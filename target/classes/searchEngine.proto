@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "generated.search";
+option java_outer_classname = "SearchEngineImpl";
+
+package searchEngine;
+
+// Interface exported by the server.
+service SearchEngine {
+   
+   // client sends 2 Strings (book title and author), and an optional integer (book id)
+   // server returns the book's availability in the local library and in others nearby
+  rpc availability(BookInfo) returns (stream BookAvailability) {}
+  
+  // client sends 1 integer (user id)
+  // server sends back a stream of information about the user
+  rpc readerInfo(userID) returns (userInformation) {}
+
+  }
+  
+  message BookInfo {
+  		string title = 1;
+  		string author = 2;
+  		int32 bookID = 3;
+  }
+  
+  message BookAvailability {
+  		string location = 1;
+  		string bookStatus = 2;
+  }
+  
+  message userID {
+  		int32 userNumber = 1;
+  }
+  
+  message userInformation {
+  		string name = 1;
+  		string registrationDate = 2;
+  		int32 totalBooksBorrowed = 3;
+  		string booksBorrowed = 4;
+  }

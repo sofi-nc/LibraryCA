@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "generated.lights";
+option java_outer_classname = "LightServiceImpl";
+
+package lighting;
+
+// Interface exported by the server.
+service LightService {
+   
+   // client-streaming RPC
+   // client sends continuous input on the light level in the building
+   // server processes the information and, when reaching a specific level, returns a message
+  rpc averageLighting(stream LightLevel) returns (AverageResponse) {}
+  
+  // unary RPC
+  // client sends one message to either turn on the lights or turn them off
+  // server sends back a single confirmation message
+  rpc turnOnOff(LightRequest) returns (StatusResponse) {}
+
+}
+
+
+
+message LightLevel {
+	int32 level  = 1;
+	string currentTime = 2;
+}
+
+message AverageResponse {
+	string lightAverage = 1;
+}
+
+message LightRequest {
+	int32 lightButton = 1;
+}
+
+message StatusResponse {
+	string lightState = 1;
+}
+
