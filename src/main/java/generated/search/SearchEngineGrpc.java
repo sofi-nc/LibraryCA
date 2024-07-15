@@ -30,30 +30,30 @@ public final class SearchEngineGrpc {
   public static final String SERVICE_NAME = "searchEngine.SearchEngine";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<generated.search.BookInfo,
-      generated.search.BookAvailability> getAvailabilityMethod;
+  private static volatile io.grpc.MethodDescriptor<generated.search.ListBy,
+      generated.search.AvailableBooks> getAvailabilityMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "availability",
-      requestType = generated.search.BookInfo.class,
-      responseType = generated.search.BookAvailability.class,
+      requestType = generated.search.ListBy.class,
+      responseType = generated.search.AvailableBooks.class,
       methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-  public static io.grpc.MethodDescriptor<generated.search.BookInfo,
-      generated.search.BookAvailability> getAvailabilityMethod() {
-    io.grpc.MethodDescriptor<generated.search.BookInfo, generated.search.BookAvailability> getAvailabilityMethod;
+  public static io.grpc.MethodDescriptor<generated.search.ListBy,
+      generated.search.AvailableBooks> getAvailabilityMethod() {
+    io.grpc.MethodDescriptor<generated.search.ListBy, generated.search.AvailableBooks> getAvailabilityMethod;
     if ((getAvailabilityMethod = SearchEngineGrpc.getAvailabilityMethod) == null) {
       synchronized (SearchEngineGrpc.class) {
         if ((getAvailabilityMethod = SearchEngineGrpc.getAvailabilityMethod) == null) {
           SearchEngineGrpc.getAvailabilityMethod = getAvailabilityMethod = 
-              io.grpc.MethodDescriptor.<generated.search.BookInfo, generated.search.BookAvailability>newBuilder()
+              io.grpc.MethodDescriptor.<generated.search.ListBy, generated.search.AvailableBooks>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
               .setFullMethodName(generateFullMethodName(
                   "searchEngine.SearchEngine", "availability"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  generated.search.BookInfo.getDefaultInstance()))
+                  generated.search.ListBy.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  generated.search.BookAvailability.getDefaultInstance()))
+                  generated.search.AvailableBooks.getDefaultInstance()))
                   .setSchemaDescriptor(new SearchEngineMethodDescriptorSupplier("availability"))
                   .build();
           }
@@ -126,19 +126,20 @@ public final class SearchEngineGrpc {
 
     /**
      * <pre>
-     * client sends 2 Strings (book title and author), and an optional integer (book id)
-     * server returns the book's availability in the local library and in others nearby
+     * client sends 1 integer to see a list of available books.
+     * The user can list the books by author, by title or by book ID
+     * server returns a list of books ordered by the selected parameter
      * </pre>
      */
-    public void availability(generated.search.BookInfo request,
-        io.grpc.stub.StreamObserver<generated.search.BookAvailability> responseObserver) {
+    public void availability(generated.search.ListBy request,
+        io.grpc.stub.StreamObserver<generated.search.AvailableBooks> responseObserver) {
       asyncUnimplementedUnaryCall(getAvailabilityMethod(), responseObserver);
     }
 
     /**
      * <pre>
      * client sends 1 integer (user id)
-     * server sends back a stream of information about the user
+     * server sends back the user's information 
      * </pre>
      */
     public void readerInfo(generated.search.userID request,
@@ -152,8 +153,8 @@ public final class SearchEngineGrpc {
             getAvailabilityMethod(),
             asyncServerStreamingCall(
               new MethodHandlers<
-                generated.search.BookInfo,
-                generated.search.BookAvailability>(
+                generated.search.ListBy,
+                generated.search.AvailableBooks>(
                   this, METHODID_AVAILABILITY)))
           .addMethod(
             getReaderInfoMethod(),
@@ -189,12 +190,13 @@ public final class SearchEngineGrpc {
 
     /**
      * <pre>
-     * client sends 2 Strings (book title and author), and an optional integer (book id)
-     * server returns the book's availability in the local library and in others nearby
+     * client sends 1 integer to see a list of available books.
+     * The user can list the books by author, by title or by book ID
+     * server returns a list of books ordered by the selected parameter
      * </pre>
      */
-    public void availability(generated.search.BookInfo request,
-        io.grpc.stub.StreamObserver<generated.search.BookAvailability> responseObserver) {
+    public void availability(generated.search.ListBy request,
+        io.grpc.stub.StreamObserver<generated.search.AvailableBooks> responseObserver) {
       asyncServerStreamingCall(
           getChannel().newCall(getAvailabilityMethod(), getCallOptions()), request, responseObserver);
     }
@@ -202,7 +204,7 @@ public final class SearchEngineGrpc {
     /**
      * <pre>
      * client sends 1 integer (user id)
-     * server sends back a stream of information about the user
+     * server sends back the user's information 
      * </pre>
      */
     public void readerInfo(generated.search.userID request,
@@ -235,12 +237,13 @@ public final class SearchEngineGrpc {
 
     /**
      * <pre>
-     * client sends 2 Strings (book title and author), and an optional integer (book id)
-     * server returns the book's availability in the local library and in others nearby
+     * client sends 1 integer to see a list of available books.
+     * The user can list the books by author, by title or by book ID
+     * server returns a list of books ordered by the selected parameter
      * </pre>
      */
-    public java.util.Iterator<generated.search.BookAvailability> availability(
-        generated.search.BookInfo request) {
+    public java.util.Iterator<generated.search.AvailableBooks> availability(
+        generated.search.ListBy request) {
       return blockingServerStreamingCall(
           getChannel(), getAvailabilityMethod(), getCallOptions(), request);
     }
@@ -248,7 +251,7 @@ public final class SearchEngineGrpc {
     /**
      * <pre>
      * client sends 1 integer (user id)
-     * server sends back a stream of information about the user
+     * server sends back the user's information 
      * </pre>
      */
     public generated.search.userInformation readerInfo(generated.search.userID request) {
@@ -281,7 +284,7 @@ public final class SearchEngineGrpc {
     /**
      * <pre>
      * client sends 1 integer (user id)
-     * server sends back a stream of information about the user
+     * server sends back the user's information 
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<generated.search.userInformation> readerInfo(
@@ -312,8 +315,8 @@ public final class SearchEngineGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_AVAILABILITY:
-          serviceImpl.availability((generated.search.BookInfo) request,
-              (io.grpc.stub.StreamObserver<generated.search.BookAvailability>) responseObserver);
+          serviceImpl.availability((generated.search.ListBy) request,
+              (io.grpc.stub.StreamObserver<generated.search.AvailableBooks>) responseObserver);
           break;
         case METHODID_READER_INFO:
           serviceImpl.readerInfo((generated.search.userID) request,

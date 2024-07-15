@@ -28,17 +28,17 @@ public interface userInformationOrBuilder extends
       getRegistrationDateBytes();
 
   /**
-   * <code>int32 totalBooksBorrowed = 3;</code>
+   * <code>bool borrowedBooks = 3;</code>
+   */
+  boolean getBorrowedBooks();
+
+  /**
+   * <code>int32 totalBooksBorrowed = 4;</code>
    */
   int getTotalBooksBorrowed();
 
   /**
-   * <code>string booksBorrowed = 4;</code>
+   * <code>bool status = 5;</code>
    */
-  java.lang.String getBooksBorrowed();
-  /**
-   * <code>string booksBorrowed = 4;</code>
-   */
-  com.google.protobuf.ByteString
-      getBooksBorrowedBytes();
+  boolean getStatus();
 }

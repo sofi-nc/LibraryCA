@@ -18,8 +18,9 @@ private static final long serialVersionUID = 0L;
   private userInformation() {
     name_ = "";
     registrationDate_ = "";
+    borrowedBooks_ = false;
     totalBooksBorrowed_ = 0;
-    booksBorrowed_ = "";
+    status_ = false;
   }
 
   @java.lang.Override
@@ -60,13 +61,17 @@ private static final long serialVersionUID = 0L;
           }
           case 24: {
 
+            borrowedBooks_ = input.readBool();
+            break;
+          }
+          case 32: {
+
             totalBooksBorrowed_ = input.readInt32();
             break;
           }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
+          case 40: {
 
-            booksBorrowed_ = s;
+            status_ = input.readBool();
             break;
           }
           default: {
@@ -169,47 +174,31 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int TOTALBOOKSBORROWED_FIELD_NUMBER = 3;
+  public static final int BORROWEDBOOKS_FIELD_NUMBER = 3;
+  private boolean borrowedBooks_;
+  /**
+   * <code>bool borrowedBooks = 3;</code>
+   */
+  public boolean getBorrowedBooks() {
+    return borrowedBooks_;
+  }
+
+  public static final int TOTALBOOKSBORROWED_FIELD_NUMBER = 4;
   private int totalBooksBorrowed_;
   /**
-   * <code>int32 totalBooksBorrowed = 3;</code>
+   * <code>int32 totalBooksBorrowed = 4;</code>
    */
   public int getTotalBooksBorrowed() {
     return totalBooksBorrowed_;
   }
 
-  public static final int BOOKSBORROWED_FIELD_NUMBER = 4;
-  private volatile java.lang.Object booksBorrowed_;
+  public static final int STATUS_FIELD_NUMBER = 5;
+  private boolean status_;
   /**
-   * <code>string booksBorrowed = 4;</code>
+   * <code>bool status = 5;</code>
    */
-  public java.lang.String getBooksBorrowed() {
-    java.lang.Object ref = booksBorrowed_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      booksBorrowed_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string booksBorrowed = 4;</code>
-   */
-  public com.google.protobuf.ByteString
-      getBooksBorrowedBytes() {
-    java.lang.Object ref = booksBorrowed_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      booksBorrowed_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public boolean getStatus() {
+    return status_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -232,11 +221,14 @@ private static final long serialVersionUID = 0L;
     if (!getRegistrationDateBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, registrationDate_);
     }
-    if (totalBooksBorrowed_ != 0) {
-      output.writeInt32(3, totalBooksBorrowed_);
+    if (borrowedBooks_ != false) {
+      output.writeBool(3, borrowedBooks_);
     }
-    if (!getBooksBorrowedBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, booksBorrowed_);
+    if (totalBooksBorrowed_ != 0) {
+      output.writeInt32(4, totalBooksBorrowed_);
+    }
+    if (status_ != false) {
+      output.writeBool(5, status_);
     }
     unknownFields.writeTo(output);
   }
@@ -253,12 +245,17 @@ private static final long serialVersionUID = 0L;
     if (!getRegistrationDateBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, registrationDate_);
     }
+    if (borrowedBooks_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(3, borrowedBooks_);
+    }
     if (totalBooksBorrowed_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(3, totalBooksBorrowed_);
+        .computeInt32Size(4, totalBooksBorrowed_);
     }
-    if (!getBooksBorrowedBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, booksBorrowed_);
+    if (status_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(5, status_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -280,10 +277,12 @@ private static final long serialVersionUID = 0L;
         .equals(other.getName());
     result = result && getRegistrationDate()
         .equals(other.getRegistrationDate());
+    result = result && (getBorrowedBooks()
+        == other.getBorrowedBooks());
     result = result && (getTotalBooksBorrowed()
         == other.getTotalBooksBorrowed());
-    result = result && getBooksBorrowed()
-        .equals(other.getBooksBorrowed());
+    result = result && (getStatus()
+        == other.getStatus());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -299,10 +298,14 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getName().hashCode();
     hash = (37 * hash) + REGISTRATIONDATE_FIELD_NUMBER;
     hash = (53 * hash) + getRegistrationDate().hashCode();
+    hash = (37 * hash) + BORROWEDBOOKS_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getBorrowedBooks());
     hash = (37 * hash) + TOTALBOOKSBORROWED_FIELD_NUMBER;
     hash = (53 * hash) + getTotalBooksBorrowed();
-    hash = (37 * hash) + BOOKSBORROWED_FIELD_NUMBER;
-    hash = (53 * hash) + getBooksBorrowed().hashCode();
+    hash = (37 * hash) + STATUS_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getStatus());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -440,9 +443,11 @@ private static final long serialVersionUID = 0L;
 
       registrationDate_ = "";
 
+      borrowedBooks_ = false;
+
       totalBooksBorrowed_ = 0;
 
-      booksBorrowed_ = "";
+      status_ = false;
 
       return this;
     }
@@ -472,8 +477,9 @@ private static final long serialVersionUID = 0L;
       generated.search.userInformation result = new generated.search.userInformation(this);
       result.name_ = name_;
       result.registrationDate_ = registrationDate_;
+      result.borrowedBooks_ = borrowedBooks_;
       result.totalBooksBorrowed_ = totalBooksBorrowed_;
-      result.booksBorrowed_ = booksBorrowed_;
+      result.status_ = status_;
       onBuilt();
       return result;
     }
@@ -530,12 +536,14 @@ private static final long serialVersionUID = 0L;
         registrationDate_ = other.registrationDate_;
         onChanged();
       }
+      if (other.getBorrowedBooks() != false) {
+        setBorrowedBooks(other.getBorrowedBooks());
+      }
       if (other.getTotalBooksBorrowed() != 0) {
         setTotalBooksBorrowed(other.getTotalBooksBorrowed());
       }
-      if (!other.getBooksBorrowed().isEmpty()) {
-        booksBorrowed_ = other.booksBorrowed_;
-        onChanged();
+      if (other.getStatus() != false) {
+        setStatus(other.getStatus());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -704,15 +712,41 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private boolean borrowedBooks_ ;
+    /**
+     * <code>bool borrowedBooks = 3;</code>
+     */
+    public boolean getBorrowedBooks() {
+      return borrowedBooks_;
+    }
+    /**
+     * <code>bool borrowedBooks = 3;</code>
+     */
+    public Builder setBorrowedBooks(boolean value) {
+      
+      borrowedBooks_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool borrowedBooks = 3;</code>
+     */
+    public Builder clearBorrowedBooks() {
+      
+      borrowedBooks_ = false;
+      onChanged();
+      return this;
+    }
+
     private int totalBooksBorrowed_ ;
     /**
-     * <code>int32 totalBooksBorrowed = 3;</code>
+     * <code>int32 totalBooksBorrowed = 4;</code>
      */
     public int getTotalBooksBorrowed() {
       return totalBooksBorrowed_;
     }
     /**
-     * <code>int32 totalBooksBorrowed = 3;</code>
+     * <code>int32 totalBooksBorrowed = 4;</code>
      */
     public Builder setTotalBooksBorrowed(int value) {
       
@@ -721,7 +755,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>int32 totalBooksBorrowed = 3;</code>
+     * <code>int32 totalBooksBorrowed = 4;</code>
      */
     public Builder clearTotalBooksBorrowed() {
       
@@ -730,71 +764,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object booksBorrowed_ = "";
+    private boolean status_ ;
     /**
-     * <code>string booksBorrowed = 4;</code>
+     * <code>bool status = 5;</code>
      */
-    public java.lang.String getBooksBorrowed() {
-      java.lang.Object ref = booksBorrowed_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        booksBorrowed_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    public boolean getStatus() {
+      return status_;
     }
     /**
-     * <code>string booksBorrowed = 4;</code>
+     * <code>bool status = 5;</code>
      */
-    public com.google.protobuf.ByteString
-        getBooksBorrowedBytes() {
-      java.lang.Object ref = booksBorrowed_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        booksBorrowed_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string booksBorrowed = 4;</code>
-     */
-    public Builder setBooksBorrowed(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      booksBorrowed_ = value;
+    public Builder setStatus(boolean value) {
+      
+      status_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string booksBorrowed = 4;</code>
+     * <code>bool status = 5;</code>
      */
-    public Builder clearBooksBorrowed() {
+    public Builder clearStatus() {
       
-      booksBorrowed_ = getDefaultInstance().getBooksBorrowed();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string booksBorrowed = 4;</code>
-     */
-    public Builder setBooksBorrowedBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      booksBorrowed_ = value;
+      status_ = false;
       onChanged();
       return this;
     }

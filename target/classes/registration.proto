@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "generated.registration";
+option java_outer_classname = "RegistrationImpl";
+
+package searchEngine;
+
+// Interface exported by the server.
+service RegistrationBook {
+
+	// BINARY STREAM RPC
+	//Client chooses an option between registering books that are either being borrowed or returned
+	//they send the book's ID and get a confirmation message from the system when they're finished (or when they reach the limit of books)
+	//Once the registration is completed, the system sends back a message with a list of the book's information, the reader's information, and the total number of registered books
+	rpc bookRegister (stream BookRegistrationRequest) returns (stream BookRegistrationResponse) {}
+	
+	//UNARY RPC
+	//Client sends a reader's ID to register their visit in the system. The system returns a confirmation message.
+	rpc visitorRegister (VisitorRegistrationRequest) returns (VisitorRegistrationResponse) {}
+}	
+
+	message BookRegistrationRequest {
+		int32 bookId = 1;
+		
+		enum RegistrationType{
+			BORROW = 0;
+			RETURN = 1;
+		}
+		
+		RegistrationType registration = 2;
+	}
+	
+	message BookRegistrationResponse {
+		string userInfo = 1;
+		string bookDetails = 2;
+		int32 totalBooks = 3;
+	}
+	
+	message VisitorRegistrationRequest {
+		int32 bookId = 1;
+	}
+	
+	message VisitorRegistrationResponse {
+		string registrationConfirmation = 1;
+		string registrationDate = 2;
+	}
+
