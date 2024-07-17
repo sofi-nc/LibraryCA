@@ -133,6 +133,8 @@ public class LibraryServer extends LightServiceImplBase{
 	public void availability(ListBy request,
 			StreamObserver<AvailableBooks> responseObserver) {
 		
+		System.out.println(LocalTime.now().toString() + " : receiving convert request with values : " + request.getOperation() );
+		
 		//ArrayList<Books> booksList = new ArrayList<>();
 		Books[] byTitle = new Books[7];
 		Books[] byAuthor = new Books[7];
@@ -174,10 +176,9 @@ public class LibraryServer extends LightServiceImplBase{
 		
 		switch (request.getOperation()) {  
 	     case TITLE:
-	    	 for (int i=0; i < 7; i++) {
-	 			
-	 			
-	 			AvailableBooks response = AvailableBooks.newBuilder().setBookId(byTitle[i].getBookId()).setTitle(byTitle[i].getTitle()).setAuthor(byTitle[i].getAuthor()).setLanguage(byTitle[i].getLang()).setSubject(byTitle[i].getSubject()).build();
+	    	 for (int i=0; i < byTitle.length; i++) {
+	    		AvailableBooks response;
+	 			response = AvailableBooks.newBuilder().setBookId(byTitle[i].getBookId()).setTitle(byTitle[i].getTitle()).setAuthor(byTitle[i].getAuthor()).setLanguage(byTitle[i].getLang()).setSubject(byTitle[i].getSubject()).build();
 	 			responseObserver.onNext(response);
 	 			
 	 			//slow it all down a bit so we can observe the behaviour 
@@ -194,9 +195,9 @@ public class LibraryServer extends LightServiceImplBase{
 	       
 	     case AUTHOR:
 	    	 for (int i=0; i < 7; i++) {
-		 			
-		 			
-		 			AvailableBooks response = AvailableBooks.newBuilder().setBookId(byAuthor[i].getBookId()).setTitle(byAuthor[i].getTitle()).setAuthor(byAuthor[i].getAuthor()).setLanguage(byAuthor[i].getLang()).setSubject(byAuthor[i].getSubject()).build();
+	    		 AvailableBooks response;
+		 		//	response = AvailableBooks.newBuilder().setBookId(byAuthor[i].getBookId()).setTitle(byAuthor[i].getTitle()).setAuthor(byAuthor[i].getAuthor()).setLanguage(byAuthor[i].getLang()).setSubject(byAuthor[i].getSubject()).build();
+	    		 response = AvailableBooks.newBuilder().setBookId(3+i).build();
 		 			responseObserver.onNext(response);
 		 			
 		 			//slow it all down a bit so we can observe the behaviour 
@@ -213,13 +214,14 @@ public class LibraryServer extends LightServiceImplBase{
 		       
 	     case ID:
 	    	 for (int i=0; i < 7; i++) {
-		 			AvailableBooks response = AvailableBooks.newBuilder().setBookId(byId[i].getBookId()).setTitle(byId[i].getTitle()).setAuthor(byId[i].getAuthor()).setLanguage(byId[i].getLang()).setSubject(byId[i].getSubject()).build();
+	    		 AvailableBooks response;
+		 			response = AvailableBooks.newBuilder().setBookId(byId[i].getBookId()).setTitle(byId[i].getTitle()).setAuthor(byId[i].getAuthor()).setLanguage(byId[i].getLang()).setSubject(byId[i].getSubject()).build();
 		 			responseObserver.onNext(response);
 		 			
 		 			//slow it all down a bit so we can observe the behaviour 
 		 			try {
 		 				//wait for a second
-		 				Thread.sleep(1000);
+		 				Thread.sleep(700);
 		 			} catch (InterruptedException e) {
 		 				// TODO Auto-generated catch block
 		 				e.printStackTrace();
@@ -227,15 +229,13 @@ public class LibraryServer extends LightServiceImplBase{
 		 			
 		 		}
 		       break;
-		       
-	     
-		       
 		 default :
-			 AvailableBooks response = AvailableBooks.newBuilder().setBookId(0).setTitle("N/A").setAuthor("N/A").setLanguage("N/A").setSubject("N/A").build();
+			 AvailableBooks response;
+			 response = AvailableBooks.newBuilder().setBookId(0).setTitle("N/A").setAuthor("N/A").setLanguage("N/A").setSubject("N/A").build();
 			 
-
 	      }
-		
+		//AvailableBooks response;
+		//response = AvailableBooks.newBuilder().setBookId(0).setTitle("N/A").setAuthor("N/A").setLanguage("N/A").setSubject("N/A").build();
 		
 		// signal that there are no more responses
 		responseObserver.onCompleted();

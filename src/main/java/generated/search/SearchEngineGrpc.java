@@ -126,7 +126,7 @@ public final class SearchEngineGrpc {
 
     /**
      * <pre>
-     * client sends 1 integer to see a list of available books.
+     * This service allows the client  to see a list of available books.
      * The user can list the books by author, by title or by book ID
      * server returns a list of books ordered by the selected parameter
      * </pre>
@@ -190,7 +190,7 @@ public final class SearchEngineGrpc {
 
     /**
      * <pre>
-     * client sends 1 integer to see a list of available books.
+     * This service allows the client  to see a list of available books.
      * The user can list the books by author, by title or by book ID
      * server returns a list of books ordered by the selected parameter
      * </pre>
@@ -237,7 +237,7 @@ public final class SearchEngineGrpc {
 
     /**
      * <pre>
-     * client sends 1 integer to see a list of available books.
+     * This service allows the client  to see a list of available books.
      * The user can list the books by author, by title or by book ID
      * server returns a list of books ordered by the selected parameter
      * </pre>

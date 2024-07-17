@@ -31,8 +31,14 @@ import generated.lights.LightServiceGrpc;
 import generated.lights.StatusResponse;
 import generated.lights.LightServiceGrpc.LightServiceBlockingStub;
 import generated.lights.LightServiceGrpc.LightServiceStub;
+import generated.search.AvailableBooks;
 import generated.search.ListBy;
 import generated.search.ListBy.ListOperation;
+import generated.search.SearchEngineGrpc;
+//import generated.search.SearchEngineGrpc.SearchEngineBlockingStub;
+//import generated.search.SearchEngineGrpc.SearchEngineStub;
+import generated.search.SearchEngineGrpc.*;
+import generated.search.AvailableBooks;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
@@ -49,10 +55,14 @@ public class LibraryGUI extends JFrame {
 	
 	int onOffInst = 0;
 	
-	private static LightServiceBlockingStub blockingStub;
-	private static LightServiceStub asyncStub;
+	//ListBy request;
+	//ListBy.ListOperation operation;
 	
-	ListBy.ListOperation listOption;
+	private static LightServiceBlockingStub LSblockingStub;
+	private static LightServiceStub asyncStub;
+	public static SearchEngineStub SEasyncStub;
+	private static SearchEngineBlockingStub SEblockingStub;
+	
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -66,15 +76,16 @@ public class LibraryGUI extends JFrame {
 				.usePlaintext()
 				.build();
 		
-		blockingStub = LightServiceGrpc.newBlockingStub(channel);
+		LSblockingStub = LightServiceGrpc.newBlockingStub(channel);
 		asyncStub = LightServiceGrpc.newStub(channel);
-		
+		SEasyncStub = SearchEngineGrpc.newStub(channel); 
+		SEblockingStub = SearchEngineGrpc.newBlockingStub(channel);
 		
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GUI_library frame = new GUI_library();
+					LibraryGUI frame = new LibraryGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -89,7 +100,7 @@ public class LibraryGUI extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public LibraryGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 722, 418);
+		setBounds(100, 100, 722, 502);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -121,7 +132,7 @@ public class LibraryGUI extends JFrame {
 		
 		JPanel emergencyPanel = new JPanel();
 		emergencyPanel.setBorder(new TitledBorder(null, "Emergency lights", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		emergencyPanel.setBounds(10, 208, 273, 92);
+		emergencyPanel.setBounds(10, 204, 273, 92);
 		contentPane.add(emergencyPanel);
 		emergencyPanel.setLayout(null);
 		
@@ -150,7 +161,7 @@ public class LibraryGUI extends JFrame {
 					instruction = onOffInst;
 				}
 				LightRequest req = LightRequest.newBuilder().setLightButton(instruction).build();
-				StatusResponse resp = blockingStub.turnOnOff(req);
+				StatusResponse resp = LSblockingStub.turnOnOff(req);
 				
 				System.out.println(LocalTime.now().toString() + ": Validation message: " + resp.getLightState());
 				lightStateTa.replaceRange(resp.getLightState(), 0, resp.getLightState().length());
@@ -258,64 +269,110 @@ public class LibraryGUI extends JFrame {
 		avgBtn.setBounds(109, 80, 136, 23);
 		AvgPanel.add(avgBtn);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "List books", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel.setBounds(293, 10, 294, 187);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Book Availability", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1.setBounds(293, 11, 294, 158);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
 		
-		JButton byTitleBtn = new JButton("By Title");
-		byTitleBtn.addActionListener(new ActionListener() {
+		JComboBox listByOptions = new JComboBox();
+		listByOptions.setBounds(93, 12, 75, 20);
+		listByOptions.setModel(new DefaultComboBoxModel(ListOperation.values()));
+		panel_1.add(listByOptions);
+		
+		JButton btnListBy = new JButton("Submit");
+		btnListBy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListBy.ListOperation listOption = ListBy.ListOperation.TITLE;
+				ListBy requestAsyn;
+				ListBy.ListOperation operation = ListBy.ListOperation.AUTHOR;
+				//operation = (ListOperation) listByOptions.getSelectedItem();
+				System.out.println("You selected to list the books by: " + operation);
+				requestAsyn = ListBy.newBuilder().setOperation(operation).build();
+				
+				/*
+				 * SERVER STREAMING (BLOCKING)
+				 */
+			/*	ListBy listingReq = ListBy.newBuilder().setOperation(operation).build();
+				try {
+				Iterator<AvailableBooks> responses = SEblockingStub.availability(listingReq);
+				
+				while(responses.hasNext()) {
+					AvailableBooks bk = responses.next();
+					System.out.println(bk.getAuthor());
+				}
+			} catch (StatusRuntimeException ie) {
+				ie.printStackTrace();
+			} */
+				
+				/*
+				 * SERVER STREAMING (NON-BLOCKING)
+				 */
+				// set up the responseObserver - this is a new object where the client specifies the
+				// behaviour to be performed for onNext , onCompleted and onError 
+				// the responseObserver is passed to the server when the request is made.
+				// The server calls onNext() for each response and onComplete() when its finished responding 
+				// The client is able to observe these events via the responseObserver.
+				// note that we are calling the same server side method as for the synchronous call  
+				// the server behaves the same - the clients reaction to the responses is different - it is 
+				// asynchronous
+				
+				StreamObserver<AvailableBooks> responseObserver = new StreamObserver<AvailableBooks>() {
+				
+					int count =0 ;
+
+					@Override
+					public void onNext(AvailableBooks value) {
+						System.out.println(LocalTime.now().toString() + ": receiving book's information.\nBook ID: " + value.getBookId() + "\nTitle: " + value.getTitle() + "\nAuthor: " + value.getAuthor() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject());
+						count += 1;
+					}
+
+					@Override
+					public void onError(Throwable t) {
+						t.printStackTrace();
+
+					}
+
+					@Override
+					public void onCompleted() {
+						System.out.println(LocalTime.now().toString() + ": stream is completed ... received "+ count+ " books");
+					}
+
+				};
+
+				
+				// the client does not have to wait for the server to return - it can just fire off the request and go to sleep.
+				//SEasyncStub.availability(request, responseObs);
+
+				SEasyncStub.availability(requestAsyn, responseObserver);
+				// the sleep here is optional - its purpose is to slow things down so we can observe what is happening
+				try {
+					Thread.sleep(15000);
+				} catch (InterruptedException ie) {
+					// TODO Auto-generated catch block
+					ie.printStackTrace();
+				} //SERVER STREAMING Nonblocking
 			}
 		});
-		byTitleBtn.setBounds(10, 21, 89, 23);
-		panel.add(byTitleBtn);
+		btnListBy.setBounds(178, 11, 89, 23);
+		panel_1.add(btnListBy);
 		
-		JButton byAuthorBtn = new JButton("By Author");
-		byAuthorBtn.setBounds(102, 21, 89, 23);
-		panel.add(byAuthorBtn);
+		JLabel lblNewLabel = new JLabel("List books by:");
+		lblNewLabel.setBounds(10, 15, 89, 14);
+		panel_1.add(lblNewLabel);
 		
-		JButton byIdBtn = new JButton("By Id");
-		byIdBtn.setBounds(195, 21, 89, 23);
-		panel.add(byIdBtn);
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 40, 274, 107);
+		panel_1.add(scrollPane_1);
 		
-		JScrollPane listScrollPane = new JScrollPane();
-		listScrollPane.setBounds(10, 55, 274, 121);
-		panel.add(listScrollPane);
+		JTextArea textArea = new JTextArea();
+		scrollPane_1.setViewportView(textArea);
 		
-		JTextPane listPane = new JTextPane();
-		listPane.setEditable(false);
-		listScrollPane.setViewportView(listPane);
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Visitor details", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBounds(293, 180, 294, 116);
+		contentPane.add(panel);
 		
-		/*
-		 * SERVER STREAMING (NON BLOCKING)
-		 */
-	/*	public static void availabilityByTitle() {
-			
-			// List by option
-			ListBy.ListOperation option;
-			option = ListBy.ListOperation.TITLE;
-
-			try {
-			
-				// the blocking stub means that the iterator only returns to the client 
-				// after the server has performed onComplete();
-				// the client gets the response directly like a local method call
-				// the client accesses the responses iterator  and loops through it
-				// 
-				Iterator<NumberResponse> responses = blockingStub.generateRandomNumbers(request);
-
-				while(responses.hasNext()) {
-					NumberResponse temp = responses.next();
-					System.out.println(temp.getNumber());				
-				}
-
-			} catch (StatusRuntimeException e) {
-				e.printStackTrace();
-			}
-
-		}*/
-	}
+		
+		
+	}//Library GUI
 }
