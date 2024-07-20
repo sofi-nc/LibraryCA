@@ -6,8 +6,12 @@ import generated.lights.LightLevel;
 import generated.lights.LightRequest;
 import generated.lights.LightServiceGrpc.LightServiceImplBase;
 import generated.lights.StatusResponse;
+import generated.registration.VisitorRegistrationRequest;
+import generated.registration.VisitorRegistrationResponse;
 import generated.search.AvailableBooks;
 import generated.search.ListBy;
+import generated.search.userID;
+import generated.search.userInformation;
 import io.grpc.ServerBuilder;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
@@ -133,7 +137,7 @@ public class LibraryServer extends LightServiceImplBase{
 	public void availability(ListBy request,
 			StreamObserver<AvailableBooks> responseObserver) {
 		
-		System.out.println(LocalTime.now().toString() + " : receiving convert request with values : " + request.getOperation() );
+		System.out.println(LocalTime.now().toString() + " : receiving convert request with values : " + request.getOperation());
 		
 		//ArrayList<Books> booksList = new ArrayList<>();
 		Books[] byTitle = new Books[7];
@@ -198,6 +202,7 @@ public class LibraryServer extends LightServiceImplBase{
 	    		 AvailableBooks response;
 		 		//	response = AvailableBooks.newBuilder().setBookId(byAuthor[i].getBookId()).setTitle(byAuthor[i].getTitle()).setAuthor(byAuthor[i].getAuthor()).setLanguage(byAuthor[i].getLang()).setSubject(byAuthor[i].getSubject()).build();
 	    		 response = AvailableBooks.newBuilder().setBookId(3+i).build();
+	    		 
 		 			responseObserver.onNext(response);
 		 			
 		 			//slow it all down a bit so we can observe the behaviour 
@@ -206,6 +211,7 @@ public class LibraryServer extends LightServiceImplBase{
 		 				Thread.sleep(1000);
 		 			} catch (InterruptedException e) {
 		 				// TODO Auto-generated catch block
+		 				System.out.println("No book");
 		 				e.printStackTrace();
 		 			}
 		 			
@@ -243,7 +249,55 @@ public class LibraryServer extends LightServiceImplBase{
 		
 	}
 	
+	/*
+	 * VISITOR SEARCH SERVICE
+	 * UNARY RPC
+	 */
+	public void readerInfo(userID request, StreamObserver<userInformation> responseObserver) {
+		System.out.println(LocalTime.now().toString() + ": receiving userID request: " + request.getUserNumber());
+		String name, registrationDate;
+		boolean borrowedBooks, status;
+		int totalBooksBorrowed;
+		
+		switch (request.getUserNumber()) {
+		/*
+		 * USERID available 443325, 493947, 102934, and 980661
+		 */
+		
+			case 443325:
+				name = "Catalina Jauregui";
+				registrationDate = "20/12/2004";
+				borrowedBooks = true;
+				status = true;
+				totalBooksBorrowed = 4;
+				break;
+			default :
+				name = "User not found";
+				registrationDate = "";
+				borrowedBooks = false;
+				status = false;
+				totalBooksBorrowed = 0;
+		}
+		
+		
+		userInformation response = userInformation.newBuilder().setName(name).setRegistrationDate(registrationDate).setBorrowedBooks(borrowedBooks).setStatus(status).setTotalBooksBorrowed(totalBooksBorrowed).build();
+		
+		responseObserver.onNext(response);
+		responseObserver.onCompleted();
+	}
+	 
 	
-	
-	
+	/*
+	 * UNARY GRPC 
+	 * VisitorRegister (VisitorRegisterReq) returns (VisitorRegisterResp)
+	 * Unary RPC. The client uses this method to register their visit to the library. A user id (integer) is sent to the service. The system replies with a confirmation message (String).
+	 */
+	public void visitorRegister(VisitorRegistrationRequest request, StreamObserver<VisitorRegistrationResponse> responseObserver) {
+		System.out.println(LocalTime.now().toString() + ": receiving user registration request. Book ID: " + request.getBookId());
+		
+		VisitorRegistrationResponse response = VisitorRegistrationResponse.newBuilder().setRegistrationConfirmation("Registration confirmed").setRegistrationDate("19/07/2024").build();
+		
+		responseObserver.onNext(response);
+		responseObserver.onCompleted();
+	}
 }

@@ -4,7 +4,7 @@ option java_multiple_files = true;
 option java_package = "generated.registration";
 option java_outer_classname = "RegistrationImpl";
 
-package searchEngine;
+package registration;
 
 // Interface exported by the server.
 service RegistrationBook {

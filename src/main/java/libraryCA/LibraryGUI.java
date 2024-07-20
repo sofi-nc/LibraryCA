@@ -46,6 +46,9 @@ import io.grpc.stub.StreamObserver;
 import javax.swing.SpinnerNumberModel;
 import java.awt.FlowLayout;
 import javax.swing.JTextPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.JCheckBox;
 
 public class LibraryGUI extends JFrame {
 
@@ -66,6 +69,7 @@ public class LibraryGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -195,7 +199,7 @@ public class LibraryGUI extends JFrame {
 		submitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int lightLvl = (int) LightLvlSpn.getValue();
-				if(lightLvl>= 0 && lightLvl<=100) {
+				if(lightLvl>= 0 && lightLvl<=5) {
 					lightList.add(lightCount, lightLvl);
 				} else {
 					JOptionPane.showMessageDialog(null, "Invalid input for light level");
@@ -269,16 +273,16 @@ public class LibraryGUI extends JFrame {
 		avgBtn.setBounds(109, 80, 136, 23);
 		AvgPanel.add(avgBtn);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Book Availability", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.setBounds(293, 11, 294, 158);
-		contentPane.add(panel_1);
-		panel_1.setLayout(null);
+		JPanel availabilityPanel = new JPanel();
+		availabilityPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Book Availability", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		availabilityPanel.setBounds(293, 11, 294, 158);
+		contentPane.add(availabilityPanel);
+		availabilityPanel.setLayout(null);
 		
 		JComboBox listByOptions = new JComboBox();
 		listByOptions.setBounds(93, 12, 75, 20);
 		listByOptions.setModel(new DefaultComboBoxModel(ListOperation.values()));
-		panel_1.add(listByOptions);
+		availabilityPanel.add(listByOptions);
 		
 		JButton btnListBy = new JButton("Submit");
 		btnListBy.addActionListener(new ActionListener() {
@@ -354,23 +358,61 @@ public class LibraryGUI extends JFrame {
 			}
 		});
 		btnListBy.setBounds(178, 11, 89, 23);
-		panel_1.add(btnListBy);
+		availabilityPanel.add(btnListBy);
 		
 		JLabel lblNewLabel = new JLabel("List books by:");
 		lblNewLabel.setBounds(10, 15, 89, 14);
-		panel_1.add(lblNewLabel);
+		availabilityPanel.add(lblNewLabel);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 40, 274, 107);
-		panel_1.add(scrollPane_1);
+		availabilityPanel.add(scrollPane_1);
 		
 		JTextArea textArea = new JTextArea();
 		scrollPane_1.setViewportView(textArea);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "Visitor details", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(293, 180, 294, 116);
-		contentPane.add(panel);
+		JPanel detailsPanel = new JPanel();
+		detailsPanel.setBorder(new TitledBorder(null, "Visitor details", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		detailsPanel.setBounds(293, 180, 294, 218);
+		contentPane.add(detailsPanel);
+		detailsPanel.setLayout(null);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"443325", "493947", "102934", "980661"}));
+		comboBox.setBounds(157, 20, 86, 22);
+		detailsPanel.add(comboBox);
+		
+		JLabel userIDLbl = new JLabel("Select user ID:");
+		userIDLbl.setBounds(29, 24, 100, 14);
+		detailsPanel.add(userIDLbl);
+		
+		textField = new JTextField();
+		textField.setBounds(157, 53, 86, 20);
+		detailsPanel.add(textField);
+		textField.setColumns(10);
+		
+		JButton useridBtn = new JButton("Submit");
+		useridBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		useridBtn.setBounds(98, 82, 89, 23);
+		detailsPanel.add(useridBtn);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Enter ID manually");
+		rdbtnNewRadioButton.setBounds(10, 52, 141, 23);
+		detailsPanel.add(rdbtnNewRadioButton);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(10, 132, 274, 75);
+		detailsPanel.add(scrollPane_2);
+		
+		JTextArea textArea_1 = new JTextArea();
+		scrollPane_2.setViewportView(textArea_1);
+		
+		JLabel detailsLbl = new JLabel("Visitor details:");
+		detailsLbl.setBounds(10, 116, 100, 14);
+		detailsPanel.add(detailsLbl);
 		
 		
 		
