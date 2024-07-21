@@ -4,7 +4,7 @@
 package generated.registration;
 
 public interface BookRegistrationRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:searchEngine.BookRegistrationRequest)
+    // @@protoc_insertion_point(interface_extends:registration.BookRegistrationRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -13,11 +13,11 @@ public interface BookRegistrationRequestOrBuilder extends
   int getBookId();
 
   /**
-   * <code>.searchEngine.BookRegistrationRequest.RegistrationType registration = 2;</code>
+   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
    */
   int getRegistrationValue();
   /**
-   * <code>.searchEngine.BookRegistrationRequest.RegistrationType registration = 2;</code>
+   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
    */
   generated.registration.BookRegistrationRequest.RegistrationType getRegistration();
 }

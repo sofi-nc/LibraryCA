@@ -27,7 +27,7 @@ public final class RegistrationBookGrpc {
 
   private RegistrationBookGrpc() {}
 
-  public static final String SERVICE_NAME = "searchEngine.RegistrationBook";
+  public static final String SERVICE_NAME = "registration.RegistrationBook";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<generated.registration.BookRegistrationRequest,
@@ -48,7 +48,7 @@ public final class RegistrationBookGrpc {
               io.grpc.MethodDescriptor.<generated.registration.BookRegistrationRequest, generated.registration.BookRegistrationResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
               .setFullMethodName(generateFullMethodName(
-                  "searchEngine.RegistrationBook", "bookRegister"))
+                  "registration.RegistrationBook", "bookRegister"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   generated.registration.BookRegistrationRequest.getDefaultInstance()))
@@ -80,7 +80,7 @@ public final class RegistrationBookGrpc {
               io.grpc.MethodDescriptor.<generated.registration.VisitorRegistrationRequest, generated.registration.VisitorRegistrationResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "searchEngine.RegistrationBook", "visitorRegister"))
+                  "registration.RegistrationBook", "visitorRegister"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   generated.registration.VisitorRegistrationRequest.getDefaultInstance()))

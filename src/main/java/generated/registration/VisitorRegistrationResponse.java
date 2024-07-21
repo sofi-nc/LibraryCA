@@ -4,11 +4,11 @@
 package generated.registration;
 
 /**
- * Protobuf type {@code searchEngine.VisitorRegistrationResponse}
+ * Protobuf type {@code registration.VisitorRegistrationResponse}
  */
 public  final class VisitorRegistrationResponse extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:searchEngine.VisitorRegistrationResponse)
+    // @@protoc_insertion_point(message_implements:registration.VisitorRegistrationResponse)
     VisitorRegistrationResponseOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use VisitorRegistrationResponse.newBuilder() to construct.
@@ -77,13 +77,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return generated.registration.RegistrationImpl.internal_static_searchEngine_VisitorRegistrationResponse_descriptor;
+    return generated.registration.RegistrationImpl.internal_static_registration_VisitorRegistrationResponse_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return generated.registration.RegistrationImpl.internal_static_searchEngine_VisitorRegistrationResponse_fieldAccessorTable
+    return generated.registration.RegistrationImpl.internal_static_registration_VisitorRegistrationResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             generated.registration.VisitorRegistrationResponse.class, generated.registration.VisitorRegistrationResponse.Builder.class);
   }
@@ -322,21 +322,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code searchEngine.VisitorRegistrationResponse}
+   * Protobuf type {@code registration.VisitorRegistrationResponse}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:searchEngine.VisitorRegistrationResponse)
+      // @@protoc_insertion_point(builder_implements:registration.VisitorRegistrationResponse)
       generated.registration.VisitorRegistrationResponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return generated.registration.RegistrationImpl.internal_static_searchEngine_VisitorRegistrationResponse_descriptor;
+      return generated.registration.RegistrationImpl.internal_static_registration_VisitorRegistrationResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return generated.registration.RegistrationImpl.internal_static_searchEngine_VisitorRegistrationResponse_fieldAccessorTable
+      return generated.registration.RegistrationImpl.internal_static_registration_VisitorRegistrationResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               generated.registration.VisitorRegistrationResponse.class, generated.registration.VisitorRegistrationResponse.Builder.class);
     }
@@ -369,7 +369,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return generated.registration.RegistrationImpl.internal_static_searchEngine_VisitorRegistrationResponse_descriptor;
+      return generated.registration.RegistrationImpl.internal_static_registration_VisitorRegistrationResponse_descriptor;
     }
 
     @java.lang.Override
@@ -626,10 +626,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:searchEngine.VisitorRegistrationResponse)
+    // @@protoc_insertion_point(builder_scope:registration.VisitorRegistrationResponse)
   }
 
-  // @@protoc_insertion_point(class_scope:searchEngine.VisitorRegistrationResponse)
+  // @@protoc_insertion_point(class_scope:registration.VisitorRegistrationResponse)
   private static final generated.registration.VisitorRegistrationResponse DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new generated.registration.VisitorRegistrationResponse();

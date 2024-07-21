@@ -293,6 +293,7 @@ public class LibraryServer extends LightServiceImplBase{
 	 * Unary RPC. The client uses this method to register their visit to the library. A user id (integer) is sent to the service. The system replies with a confirmation message (String).
 	 */
 	public void visitorRegister(VisitorRegistrationRequest request, StreamObserver<VisitorRegistrationResponse> responseObserver) {
+		
 		System.out.println(LocalTime.now().toString() + ": receiving user registration request. Book ID: " + request.getBookId());
 		
 		VisitorRegistrationResponse response = VisitorRegistrationResponse.newBuilder().setRegistrationConfirmation("Registration confirmed").setRegistrationDate("19/07/2024").build();

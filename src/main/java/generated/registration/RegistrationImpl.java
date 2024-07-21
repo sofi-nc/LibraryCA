@@ -15,25 +15,25 @@ public final class RegistrationImpl {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_searchEngine_BookRegistrationRequest_descriptor;
+    internal_static_registration_BookRegistrationRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_searchEngine_BookRegistrationRequest_fieldAccessorTable;
+      internal_static_registration_BookRegistrationRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_searchEngine_BookRegistrationResponse_descriptor;
+    internal_static_registration_BookRegistrationResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_searchEngine_BookRegistrationResponse_fieldAccessorTable;
+      internal_static_registration_BookRegistrationResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_searchEngine_VisitorRegistrationRequest_descriptor;
+    internal_static_registration_VisitorRegistrationRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_searchEngine_VisitorRegistrationRequest_fieldAccessorTable;
+      internal_static_registration_VisitorRegistrationRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_searchEngine_VisitorRegistrationResponse_descriptor;
+    internal_static_registration_VisitorRegistrationResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_searchEngine_VisitorRegistrationResponse_fieldAccessorTable;
+      internal_static_registration_VisitorRegistrationResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -43,9 +43,9 @@ public final class RegistrationImpl {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022registration.proto\022\014searchEngine\"\243\001\n\027B" +
+      "\n\022registration.proto\022\014registration\"\243\001\n\027B" +
       "ookRegistrationRequest\022\016\n\006bookId\030\001 \001(\005\022L" +
-      "\n\014registration\030\002 \001(\01626.searchEngine.Book" +
+      "\n\014registration\030\002 \001(\01626.registration.Book" +
       "RegistrationRequest.RegistrationType\"*\n\020" +
       "RegistrationType\022\n\n\006BORROW\020\000\022\n\n\006RETURN\020\001" +
       "\"U\n\030BookRegistrationResponse\022\020\n\010userInfo" +
@@ -54,11 +54,11 @@ public final class RegistrationImpl {
       "\006bookId\030\001 \001(\005\"Y\n\033VisitorRegistrationResp" +
       "onse\022 \n\030registrationConfirmation\030\001 \001(\t\022\030" +
       "\n\020registrationDate\030\002 \001(\t2\341\001\n\020Registratio" +
-      "nBook\022c\n\014bookRegister\022%.searchEngine.Boo" +
-      "kRegistrationRequest\032&.searchEngine.Book" +
+      "nBook\022c\n\014bookRegister\022%.registration.Boo" +
+      "kRegistrationRequest\032&.registration.Book" +
       "RegistrationResponse\"\000(\0010\001\022h\n\017visitorReg" +
-      "ister\022(.searchEngine.VisitorRegistration" +
-      "Request\032).searchEngine.VisitorRegistrati" +
+      "ister\022(.registration.VisitorRegistration" +
+      "Request\032).registration.VisitorRegistrati" +
       "onResponse\"\000B,\n\026generated.registrationB\020" +
       "RegistrationImplP\001b\006proto3"
     };
@@ -74,29 +74,29 @@ public final class RegistrationImpl {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_searchEngine_BookRegistrationRequest_descriptor =
+    internal_static_registration_BookRegistrationRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_searchEngine_BookRegistrationRequest_fieldAccessorTable = new
+    internal_static_registration_BookRegistrationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_searchEngine_BookRegistrationRequest_descriptor,
+        internal_static_registration_BookRegistrationRequest_descriptor,
         new java.lang.String[] { "BookId", "Registration", });
-    internal_static_searchEngine_BookRegistrationResponse_descriptor =
+    internal_static_registration_BookRegistrationResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_searchEngine_BookRegistrationResponse_fieldAccessorTable = new
+    internal_static_registration_BookRegistrationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_searchEngine_BookRegistrationResponse_descriptor,
+        internal_static_registration_BookRegistrationResponse_descriptor,
         new java.lang.String[] { "UserInfo", "BookDetails", "TotalBooks", });
-    internal_static_searchEngine_VisitorRegistrationRequest_descriptor =
+    internal_static_registration_VisitorRegistrationRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_searchEngine_VisitorRegistrationRequest_fieldAccessorTable = new
+    internal_static_registration_VisitorRegistrationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_searchEngine_VisitorRegistrationRequest_descriptor,
+        internal_static_registration_VisitorRegistrationRequest_descriptor,
         new java.lang.String[] { "BookId", });
-    internal_static_searchEngine_VisitorRegistrationResponse_descriptor =
+    internal_static_registration_VisitorRegistrationResponse_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_searchEngine_VisitorRegistrationResponse_fieldAccessorTable = new
+    internal_static_registration_VisitorRegistrationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_searchEngine_VisitorRegistrationResponse_descriptor,
+        internal_static_registration_VisitorRegistrationResponse_descriptor,
         new java.lang.String[] { "RegistrationConfirmation", "RegistrationDate", });
   }
 

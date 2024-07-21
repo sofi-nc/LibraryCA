@@ -4,7 +4,7 @@
 package generated.registration;
 
 public interface VisitorRegistrationResponseOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:searchEngine.VisitorRegistrationResponse)
+    // @@protoc_insertion_point(interface_extends:registration.VisitorRegistrationResponse)
     com.google.protobuf.MessageOrBuilder {
 
   /**

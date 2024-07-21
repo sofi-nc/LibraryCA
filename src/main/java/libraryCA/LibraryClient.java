@@ -6,6 +6,7 @@ import generated.lights.AverageResponse;
 import generated.lights.LightLevel;
 import generated.lights.LightServiceGrpc;
 import generated.lights.LightServiceGrpc.LightServiceStub;
+import generated.registration.RegistrationBookGrpc.RegistrationBookBlockingStub;
 import generated.registration.RegistrationBookGrpc.RegistrationBookStub;
 import generated.registration.RegistrationBookGrpc;
 import generated.registration.VisitorRegistrationRequest;
@@ -25,7 +26,8 @@ public class LibraryClient {
 	private static SearchEngineBlockingStub blockingStub;
 	private static SearchEngineStub asyncStub;
 	private static LightServiceStub LSasyncStub;
-	private static RegistrationBookStub RblockingStub;
+	private static RegistrationBookStub RAsyncStub;
+	private static RegistrationBookBlockingStub RblockingStub;
 	
 	
 	public static void main(String[] args) {
@@ -38,11 +40,12 @@ public class LibraryClient {
 		blockingStub = SearchEngineGrpc.newBlockingStub(channel);
 		asyncStub = SearchEngineGrpc.newStub(channel);
 		LSasyncStub = LightServiceGrpc.newStub(channel);
-		RblockingStub = RegistrationBookGrpc.newStub(channel);
+		RblockingStub = RegistrationBookGrpc.newBlockingStub(channel);
 		
 		//availabilityAsyn();
 		//LightAvg();
 		readerInfo();
+		//visitorRegister();
 	}
 	
 	public static void availabilityAsyn() {
@@ -84,25 +87,25 @@ public class LibraryClient {
 	 * UNARY RPC
 	 */
 	public static void readerInfo() {
+		System.out.println("Enter a user number");
 		/*
 		 * USERID available 443325, 493947, 102934, and 980661
 		 */
 		int userNum = 443325;
 		userID req = userID.newBuilder().setUserNumber(userNum).build();
-		userInformation response = blockingStub.readerInfo(req);
+		userInformation responseRI = blockingStub.readerInfo(req);
 		
-		System.out.println(LocalTime.now().toString() + ": User's information: \nNAME: " + response.getName() + "\nREGISTRATION DATE: " + response.getRegistrationDate());
+		System.out.println(LocalTime.now().toString() + ": User's information: \nNAME: " + responseRI.getName() + "\nREGISTRATION DATE: " + responseRI.getRegistrationDate());
 		
 	}
 	
 	public static void visitorRegister() {
-		int bookID = 12;
-		VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setBookId(bookID).build();
+		int visitorID = 12;
+		VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setBookId(visitorID).build();
 		
-		VisitorRegistrationResponse response = RblockingStub.visitorRegister(req, null);
+		VisitorRegistrationResponse response = RblockingStub.visitorRegister(req);
 		
-		
-		System.out.println(LocalTime.now().toString() + ": receiving message: " + re
+		System.out.println(LocalTime.now().toString() + ": receiving message: " + response.getRegistrationConfirmation() + " for the date: " + response.getRegistrationDate());
 	}
 	
 	public static void LightAvg() {

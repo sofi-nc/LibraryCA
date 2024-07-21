@@ -38,7 +38,7 @@ service RegistrationBook {
 	}
 	
 	message VisitorRegistrationRequest {
-		int32 bookId = 1;
+		int32 visitorId = 1;
 	}
 	
 	message VisitorRegistrationResponse {

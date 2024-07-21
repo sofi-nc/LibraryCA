@@ -4,11 +4,11 @@
 package generated.registration;
 
 /**
- * Protobuf type {@code searchEngine.BookRegistrationRequest}
+ * Protobuf type {@code registration.BookRegistrationRequest}
  */
 public  final class BookRegistrationRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:searchEngine.BookRegistrationRequest)
+    // @@protoc_insertion_point(message_implements:registration.BookRegistrationRequest)
     BookRegistrationRequestOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use BookRegistrationRequest.newBuilder() to construct.
@@ -76,19 +76,19 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return generated.registration.RegistrationImpl.internal_static_searchEngine_BookRegistrationRequest_descriptor;
+    return generated.registration.RegistrationImpl.internal_static_registration_BookRegistrationRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return generated.registration.RegistrationImpl.internal_static_searchEngine_BookRegistrationRequest_fieldAccessorTable
+    return generated.registration.RegistrationImpl.internal_static_registration_BookRegistrationRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             generated.registration.BookRegistrationRequest.class, generated.registration.BookRegistrationRequest.Builder.class);
   }
 
   /**
-   * Protobuf enum {@code searchEngine.BookRegistrationRequest.RegistrationType}
+   * Protobuf enum {@code registration.BookRegistrationRequest.RegistrationType}
    */
   public enum RegistrationType
       implements com.google.protobuf.ProtocolMessageEnum {
@@ -182,7 +182,7 @@ private static final long serialVersionUID = 0L;
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:searchEngine.BookRegistrationRequest.RegistrationType)
+    // @@protoc_insertion_point(enum_scope:registration.BookRegistrationRequest.RegistrationType)
   }
 
   public static final int BOOKID_FIELD_NUMBER = 1;
@@ -197,13 +197,13 @@ private static final long serialVersionUID = 0L;
   public static final int REGISTRATION_FIELD_NUMBER = 2;
   private int registration_;
   /**
-   * <code>.searchEngine.BookRegistrationRequest.RegistrationType registration = 2;</code>
+   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
    */
   public int getRegistrationValue() {
     return registration_;
   }
   /**
-   * <code>.searchEngine.BookRegistrationRequest.RegistrationType registration = 2;</code>
+   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
    */
   public generated.registration.BookRegistrationRequest.RegistrationType getRegistration() {
     @SuppressWarnings("deprecation")
@@ -378,21 +378,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code searchEngine.BookRegistrationRequest}
+   * Protobuf type {@code registration.BookRegistrationRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:searchEngine.BookRegistrationRequest)
+      // @@protoc_insertion_point(builder_implements:registration.BookRegistrationRequest)
       generated.registration.BookRegistrationRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return generated.registration.RegistrationImpl.internal_static_searchEngine_BookRegistrationRequest_descriptor;
+      return generated.registration.RegistrationImpl.internal_static_registration_BookRegistrationRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return generated.registration.RegistrationImpl.internal_static_searchEngine_BookRegistrationRequest_fieldAccessorTable
+      return generated.registration.RegistrationImpl.internal_static_registration_BookRegistrationRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               generated.registration.BookRegistrationRequest.class, generated.registration.BookRegistrationRequest.Builder.class);
     }
@@ -425,7 +425,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return generated.registration.RegistrationImpl.internal_static_searchEngine_BookRegistrationRequest_descriptor;
+      return generated.registration.RegistrationImpl.internal_static_registration_BookRegistrationRequest_descriptor;
     }
 
     @java.lang.Override
@@ -558,13 +558,13 @@ private static final long serialVersionUID = 0L;
 
     private int registration_ = 0;
     /**
-     * <code>.searchEngine.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
      */
     public int getRegistrationValue() {
       return registration_;
     }
     /**
-     * <code>.searchEngine.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
      */
     public Builder setRegistrationValue(int value) {
       registration_ = value;
@@ -572,7 +572,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.searchEngine.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
      */
     public generated.registration.BookRegistrationRequest.RegistrationType getRegistration() {
       @SuppressWarnings("deprecation")
@@ -580,7 +580,7 @@ private static final long serialVersionUID = 0L;
       return result == null ? generated.registration.BookRegistrationRequest.RegistrationType.UNRECOGNIZED : result;
     }
     /**
-     * <code>.searchEngine.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
      */
     public Builder setRegistration(generated.registration.BookRegistrationRequest.RegistrationType value) {
       if (value == null) {
@@ -592,7 +592,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.searchEngine.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
      */
     public Builder clearRegistration() {
       
@@ -613,10 +613,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:searchEngine.BookRegistrationRequest)
+    // @@protoc_insertion_point(builder_scope:registration.BookRegistrationRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:searchEngine.BookRegistrationRequest)
+  // @@protoc_insertion_point(class_scope:registration.BookRegistrationRequest)
   private static final generated.registration.BookRegistrationRequest DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new generated.registration.BookRegistrationRequest();

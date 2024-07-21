@@ -4,7 +4,7 @@
 package generated.registration;
 
 public interface BookRegistrationResponseOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:searchEngine.BookRegistrationResponse)
+    // @@protoc_insertion_point(interface_extends:registration.BookRegistrationResponse)
     com.google.protobuf.MessageOrBuilder {
 
   /**
