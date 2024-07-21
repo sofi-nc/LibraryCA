@@ -35,6 +35,8 @@ import generated.search.AvailableBooks;
 import generated.search.ListBy;
 import generated.search.ListBy.ListOperation;
 import generated.search.SearchEngineGrpc;
+import generated.search.userID;
+import generated.search.userInformation;
 //import generated.search.SearchEngineGrpc.SearchEngineBlockingStub;
 //import generated.search.SearchEngineGrpc.SearchEngineStub;
 import generated.search.SearchEngineGrpc.*;
@@ -49,12 +51,20 @@ import javax.swing.JTextPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import javax.swing.JToggleButton;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LibraryGUI extends JFrame {
 
 	int barCount, lightCount=0, calcAvg=0;
 	ArrayList<Integer> lightList = new ArrayList<Integer>();
 	ArrayList<String> timeList = new ArrayList<String>();
+	boolean manualID=false;
 	
 	int onOffInst = 0;
 	
@@ -69,7 +79,7 @@ public class LibraryGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField userIDinput;
 
 	/**
 	 * Launch the application.
@@ -118,16 +128,16 @@ public class LibraryGUI extends JFrame {
 		AvgPanel.setLayout(null);
 		
 		JLabel LightLevelLbl = new JLabel("Natural light level (1-5)");
-		LightLevelLbl.setBounds(24, 25, 114, 14);
+		LightLevelLbl.setBounds(24, 25, 155, 14);
 		AvgPanel.add(LightLevelLbl);
 		
 		JLabel TimeLbl = new JLabel("Time (Select)");
-		TimeLbl.setBounds(24, 50, 93, 14);
+		TimeLbl.setBounds(24, 50, 155, 14);
 		AvgPanel.add(TimeLbl);
 		
 		JSpinner LightLvlSpn = new JSpinner();
 		LightLvlSpn.setModel(new SpinnerNumberModel(1, 1, 5, 1));
-		LightLvlSpn.setBounds(141, 22, 86, 20);
+		LightLvlSpn.setBounds(177, 22, 86, 20);
 		AvgPanel.add(LightLvlSpn);
 		
 		JLabel avgLbl = new JLabel("Average light level");
@@ -175,7 +185,7 @@ public class LibraryGUI extends JFrame {
 		emergencyPanel.add(OnOffBtn);
 		
 		JComboBox timeOptions = new JComboBox();
-		timeOptions.setBounds(141, 46, 86, 22);
+		timeOptions.setBounds(177, 46, 86, 22);
 		AvgPanel.add(timeOptions);
 		timeOptions.setModel(new DefaultComboBoxModel(new String[] {"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"}));
 		
@@ -284,29 +294,23 @@ public class LibraryGUI extends JFrame {
 		listByOptions.setModel(new DefaultComboBoxModel(ListOperation.values()));
 		availabilityPanel.add(listByOptions);
 		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 40, 274, 107);
+		availabilityPanel.add(scrollPane_1);
+		
+		JTextArea booksTa = new JTextArea();
+		booksTa.setEditable(false);
+		scrollPane_1.setViewportView(booksTa);
+		
 		JButton btnListBy = new JButton("Submit");
 		btnListBy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ListBy requestAsyn;
-				ListBy.ListOperation operation = ListBy.ListOperation.AUTHOR;
-				//operation = (ListOperation) listByOptions.getSelectedItem();
+				ListBy.ListOperation operation;
+				operation = (ListOperation) listByOptions.getSelectedItem();
+				
 				System.out.println("You selected to list the books by: " + operation);
 				requestAsyn = ListBy.newBuilder().setOperation(operation).build();
-				
-				/*
-				 * SERVER STREAMING (BLOCKING)
-				 */
-			/*	ListBy listingReq = ListBy.newBuilder().setOperation(operation).build();
-				try {
-				Iterator<AvailableBooks> responses = SEblockingStub.availability(listingReq);
-				
-				while(responses.hasNext()) {
-					AvailableBooks bk = responses.next();
-					System.out.println(bk.getAuthor());
-				}
-			} catch (StatusRuntimeException ie) {
-				ie.printStackTrace();
-			} */
 				
 				/*
 				 * SERVER STREAMING (NON-BLOCKING)
@@ -328,6 +332,7 @@ public class LibraryGUI extends JFrame {
 					public void onNext(AvailableBooks value) {
 						System.out.println(LocalTime.now().toString() + ": receiving book's information.\nBook ID: " + value.getBookId() + "\nTitle: " + value.getTitle() + "\nAuthor: " + value.getAuthor() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject());
 						count += 1;
+						booksTa.append(value.getBookId() + "\nTitle: " + value.getTitle() + "\nAuthor: " + value.getAuthor() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject() + "\n- - - - - -\n");
 					}
 
 					@Override
@@ -364,12 +369,6 @@ public class LibraryGUI extends JFrame {
 		lblNewLabel.setBounds(10, 15, 89, 14);
 		availabilityPanel.add(lblNewLabel);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 40, 274, 107);
-		availabilityPanel.add(scrollPane_1);
-		
-		JTextArea textArea = new JTextArea();
-		scrollPane_1.setViewportView(textArea);
 		
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBorder(new TitledBorder(null, "Visitor details", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -377,42 +376,89 @@ public class LibraryGUI extends JFrame {
 		contentPane.add(detailsPanel);
 		detailsPanel.setLayout(null);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"443325", "493947", "102934", "980661"}));
-		comboBox.setBounds(157, 20, 86, 22);
-		detailsPanel.add(comboBox);
+		JComboBox userIDopt = new JComboBox();
+		userIDopt.setModel(new DefaultComboBoxModel(new String[] {"443325", "493947", "102934", "980661"}));
+		userIDopt.setSelectedIndex(0);
+		userIDopt.setBounds(157, 20, 86, 22);
+		detailsPanel.add(userIDopt);
 		
 		JLabel userIDLbl = new JLabel("Select user ID:");
 		userIDLbl.setBounds(29, 24, 100, 14);
 		detailsPanel.add(userIDLbl);
 		
-		textField = new JTextField();
-		textField.setBounds(157, 53, 86, 20);
-		detailsPanel.add(textField);
-		textField.setColumns(10);
-		
-		JButton useridBtn = new JButton("Submit");
-		useridBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		useridBtn.setBounds(98, 82, 89, 23);
-		detailsPanel.add(useridBtn);
-		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Enter ID manually");
-		rdbtnNewRadioButton.setBounds(10, 52, 141, 23);
-		detailsPanel.add(rdbtnNewRadioButton);
+		userIDinput = new JTextField();
+		userIDinput.setEditable(false);
+		userIDinput.setBounds(157, 53, 86, 20);
+		detailsPanel.add(userIDinput);
+		userIDinput.setColumns(10);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(10, 132, 274, 75);
 		detailsPanel.add(scrollPane_2);
 		
-		JTextArea textArea_1 = new JTextArea();
-		scrollPane_2.setViewportView(textArea_1);
+		JTextArea visitorDtlsTa = new JTextArea();
+		scrollPane_2.setViewportView(visitorDtlsTa);
 		
 		JLabel detailsLbl = new JLabel("Visitor details:");
 		detailsLbl.setBounds(10, 116, 100, 14);
 		detailsPanel.add(detailsLbl);
+		
+		JCheckBox chckbxEnterIdManually = new JCheckBox("Enter ID manually");
+		chckbxEnterIdManually.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (manualID == true) {
+					userIDinput.setEditable(false);
+					manualID = false;
+				} else {
+					System.out.println("Enter the visitor's ID: ");
+					userIDinput.setEditable(true);
+					manualID = true;
+				}
+				
+			}
+		});
+		chckbxEnterIdManually.setBounds(10, 52, 141, 23);
+		detailsPanel.add(chckbxEnterIdManually);
+		
+		JButton useridBtn = new JButton("Submit");
+		useridBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*
+				 * VISITOR SEARCH SERVICE
+				 * UNARY RPC
+				 */
+				
+				userID req;
+				int userNum;
+				if (manualID==false) {
+					//USERIDs available 443325, 493947, 102934, and 980661
+					//userNum = (int) userIDopt.getSelectedItem();
+					userNum = Integer.valueOf((String) userIDopt.getSelectedItem());
+					
+				} else {
+					userNum = Integer.valueOf(userIDinput.getText());
+					
+				}
+				req = userID.newBuilder().setUserNumber(userNum).build();
+				
+				userInformation responseRI = SEblockingStub.readerInfo(req);
+					
+					System.out.println(LocalTime.now().toString() + ": User's information: \nNAME: " + responseRI.getName() + "\nREGISTRATION DATE: " + responseRI.getRegistrationDate() + "\nBORROWED BOOKS: " + responseRI.getBorrowedBooks() + "\nTOTAL BORROWED BOOKS: " + responseRI.getTotalBooksBorrowed() + "\nACTIVE: " + responseRI.getStatus());
+				
+					visitorDtlsTa.append("NAME: " + responseRI.getName() + "\nREGISTRATION DATE: " + responseRI.getRegistrationDate() + "\nBORROWED BOOKS: " + responseRI.getBorrowedBooks() + "\nTOTAL BORROWED BOOKS: " + responseRI.getTotalBooksBorrowed() + "\nACTIVE: " + responseRI.getStatus());
+					
+				
+			}
+		});
+		useridBtn.setBounds(98, 82, 89, 23);
+		detailsPanel.add(useridBtn);
+		
+		
+		
+		
+		
+		
 		
 		
 		

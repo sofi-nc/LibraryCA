@@ -42,7 +42,7 @@ public class LibraryClient {
 		LSasyncStub = LightServiceGrpc.newStub(channel);
 		RblockingStub = RegistrationBookGrpc.newBlockingStub(channel);
 		
-		//availabilityAsyn();
+		availabilityAsyn();
 		//LightAvg();
 		readerInfo();
 		//visitorRegister();

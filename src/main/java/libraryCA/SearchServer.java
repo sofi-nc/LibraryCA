@@ -1,46 +1,30 @@
 package libraryCA;
 
+import java.io.IOException;
+import java.time.LocalTime;
 
-import generated.lights.AverageResponse;
-import generated.lights.LightLevel;
-import generated.lights.LightRequest;
-import generated.lights.LightServiceGrpc.LightServiceImplBase;
-import generated.lights.StatusResponse;
-import generated.registration.VisitorRegistrationRequest;
-import generated.registration.VisitorRegistrationResponse;
 import generated.search.AvailableBooks;
 import generated.search.ListBy;
 import generated.search.userID;
 import generated.search.userInformation;
-import io.grpc.ServerBuilder;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Random;
-
+import generated.search.SearchEngineGrpc.SearchEngineImplBase;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 
-@SuppressWarnings("unused")
-public class LibraryServer extends LightServiceImplBase{
-	private static final Books[][] Array = null;
-
+public class SearchServer extends SearchEngineImplBase{
 	public static void main(String[] args) {
-		LibraryServer libserver = new LibraryServer();
+		SearchServer searchServer = new SearchServer();
 		
 		int port = 50051;
 		
 		try {
 			Server server = ServerBuilder.forPort(port)
-					.addService(libserver)
+					.addService(searchServer)
 					.build()
 					.start();
 			
-			System.out.println(LocalTime.now().toString() + ": Library Server started, listening on " + port);
+			System.out.println(LocalTime.now().toString() + ": Search Engine Server started, listening on " + port);
 			server.awaitTermination();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -49,85 +33,7 @@ public class LibraryServer extends LightServiceImplBase{
 		}
 	}
 	
-	/*
-	 * 	LIGHTING SERVICE
-	 * CLIENT-STREAMING RPC
-	 * The client sends continuous messages of the natural light level in the building
-	 * Server processes the information and, when reaching a level, changes the light status and returns a message
-	 */
-	public StreamObserver<LightLevel> averageLighting(StreamObserver<AverageResponse> responseObserver){
-		
-		return new StreamObserver<LightLevel>() {
-			
-			ArrayList<Integer> levelList = new ArrayList<Integer>();
 
-			@Override
-			public void onNext(LightLevel request) {
-				// TODO Auto-generated method stub
-				System.out.println(LocalTime.now().toString() + ": received the light level: " + request.getLevel() + "\nTime of the recording: " + request.getCurrentTime());
-					
-				levelList.add(request.getLevel());
-				//System.out.println("\n" + levelList.toString() + "\n");
-			}
-
-			@Override
-			public void onError(Throwable t) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onCompleted() {
-				// TODO Auto-generated method stub
-				System.out.printf(LocalTime.now().toString() + ": Natural light level stream complete \n");
-				
-				double lightPercentage = 0;
-				for (float v: levelList) {
-					lightPercentage = lightPercentage + v;
-				}
-				float mean = (float) (lightPercentage/levelList.size());
-				
-				String finalMsg = "Today's natural lighting average was: " + mean;
-				
-				AverageResponse reply = AverageResponse.newBuilder().setLightAverage(finalMsg).build();
-				
-				responseObserver.onNext(reply);
-				responseObserver.onCompleted();
-				
-			}
-			
-			
-			
-		};
-	}
-	
-	/*
-	 * LIGHTING
-	 * UNARY RPC.
-	 * The client sends a message to turn on or turn off the lights (String)
-	 * The system responds with a confirmation message (String).
-	 */
-	public void turnOnOff(LightRequest request, StreamObserver <StatusResponse> responseObserver) {
-		
-		System.out.println("Receiving instruction request.");
-		
-		String msg = "";
-		if(request.getLightButton() == 1) {
-			msg = "Lights are turned on ";
-		} else { if(request.getLightButton() == 0) {
-			msg = "Lights are turned off";
-		} else {
-			msg = "Invalid input";
-		}
-			
-		}
-		
-		StatusResponse response = StatusResponse.newBuilder().setLightState(msg).build();
-		responseObserver.onNext(response);
-		responseObserver.onCompleted();
-		
-	}
-	
 	/*
 	 * SEARCH SERVICE
 	 * SERVER-STREAMING RPC
@@ -182,13 +88,13 @@ public class LibraryServer extends LightServiceImplBase{
 	     case TITLE:
 	    	 for (int i=0; i < byTitle.length; i++) {
 	    		AvailableBooks response;
-	 			response = AvailableBooks.newBuilder().setBookId(byTitle[i].getBookId()).setTitle(byTitle[i].getTitle()).setAuthor(byTitle[i].getAuthor()).setLanguage(byTitle[i].getLang()).setSubject(byTitle[i].getSubject()).build();
+	 			response = AvailableBooks.newBuilder().setTitle(byTitle[i].getTitle()).setBookId(byTitle[i].getBookId()).setAuthor(byTitle[i].getAuthor()).setLanguage(byTitle[i].getLang()).setSubject(byTitle[i].getSubject()).build();
 	 			responseObserver.onNext(response);
 	 			
 	 			//slow it all down a bit so we can observe the behaviour 
 	 			try {
 	 				//wait for a second
-	 				Thread.sleep(1000);
+	 				Thread.sleep(7000);
 	 			} catch (InterruptedException e) {
 	 				// TODO Auto-generated catch block
 	 				e.printStackTrace();
@@ -200,15 +106,15 @@ public class LibraryServer extends LightServiceImplBase{
 	     case AUTHOR:
 	    	 for (int i=0; i < 7; i++) {
 	    		 AvailableBooks response;
-		 		//	response = AvailableBooks.newBuilder().setBookId(byAuthor[i].getBookId()).setTitle(byAuthor[i].getTitle()).setAuthor(byAuthor[i].getAuthor()).setLanguage(byAuthor[i].getLang()).setSubject(byAuthor[i].getSubject()).build();
-	    		 response = AvailableBooks.newBuilder().setBookId(3+i).build();
+		 		response = AvailableBooks.newBuilder().setAuthor(byAuthor[i].getAuthor()).setBookId(byAuthor[i].getBookId()).setTitle(byAuthor[i].getTitle()).setLanguage(byAuthor[i].getLang()).setSubject(byAuthor[i].getSubject()).build();
+	    		 //response = AvailableBooks.newBuilder().setBookId(3+i).build();
 	    		 
 		 			responseObserver.onNext(response);
 		 			
 		 			//slow it all down a bit so we can observe the behaviour 
 		 			try {
 		 				//wait for a second
-		 				Thread.sleep(1000);
+		 				Thread.sleep(7000);
 		 			} catch (InterruptedException e) {
 		 				// TODO Auto-generated catch block
 		 				System.out.println("No book");
@@ -227,7 +133,7 @@ public class LibraryServer extends LightServiceImplBase{
 		 			//slow it all down a bit so we can observe the behaviour 
 		 			try {
 		 				//wait for a second
-		 				Thread.sleep(700);
+		 				Thread.sleep(7000);
 		 			} catch (InterruptedException e) {
 		 				// TODO Auto-generated catch block
 		 				e.printStackTrace();
@@ -238,10 +144,9 @@ public class LibraryServer extends LightServiceImplBase{
 		 default :
 			 AvailableBooks response;
 			 response = AvailableBooks.newBuilder().setBookId(0).setTitle("N/A").setAuthor("N/A").setLanguage("N/A").setSubject("N/A").build();
-			 
+			 responseObserver.onNext(response);
 	      }
-		//AvailableBooks response;
-		//response = AvailableBooks.newBuilder().setBookId(0).setTitle("N/A").setAuthor("N/A").setLanguage("N/A").setSubject("N/A").build();
+		
 		
 		// signal that there are no more responses
 		responseObserver.onCompleted();
@@ -281,23 +186,6 @@ public class LibraryServer extends LightServiceImplBase{
 		
 		
 		userInformation response = userInformation.newBuilder().setName(name).setRegistrationDate(registrationDate).setBorrowedBooks(borrowedBooks).setStatus(status).setTotalBooksBorrowed(totalBooksBorrowed).build();
-		
-		responseObserver.onNext(response);
-		responseObserver.onCompleted();
-	}
-	 
-	
-	/*
-	 * REGISTRATION
-	 * UNARY GRPC 
-	 * VisitorRegister (VisitorRegisterReq) returns (VisitorRegisterResp)
-	 * Unary RPC. The client uses this method to register their visit to the library. A user id (integer) is sent to the service. The system replies with a confirmation message (String).
-	 */
-	public void visitorRegister(VisitorRegistrationRequest request, StreamObserver<VisitorRegistrationResponse> responseObserver) {
-		
-		System.out.println(LocalTime.now().toString() + ": receiving user registration request. Book ID: " + request.getBookId());
-		
-		VisitorRegistrationResponse response = VisitorRegistrationResponse.newBuilder().setRegistrationConfirmation("Registration confirmed").setRegistrationDate("19/07/2024").build();
 		
 		responseObserver.onNext(response);
 		responseObserver.onCompleted();
