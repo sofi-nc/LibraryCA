@@ -8,7 +8,7 @@ public interface VisitorRegistrationRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 bookId = 1;</code>
+   * <code>int32 visitorId = 1;</code>
    */
-  int getBookId();
+  int getVisitorId();
 }

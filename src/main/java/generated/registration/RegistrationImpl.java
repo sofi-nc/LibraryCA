@@ -50,17 +50,17 @@ public final class RegistrationImpl {
       "RegistrationType\022\n\n\006BORROW\020\000\022\n\n\006RETURN\020\001" +
       "\"U\n\030BookRegistrationResponse\022\020\n\010userInfo" +
       "\030\001 \001(\t\022\023\n\013bookDetails\030\002 \001(\t\022\022\n\ntotalBook" +
-      "s\030\003 \001(\005\",\n\032VisitorRegistrationRequest\022\016\n" +
-      "\006bookId\030\001 \001(\005\"Y\n\033VisitorRegistrationResp" +
-      "onse\022 \n\030registrationConfirmation\030\001 \001(\t\022\030" +
-      "\n\020registrationDate\030\002 \001(\t2\341\001\n\020Registratio" +
-      "nBook\022c\n\014bookRegister\022%.registration.Boo" +
-      "kRegistrationRequest\032&.registration.Book" +
-      "RegistrationResponse\"\000(\0010\001\022h\n\017visitorReg" +
-      "ister\022(.registration.VisitorRegistration" +
-      "Request\032).registration.VisitorRegistrati" +
-      "onResponse\"\000B,\n\026generated.registrationB\020" +
-      "RegistrationImplP\001b\006proto3"
+      "s\030\003 \001(\005\"/\n\032VisitorRegistrationRequest\022\021\n" +
+      "\tvisitorId\030\001 \001(\005\"Y\n\033VisitorRegistrationR" +
+      "esponse\022 \n\030registrationConfirmation\030\001 \001(" +
+      "\t\022\030\n\020registrationDate\030\002 \001(\t2\341\001\n\020Registra" +
+      "tionBook\022c\n\014bookRegister\022%.registration." +
+      "BookRegistrationRequest\032&.registration.B" +
+      "ookRegistrationResponse\"\000(\0010\001\022h\n\017visitor" +
+      "Register\022(.registration.VisitorRegistrat" +
+      "ionRequest\032).registration.VisitorRegistr" +
+      "ationResponse\"\000B,\n\026generated.registratio" +
+      "nB\020RegistrationImplP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -91,7 +91,7 @@ public final class RegistrationImpl {
     internal_static_registration_VisitorRegistrationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_registration_VisitorRegistrationRequest_descriptor,
-        new java.lang.String[] { "BookId", });
+        new java.lang.String[] { "VisitorId", });
     internal_static_registration_VisitorRegistrationResponse_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_registration_VisitorRegistrationResponse_fieldAccessorTable = new

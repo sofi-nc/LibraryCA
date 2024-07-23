@@ -295,7 +295,7 @@ public class LibraryServer extends LightServiceImplBase{
 	 */
 	public void visitorRegister(VisitorRegistrationRequest request, StreamObserver<VisitorRegistrationResponse> responseObserver) {
 		
-		System.out.println(LocalTime.now().toString() + ": receiving user registration request. Book ID: " + request.getBookId());
+		System.out.println(LocalTime.now().toString() + ": receiving user registration request. Book ID: " + request.getVisitorId());
 		
 		VisitorRegistrationResponse response = VisitorRegistrationResponse.newBuilder().setRegistrationConfirmation("Registration confirmed").setRegistrationDate("19/07/2024").build();
 		

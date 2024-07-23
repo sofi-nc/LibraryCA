@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private VisitorRegistrationRequest() {
-    bookId_ = 0;
+    visitorId_ = 0;
   }
 
   @java.lang.Override
@@ -45,7 +45,7 @@ private static final long serialVersionUID = 0L;
             break;
           case 8: {
 
-            bookId_ = input.readInt32();
+            visitorId_ = input.readInt32();
             break;
           }
           default: {
@@ -80,13 +80,13 @@ private static final long serialVersionUID = 0L;
             generated.registration.VisitorRegistrationRequest.class, generated.registration.VisitorRegistrationRequest.Builder.class);
   }
 
-  public static final int BOOKID_FIELD_NUMBER = 1;
-  private int bookId_;
+  public static final int VISITORID_FIELD_NUMBER = 1;
+  private int visitorId_;
   /**
-   * <code>int32 bookId = 1;</code>
+   * <code>int32 visitorId = 1;</code>
    */
-  public int getBookId() {
-    return bookId_;
+  public int getVisitorId() {
+    return visitorId_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -103,8 +103,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (bookId_ != 0) {
-      output.writeInt32(1, bookId_);
+    if (visitorId_ != 0) {
+      output.writeInt32(1, visitorId_);
     }
     unknownFields.writeTo(output);
   }
@@ -115,9 +115,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (bookId_ != 0) {
+    if (visitorId_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, bookId_);
+        .computeInt32Size(1, visitorId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -135,8 +135,8 @@ private static final long serialVersionUID = 0L;
     generated.registration.VisitorRegistrationRequest other = (generated.registration.VisitorRegistrationRequest) obj;
 
     boolean result = true;
-    result = result && (getBookId()
-        == other.getBookId());
+    result = result && (getVisitorId()
+        == other.getVisitorId());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -148,8 +148,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + BOOKID_FIELD_NUMBER;
-    hash = (53 * hash) + getBookId();
+    hash = (37 * hash) + VISITORID_FIELD_NUMBER;
+    hash = (53 * hash) + getVisitorId();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -283,7 +283,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      bookId_ = 0;
+      visitorId_ = 0;
 
       return this;
     }
@@ -311,7 +311,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public generated.registration.VisitorRegistrationRequest buildPartial() {
       generated.registration.VisitorRegistrationRequest result = new generated.registration.VisitorRegistrationRequest(this);
-      result.bookId_ = bookId_;
+      result.visitorId_ = visitorId_;
       onBuilt();
       return result;
     }
@@ -360,8 +360,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(generated.registration.VisitorRegistrationRequest other) {
       if (other == generated.registration.VisitorRegistrationRequest.getDefaultInstance()) return this;
-      if (other.getBookId() != 0) {
-        setBookId(other.getBookId());
+      if (other.getVisitorId() != 0) {
+        setVisitorId(other.getVisitorId());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -392,28 +392,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int bookId_ ;
+    private int visitorId_ ;
     /**
-     * <code>int32 bookId = 1;</code>
+     * <code>int32 visitorId = 1;</code>
      */
-    public int getBookId() {
-      return bookId_;
+    public int getVisitorId() {
+      return visitorId_;
     }
     /**
-     * <code>int32 bookId = 1;</code>
+     * <code>int32 visitorId = 1;</code>
      */
-    public Builder setBookId(int value) {
+    public Builder setVisitorId(int value) {
       
-      bookId_ = value;
+      visitorId_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 bookId = 1;</code>
+     * <code>int32 visitorId = 1;</code>
      */
-    public Builder clearBookId() {
+    public Builder clearVisitorId() {
       
-      bookId_ = 0;
+      visitorId_ = 0;
       onChanged();
       return this;
     }

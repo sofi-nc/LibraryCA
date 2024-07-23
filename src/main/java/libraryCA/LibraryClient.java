@@ -42,10 +42,10 @@ public class LibraryClient {
 		LSasyncStub = LightServiceGrpc.newStub(channel);
 		RblockingStub = RegistrationBookGrpc.newBlockingStub(channel);
 		
-		availabilityAsyn();
+		//availabilityAsyn();
 		//LightAvg();
-		readerInfo();
-		//visitorRegister();
+		//readerInfo();
+		visitorRegister();
 	}
 	
 	public static void availabilityAsyn() {
@@ -83,7 +83,8 @@ public class LibraryClient {
 	}
 	
 	/*
-	 * VISITOR SEARCH SERVICE
+	 * SEARCH ENGINE SERVICE
+	 * VISITOR SEARCH
 	 * UNARY RPC
 	 */
 	public static void readerInfo() {
@@ -99,14 +100,32 @@ public class LibraryClient {
 		
 	}
 	
+	/*
+	 * REGISTRATION SERVICE
+	 * VISITOR REGISTER
+	 * UNARY RPC
+	 */
+	
 	public static void visitorRegister() {
 		int visitorID = 12;
-		VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setBookId(visitorID).build();
+		VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setVisitorId(visitorID).build();
 		
 		VisitorRegistrationResponse response = RblockingStub.visitorRegister(req);
 		
 		System.out.println(LocalTime.now().toString() + ": receiving message: " + response.getRegistrationConfirmation() + " for the date: " + response.getRegistrationDate());
 	}
+	/*
+	 * REGISTRATION SERVICE
+	 * BOOK REGISTER
+	 * BINARY RPC
+	 */
+	
+	
+	/*
+	 * LIGHTING SERVICE
+	 * LIGHT AVERAGE
+	 * CLIENT STREAMING RPC
+	 */
 	
 	public static void LightAvg() {
 		StreamObserver<AverageResponse> responseObserver = new StreamObserver<AverageResponse>() {
@@ -153,5 +172,7 @@ public class LibraryClient {
 			ex.printStackTrace();
 		}
 	}
+	
+	
 	
 }
