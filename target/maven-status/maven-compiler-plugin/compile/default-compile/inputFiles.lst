@@ -6,10 +6,12 @@ C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\lights\LightS
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\search\userInformationOrBuilder.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\RegistrationBookGrpc.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\LibraryServer.java
+C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\RegisterServer.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\VisitorRegistrationResponse.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\VisitorRegistrationResponseOrBuilder.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\VisitorRegistrationRequestOrBuilder.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\search\ListByOrBuilder.java
+C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\SearchServer.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\BookRegistrationRequest.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\search\userIDOrBuilder.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\lights\LightLevelOrBuilder.java
@@ -19,6 +21,7 @@ C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\lights\LightR
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\lights\LightRequestOrBuilder.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\BookRegistrationResponse.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\search\AvailableBooksOrBuilder.java
+C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\LightingServer.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\lights\AverageResponse.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\BookRegistrationRequestOrBuilder.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\GUI_library.java

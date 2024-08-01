@@ -1,6 +1,7 @@
 package libraryCA;
 
 import java.time.LocalTime;
+import java.util.Random;
 
 import generated.lights.AverageResponse;
 import generated.lights.LightLevel;
@@ -8,6 +9,9 @@ import generated.lights.LightServiceGrpc;
 import generated.lights.LightServiceGrpc.LightServiceStub;
 import generated.registration.RegistrationBookGrpc.RegistrationBookBlockingStub;
 import generated.registration.RegistrationBookGrpc.RegistrationBookStub;
+import generated.registration.BookRegistrationRequest;
+import generated.registration.BookRegistrationRequest.RegistrationType;
+import generated.registration.BookRegistrationResponse;
 import generated.registration.RegistrationBookGrpc;
 import generated.registration.VisitorRegistrationRequest;
 import generated.registration.VisitorRegistrationResponse;
@@ -41,11 +45,13 @@ public class LibraryClient {
 		asyncStub = SearchEngineGrpc.newStub(channel);
 		LSasyncStub = LightServiceGrpc.newStub(channel);
 		RblockingStub = RegistrationBookGrpc.newBlockingStub(channel);
+		RAsyncStub = RegistrationBookGrpc.newStub(channel);
 		
 		//availabilityAsyn();
 		//LightAvg();
 		//readerInfo();
-		visitorRegister();
+		//visitorRegister();
+		bookRegister();
 	}
 	
 	public static void availabilityAsyn() {
@@ -117,8 +123,57 @@ public class LibraryClient {
 	/*
 	 * REGISTRATION SERVICE
 	 * BOOK REGISTER
-	 * BINARY RPC
+	 * BI-DIRECTIONAL RPC
 	 */
+	public static void bookRegister() {
+		StreamObserver<BookRegistrationResponse> responseObserver = new StreamObserver<BookRegistrationResponse>() {
+			int iCount = 0;
+			@Override
+			public void onNext(BookRegistrationResponse value) {
+				System.out.println(LocalTime.now().toString() + ": received information\n" + value.getBookDetails() + "\nBooks registered so far: " + value.getTotalBooks());
+				iCount++;
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				t.printStackTrace();
+				
+			}
+
+			@Override
+			public void onCompleted() {
+				System.out.println(LocalTime.now().toString() + ": stream is completed... received " + iCount + "books for registration.");
+				
+			}
+			
+		};
+		
+		StreamObserver<BookRegistrationRequest> request = RAsyncStub.bookRegister(responseObserver);
+		try {
+			//IDs available 7836262, 7174668, 8724795, 7660479, 3283121, 1917707, 3924794
+			RegistrationType type = RegistrationType.BORROW;
+			request.onNext(BookRegistrationRequest.newBuilder().setBookId(3283121).setUserId(54642).setRegistration(type).build());
+			
+			request.onCompleted();
+			
+			Thread.sleep(new Random().nextInt(1000) + 500);
+
+
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {			
+			e.printStackTrace();
+		}
+		
+		try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		}
+	
 	
 	
 	/*

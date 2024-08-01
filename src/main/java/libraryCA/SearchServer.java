@@ -49,6 +49,7 @@ public class SearchServer extends SearchEngineImplBase{
 		Books[] byTitle = new Books[7];
 		Books[] byAuthor = new Books[7];
 		Books[] byId = new Books[7];
+		Books[] bookList = new Books[7];
 		
 		Books TGatsby = new Books(7836262, "The great Gatsby", "F. Scott Fitzgerald", "English", "Fiction");
 		Books TKill = new Books(7174668, "To kill a mockingbird", "Harper Lee", "English", "Thriller");
@@ -58,7 +59,7 @@ public class SearchServer extends SearchEngineImplBase{
 		Books	WNext = new Books (1917707, "What comes next", "John Katzenbach", "English", "Suspense");
 		Books PetS = new Books (3924794, "Pet Sematary", "Stephen King", "English", "Thriller");
 		
-		byTitle[0] = PetS;
+	/*	byTitle[0] = PetS;
 		byTitle[1] = Phantom;
 		byTitle[2] = Pride;
 		byTitle[3] = Tcatcher;
@@ -80,15 +81,23 @@ public class SearchServer extends SearchEngineImplBase{
 		byId[3] = TKill;
 		byId[4] = Tcatcher;
 		byId[5] = TGatsby;
-		byId[6] = Pride;
+		byId[6] = Pride; */
 		
+		bookList[0] = WNext;
+		bookList[1] = Phantom;
+		bookList[2] = PetS;
+		bookList[3] = TKill;
+		bookList[4] = Tcatcher;
+		bookList[5] = TGatsby;
+		bookList[6] = Pride;
 		
+		AvailableBooks response;
 		
 		switch (request.getOperation()) {  
 	     case TITLE:
 	    	 for (int i=0; i < byTitle.length; i++) {
-	    		AvailableBooks response;
-	 			response = AvailableBooks.newBuilder().setTitle(byTitle[i].getTitle()).setBookId(byTitle[i].getBookId()).setAuthor(byTitle[i].getAuthor()).setLanguage(byTitle[i].getLang()).setSubject(byTitle[i].getSubject()).build();
+	    		quickSort(bookList, 0, bookList.length-1, "Title");
+	 			response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).build();
 	 			responseObserver.onNext(response);
 	 			
 	 			//slow it all down a bit so we can observe the behaviour 
@@ -105,8 +114,8 @@ public class SearchServer extends SearchEngineImplBase{
 	       
 	     case AUTHOR:
 	    	 for (int i=0; i < 7; i++) {
-	    		 AvailableBooks response;
-		 		response = AvailableBooks.newBuilder().setAuthor(byAuthor[i].getAuthor()).setBookId(byAuthor[i].getBookId()).setTitle(byAuthor[i].getTitle()).setLanguage(byAuthor[i].getLang()).setSubject(byAuthor[i].getSubject()).build();
+	    		 quickSort(bookList, 0, bookList.length-1, "Author");
+		 		response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).build();
 	    		 //response = AvailableBooks.newBuilder().setBookId(3+i).build();
 	    		 
 		 			responseObserver.onNext(response);
@@ -126,8 +135,8 @@ public class SearchServer extends SearchEngineImplBase{
 		       
 	     case ID:
 	    	 for (int i=0; i < 7; i++) {
-	    		 AvailableBooks response;
-		 			response = AvailableBooks.newBuilder().setBookId(byId[i].getBookId()).setTitle(byId[i].getTitle()).setAuthor(byId[i].getAuthor()).setLanguage(byId[i].getLang()).setSubject(byId[i].getSubject()).build();
+	    		 quickSort(bookList, 0, bookList.length-1, "ID");
+		 			response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).build();
 		 			responseObserver.onNext(response);
 		 			
 		 			//slow it all down a bit so we can observe the behaviour 
@@ -141,8 +150,12 @@ public class SearchServer extends SearchEngineImplBase{
 		 			
 		 		}
 		       break;
+	     case UNRECOGNIZED:
+			 response = AvailableBooks.newBuilder().setBookId(0).setTitle("N/A").setAuthor("N/A").setLanguage("N/A").setSubject("N/A").build();
+			 responseObserver.onNext(response);
+				break;
 		 default :
-			 AvailableBooks response;
+			 //AvailableBooks response;
 			 response = AvailableBooks.newBuilder().setBookId(0).setTitle("N/A").setAuthor("N/A").setLanguage("N/A").setSubject("N/A").build();
 			 responseObserver.onNext(response);
 	      }
@@ -153,6 +166,79 @@ public class SearchServer extends SearchEngineImplBase{
 		
 		
 	}
+	
+	/*
+	 * QUICK SORT ALGORITHM USED TO SORT THE ARRAYS
+	 */
+	private void quickSort(Books[] list, int iStart, int iEnd, String opt) {
+        int iPivotIndex;
+        if (iStart < iEnd) {
+            /*
+                select pivot and re-arrange elements in two partitions such as
+                all array[start … p-1] are less than pivot = array [p] and
+                all array[p+1 … end] are >= pivot
+             */
+            iPivotIndex = partition(list, iStart, iEnd, opt);
+            //System.out.println("\npivotindex sort\n");
+
+            // sort first partition of the array (from start to pivot_index-1)
+            quickSort(list, iStart, iPivotIndex - 1, opt);
+            //System.out.println("\nquick sortleft\n");
+            
+            //sort second partition of the array
+            quickSort(list, iPivotIndex + 1, iEnd, opt);
+            //System.out.println("\nquick sortright\n");
+        } 
+    }
+
+    private int partition(Books[] list, int iStart, int iEnd, String opt) {
+        int iUp, iDown;
+        Books pivot;
+
+        // select the first element as pivot
+        pivot = list[iStart];
+        //System.out.println("pivot: " + pivot);
+        
+        // set the UP and DOWN indexes
+        iUp = iStart;
+        iDown = iEnd;
+        //System.out.println("Start: " + iUp + " End: " + iDown);
+        // as long as UP and DOWN indexes did not pass each other
+        while (iUp < iDown) {
+            // increment UP index until found first element higher than pivot
+            /*
+            * HERE IS WHERE YOU SHOULD PUT THE CONDITIONAL FOR THE ID BECAUSE IT SHOULD CHECK IF THE ENTIRE OBJECT IS < OR WHATEVER??
+            */
+            while (iUp < iEnd && list[iUp].compareObject(pivot, opt)<= 0 ) {
+                iUp = iUp + 1;
+               // System.out.println("value[iUp] < pivot: " + list[iUp].getlValue() + " < " + pivot.getlValue());
+            }
+            
+
+            // decrement DOWN until found first element smaller than  pivot
+            while (iDown > iStart && list[iDown].compareObject(pivot, opt) > 0){
+                iDown = iDown - 1;
+               // System.out.println("value[iDown] < pivot");
+            }
+
+            // if UP and DOWN indexes did not pass each other
+            if (iUp < iDown) {
+                Books elementUp = list[iUp];
+                //swap the two elements found
+                
+                    list[iUp] = list[iDown];
+                    list[iDown] = elementUp;
+                   // System.out.println("swap");
+                
+            } 
+        }
+
+        // UP and DOWN indexes have passed each other, so swap pivot with the element on DOWN position
+        list[iStart] = list[iDown];
+        list[iDown] = pivot;
+        
+        return iDown;
+    }
 	
 	/*
 	 * VISITOR SEARCH SERVICE

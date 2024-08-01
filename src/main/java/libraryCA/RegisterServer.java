@@ -3,6 +3,7 @@ package libraryCA;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 
 import generated.registration.BookRegistrationRequest;
 import generated.registration.BookRegistrationRequest.RegistrationType;
@@ -34,7 +35,7 @@ public class RegisterServer extends RegistrationBookImplBase{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
+	} //Main
 	
 	/*
 	 * VISITOR REGISTRATION SERVICE
@@ -59,15 +60,20 @@ public class RegisterServer extends RegistrationBookImplBase{
 		}
 		
 		responseObserver.onCompleted();
-	}
+	} //Visitor register
 	
 	/*
 	 * BOOK REGISTRATION SERVICE
-	 * BINARY STREAM RPC
+	 * BI-DIRECTIONAL STREAM RPC
 	 * rpc bookRegister (stream BookRegistrationRequest) returns (stream BookRegistrationResponse)
 	 */
 	public StreamObserver<BookRegistrationRequest> bookRegister(StreamObserver<BookRegistrationResponse> responseObserver){
+		
 		return new StreamObserver<BookRegistrationRequest> () {
+			int iCount = 0;
+			
+			
+			
 			@Override
 			public void onNext(BookRegistrationRequest msg) {
 				System.out.println(LocalTime.now().toString() + ": receiving registration type: " + msg.getRegistration());
@@ -90,31 +96,57 @@ public class RegisterServer extends RegistrationBookImplBase{
 				booksList[5] = TGatsby;
 				booksList[6] = Pride;
 				
+				Integer[] idList = new Integer[7];
+				for (int i=0; i<idList.length-1; i++) {
+					idList[i]=booksList[i].getBookId();
+				}
+				
+				String visitorId = "User registered: " + msg.getUserId();
+				String bookDtls;
+				BookRegistrationResponse resp = BookRegistrationResponse.newBuilder().setUserInfo(visitorId).build();
 				switch (msg.getRegistration()) {
 				case BORROW:
-					int found = booksList.binarySearch(booksList, 0, booksList.length, Phantom);
-					//if()
-					String regBook = "Book with ID " + msg.getBookId() + " has been SUCCESSFULLY REGISTERED." 
-					+ "Book details: ";
+					
+					int iIndex = Arrays.binarySearch(idList, msg.getBookId());
+					if(iIndex >=0) {
+						bookDtls = booksList[iIndex].toString();
+						iCount++;
+						resp = BookRegistrationResponse.newBuilder().setUserInfo(visitorId).setBookDetails(bookDtls).setTotalBooks(iCount).build();
+					} else {
+						bookDtls = "Book not found.";
+						resp = BookRegistrationResponse.newBuilder().setUserInfo(visitorId).setBookDetails(bookDtls).build();
+					}
+					
+					
+					break;
+				case RETURN:
+					
+					//visitorId = "User registered: " + msg.getUserId();
+					bookDtls = "Book registered: " + msg.getBookId();
+					iCount++;
+					resp = BookRegistrationResponse.newBuilder().setUserInfo(visitorId).setBookDetails(bookDtls).setTotalBooks(iCount).build();
 					break;
 				default:
-				}
-
+				} //Switch
+				responseObserver.onNext(resp);
 				
-			}
+			} //On next
 
 			@Override
 			public void onError(Throwable t) {
 				// TODO Auto-generated method stub
-				
-			}
+				t.printStackTrace();
+			}//onError
 
 			@Override
 			public void onCompleted() {
-				// TODO Auto-generated method stub
+				System.out.println(LocalTime.now().toString() + ": reveiving book registration completed.");
+				responseObserver.onCompleted();
 				
-			}
-		}
-	}
+			} // onCompleted
+		}; //Stream observer
+	} //Book register
 	
-}
+	 
+	
+} //Register server

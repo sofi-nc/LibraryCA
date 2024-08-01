@@ -1,5 +1,8 @@
 package libraryCA;
 
+import java.io.IOException;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 import generated.lights.AverageResponse;
 import generated.lights.LightLevel;
@@ -12,15 +15,6 @@ import generated.search.AvailableBooks;
 import generated.search.ListBy;
 import generated.search.userID;
 import generated.search.userInformation;
-import io.grpc.ServerBuilder;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Random;
-
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
@@ -211,7 +205,7 @@ public class LibraryServer extends LightServiceImplBase{
 		 				Thread.sleep(1000);
 		 			} catch (InterruptedException e) {
 		 				// TODO Auto-generated catch block
-		 				System.out.println("No book");
+		 				//System.out.println("No book");
 		 				e.printStackTrace();
 		 			}
 		 			

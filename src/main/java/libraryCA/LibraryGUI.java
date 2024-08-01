@@ -330,9 +330,33 @@ public class LibraryGUI extends JFrame {
 
 					@Override
 					public void onNext(AvailableBooks value) {
-						System.out.println(LocalTime.now().toString() + ": receiving book's information.\nBook ID: " + value.getBookId() + "\nTitle: " + value.getTitle() + "\nAuthor: " + value.getAuthor() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject());
-						count += 1;
-						booksTa.append(value.getBookId() + "\nTitle: " + value.getTitle() + "\nAuthor: " + value.getAuthor() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject() + "\n- - - - - -\n");
+						switch (operation) {
+						case AUTHOR:
+							System.out.println(LocalTime.now().toString() + ": receiving book's information.\nAuthor: " + value.getAuthor() + "\nBook ID: " + value.getBookId() + "\nTitle: " + value.getTitle() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject());
+							count += 1;
+							booksTa.append("Author: " + value.getAuthor() + "\nBook ID: " + value.getBookId() + "\nTitle: " + value.getTitle() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject() + "\n- - - - - -\n");
+							break;
+						case ID:
+							System.out.println(LocalTime.now().toString() + ": receiving book's information." + "\nBook ID: " + value.getBookId() + "\nAuthor: " + value.getAuthor() + "\nTitle: " + value.getTitle() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject());
+							count += 1;
+							booksTa.append("Book ID: " + value.getBookId() + "\nTitle: " + value.getTitle() + "\nAuthor: " + value.getAuthor() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject() + "\n- - - - - -\n");
+							break;
+						case TITLE:
+							System.out.println(LocalTime.now().toString() + ": receiving book's information." + "\nTitle: " + value.getTitle() + "\nBook ID: " + value.getBookId() + "\nAuthor: " + value.getAuthor() +  "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject());
+							count += 1;
+							booksTa.append("\nTitle: " + value.getTitle() + value.getBookId() + "\nAuthor: " + value.getAuthor() + "\nLanguage: " + value.getLanguage() + "\nSubject: " + value.getSubject() + "\n- - - - - -\n");
+							break;
+						case UNRECOGNIZED:
+							System.out.println("Invalid option");
+							booksTa.append("Invalid selection");
+							break;
+						default:
+							System.out.println("Invalid option");
+							booksTa.append("Invalid selection");
+							break;
+						
+						}
+						
 					}
 
 					@Override

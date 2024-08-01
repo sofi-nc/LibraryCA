@@ -17,6 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private BookRegistrationRequest() {
     bookId_ = 0;
+    userId_ = 0;
     registration_ = 0;
   }
 
@@ -50,6 +51,11 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 16: {
+
+            userId_ = input.readInt32();
+            break;
+          }
+          case 24: {
             int rawValue = input.readEnum();
 
             registration_ = rawValue;
@@ -194,16 +200,25 @@ private static final long serialVersionUID = 0L;
     return bookId_;
   }
 
-  public static final int REGISTRATION_FIELD_NUMBER = 2;
+  public static final int USERID_FIELD_NUMBER = 2;
+  private int userId_;
+  /**
+   * <code>int32 userId = 2;</code>
+   */
+  public int getUserId() {
+    return userId_;
+  }
+
+  public static final int REGISTRATION_FIELD_NUMBER = 3;
   private int registration_;
   /**
-   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
+   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 3;</code>
    */
   public int getRegistrationValue() {
     return registration_;
   }
   /**
-   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
+   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 3;</code>
    */
   public generated.registration.BookRegistrationRequest.RegistrationType getRegistration() {
     @SuppressWarnings("deprecation")
@@ -228,8 +243,11 @@ private static final long serialVersionUID = 0L;
     if (bookId_ != 0) {
       output.writeInt32(1, bookId_);
     }
+    if (userId_ != 0) {
+      output.writeInt32(2, userId_);
+    }
     if (registration_ != generated.registration.BookRegistrationRequest.RegistrationType.BORROW.getNumber()) {
-      output.writeEnum(2, registration_);
+      output.writeEnum(3, registration_);
     }
     unknownFields.writeTo(output);
   }
@@ -244,9 +262,13 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(1, bookId_);
     }
+    if (userId_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(2, userId_);
+    }
     if (registration_ != generated.registration.BookRegistrationRequest.RegistrationType.BORROW.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(2, registration_);
+        .computeEnumSize(3, registration_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -266,6 +288,8 @@ private static final long serialVersionUID = 0L;
     boolean result = true;
     result = result && (getBookId()
         == other.getBookId());
+    result = result && (getUserId()
+        == other.getUserId());
     result = result && registration_ == other.registration_;
     result = result && unknownFields.equals(other.unknownFields);
     return result;
@@ -280,6 +304,8 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + BOOKID_FIELD_NUMBER;
     hash = (53 * hash) + getBookId();
+    hash = (37 * hash) + USERID_FIELD_NUMBER;
+    hash = (53 * hash) + getUserId();
     hash = (37 * hash) + REGISTRATION_FIELD_NUMBER;
     hash = (53 * hash) + registration_;
     hash = (29 * hash) + unknownFields.hashCode();
@@ -417,6 +443,8 @@ private static final long serialVersionUID = 0L;
       super.clear();
       bookId_ = 0;
 
+      userId_ = 0;
+
       registration_ = 0;
 
       return this;
@@ -446,6 +474,7 @@ private static final long serialVersionUID = 0L;
     public generated.registration.BookRegistrationRequest buildPartial() {
       generated.registration.BookRegistrationRequest result = new generated.registration.BookRegistrationRequest(this);
       result.bookId_ = bookId_;
+      result.userId_ = userId_;
       result.registration_ = registration_;
       onBuilt();
       return result;
@@ -497,6 +526,9 @@ private static final long serialVersionUID = 0L;
       if (other == generated.registration.BookRegistrationRequest.getDefaultInstance()) return this;
       if (other.getBookId() != 0) {
         setBookId(other.getBookId());
+      }
+      if (other.getUserId() != 0) {
+        setUserId(other.getUserId());
       }
       if (other.registration_ != 0) {
         setRegistrationValue(other.getRegistrationValue());
@@ -556,15 +588,41 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int userId_ ;
+    /**
+     * <code>int32 userId = 2;</code>
+     */
+    public int getUserId() {
+      return userId_;
+    }
+    /**
+     * <code>int32 userId = 2;</code>
+     */
+    public Builder setUserId(int value) {
+      
+      userId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 userId = 2;</code>
+     */
+    public Builder clearUserId() {
+      
+      userId_ = 0;
+      onChanged();
+      return this;
+    }
+
     private int registration_ = 0;
     /**
-     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 3;</code>
      */
     public int getRegistrationValue() {
       return registration_;
     }
     /**
-     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 3;</code>
      */
     public Builder setRegistrationValue(int value) {
       registration_ = value;
@@ -572,7 +630,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 3;</code>
      */
     public generated.registration.BookRegistrationRequest.RegistrationType getRegistration() {
       @SuppressWarnings("deprecation")
@@ -580,7 +638,7 @@ private static final long serialVersionUID = 0L;
       return result == null ? generated.registration.BookRegistrationRequest.RegistrationType.UNRECOGNIZED : result;
     }
     /**
-     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 3;</code>
      */
     public Builder setRegistration(generated.registration.BookRegistrationRequest.RegistrationType value) {
       if (value == null) {
@@ -592,7 +650,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 2;</code>
+     * <code>.registration.BookRegistrationRequest.RegistrationType registration = 3;</code>
      */
     public Builder clearRegistration() {
       

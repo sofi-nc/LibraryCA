@@ -54,4 +54,37 @@ public class Books {
 	
 	
 	
+	public int compareObject(Object obj, String opt) {
+		/*
+		 * Vehicles myVehicles = (Vehicles) obj;
+        return this.sLocation.compareTo(myVehicles.getsLocation());
+		 */
+		Books book2 = (Books) obj;
+		if(opt.equalsIgnoreCase("Title")) {
+			return this.title.compareTo(book2.title);
+		} else if(opt.equalsIgnoreCase("Author")) {
+			return this.author.compareTo(book2.author);
+		} else if(opt.equalsIgnoreCase("ID")) {
+			if(this.bookId>book2.bookId) {
+				return 1;
+			} else if(this.bookId<book2.bookId) {
+				return -1;
+			} else {
+				return 0;
+			}
+			
+		} else {
+			return -1;
+		}
+		
+	}
+
+	@Override
+	public String toString() {
+		return "Book [Book ID= " + bookId + ", Title= " + title + ", Author= " + author + ", Language= " + lang + ", Subject= "
+				+ subject + "]";
+	}
+	
+	
+	
 }
