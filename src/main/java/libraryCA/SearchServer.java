@@ -51,13 +51,13 @@ public class SearchServer extends SearchEngineImplBase{
 		Books[] byId = new Books[7];
 		Books[] bookList = new Books[7];
 		
-		Books TGatsby = new Books(7836262, "The great Gatsby", "F. Scott Fitzgerald", "English", "Fiction");
-		Books TKill = new Books(7174668, "To kill a mockingbird", "Harper Lee", "English", "Thriller");
-		Books Pride = new Books(8724795, "Pride and prejudice","Jane Austen", "English", "Romance");
-		Books Tcatcher = new Books (7660479, "The catcher in the Rye", "J. D. Salinger", "English", "Young adult fiction");
-		Books Phantom = new Books (3283121, "Phantom", "Jo Nesbo", "English", "Mystery");
-		Books	WNext = new Books (1917707, "What comes next", "John Katzenbach", "English", "Suspense");
-		Books PetS = new Books (3924794, "Pet Sematary", "Stephen King", "English", "Thriller");
+		Books TGatsby = new Books(7836262, "The great Gatsby", "F. Scott Fitzgerald", "English", "Fiction",3);
+		Books TKill = new Books(7174668, "To kill a mockingbird", "Harper Lee", "English", "Thriller",7);
+		Books Pride = new Books(8724795, "Pride and prejudice","Jane Austen", "English", "Romance",5);
+		Books Tcatcher = new Books (7660479, "The catcher in the Rye", "J. D. Salinger", "English", "Young adult fiction",1);
+		Books Phantom = new Books (3283121, "Phantom", "Jo Nesbo", "English", "Mystery",9);
+		Books	WNext = new Books (1917707, "What comes next", "John Katzenbach", "English", "Suspense",4);
+		Books PetS = new Books (3924794, "Pet Sematary", "Stephen King", "English", "Thriller",8);
 		
 	/*	byTitle[0] = PetS;
 		byTitle[1] = Phantom;
@@ -247,7 +247,7 @@ public class SearchServer extends SearchEngineImplBase{
 	public void readerInfo(userID request, StreamObserver<userInformation> responseObserver) {
 		System.out.println(LocalTime.now().toString() + ": receiving userID request: " + request.getUserNumber());
 		String name, registrationDate;
-		boolean borrowedBooks, status;
+		boolean borrowedBooks, status, found;
 		int totalBooksBorrowed;
 		
 		switch (request.getUserNumber()) {
@@ -261,6 +261,7 @@ public class SearchServer extends SearchEngineImplBase{
 				borrowedBooks = true;
 				status = true;
 				totalBooksBorrowed = 4;
+				found = true;
 				break;
 			default :
 				name = "User not found";
@@ -268,10 +269,11 @@ public class SearchServer extends SearchEngineImplBase{
 				borrowedBooks = false;
 				status = false;
 				totalBooksBorrowed = 0;
+				found = false;
 		}
 		
 		
-		userInformation response = userInformation.newBuilder().setName(name).setRegistrationDate(registrationDate).setBorrowedBooks(borrowedBooks).setStatus(status).setTotalBooksBorrowed(totalBooksBorrowed).build();
+		userInformation response = userInformation.newBuilder().setName(name).setRegistrationDate(registrationDate).setBorrowedBooks(borrowedBooks).setStatus(status).setTotalBooksBorrowed(totalBooksBorrowed).setFound(found).build();
 		
 		responseObserver.onNext(response);
 		responseObserver.onCompleted();

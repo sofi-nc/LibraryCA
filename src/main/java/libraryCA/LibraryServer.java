@@ -138,13 +138,13 @@ public class LibraryServer extends LightServiceImplBase{
 		Books[] byAuthor = new Books[7];
 		Books[] byId = new Books[7];
 		
-		Books TGatsby = new Books(7836262, "The great Gatsby", "F. Scott Fitzgerald", "English", "Fiction");
-		Books TKill = new Books(7174668, "To kill a mockingbird", "Harper Lee", "English", "Thriller");
-		Books Pride = new Books(8724795, "Pride and prejudice","Jane Austen", "English", "Romance");
-		Books Tcatcher = new Books (7660479, "The catcher in the Rye", "J. D. Salinger", "English", "Young adult fiction");
-		Books Phantom = new Books (3283121, "Phantom", "Jo Nesbo", "English", "Mystery");
-		Books	WNext = new Books (1917707, "What comes next", "John Katzenbach", "English", "Suspense");
-		Books PetS = new Books (3924794, "Pet Sematary", "Stephen King", "English", "Thriller");
+		Books TGatsby = new Books(7836262, "The great Gatsby", "F. Scott Fitzgerald", "English", "Fiction",3);
+		Books TKill = new Books(7174668, "To kill a mockingbird", "Harper Lee", "English", "Thriller",7);
+		Books Pride = new Books(8724795, "Pride and prejudice","Jane Austen", "English", "Romance",5);
+		Books Tcatcher = new Books (7660479, "The catcher in the Rye", "J. D. Salinger", "English", "Young adult fiction",1);
+		Books Phantom = new Books (3283121, "Phantom", "Jo Nesbo", "English", "Mystery",9);
+		Books	WNext = new Books (1917707, "What comes next", "John Katzenbach", "English", "Suspense",4);
+		Books PetS = new Books (3924794, "Pet Sematary", "Stephen King", "English", "Thriller",8);
 		
 		byTitle[0] = PetS;
 		byTitle[1] = Phantom;
@@ -176,7 +176,7 @@ public class LibraryServer extends LightServiceImplBase{
 	     case TITLE:
 	    	 for (int i=0; i < byTitle.length; i++) {
 	    		AvailableBooks response;
-	 			response = AvailableBooks.newBuilder().setBookId(byTitle[i].getBookId()).setTitle(byTitle[i].getTitle()).setAuthor(byTitle[i].getAuthor()).setLanguage(byTitle[i].getLang()).setSubject(byTitle[i].getSubject()).build();
+	 			response = AvailableBooks.newBuilder().setBookId(byTitle[i].getBookId()).setTitle(byTitle[i].getTitle()).setAuthor(byTitle[i].getAuthor()).setLanguage(byTitle[i].getLang()).setSubject(byTitle[i].getSubject()).setBookQty(byTitle[i].getBookQty()).build();
 	 			responseObserver.onNext(response);
 	 			
 	 			//slow it all down a bit so we can observe the behaviour 
@@ -194,8 +194,7 @@ public class LibraryServer extends LightServiceImplBase{
 	     case AUTHOR:
 	    	 for (int i=0; i < 7; i++) {
 	    		 AvailableBooks response;
-		 		//	response = AvailableBooks.newBuilder().setBookId(byAuthor[i].getBookId()).setTitle(byAuthor[i].getTitle()).setAuthor(byAuthor[i].getAuthor()).setLanguage(byAuthor[i].getLang()).setSubject(byAuthor[i].getSubject()).build();
-	    		 response = AvailableBooks.newBuilder().setBookId(3+i).build();
+		 		response = AvailableBooks.newBuilder().setBookId(byAuthor[i].getBookId()).setTitle(byAuthor[i].getTitle()).setAuthor(byAuthor[i].getAuthor()).setLanguage(byAuthor[i].getLang()).setSubject(byAuthor[i].getSubject()).setBookQty(byAuthor[i].getBookQty()).build();
 	    		 
 		 			responseObserver.onNext(response);
 		 			
@@ -215,7 +214,7 @@ public class LibraryServer extends LightServiceImplBase{
 	     case ID:
 	    	 for (int i=0; i < 7; i++) {
 	    		 AvailableBooks response;
-		 			response = AvailableBooks.newBuilder().setBookId(byId[i].getBookId()).setTitle(byId[i].getTitle()).setAuthor(byId[i].getAuthor()).setLanguage(byId[i].getLang()).setSubject(byId[i].getSubject()).build();
+		 			response = AvailableBooks.newBuilder().setBookId(byId[i].getBookId()).setTitle(byId[i].getTitle()).setAuthor(byId[i].getAuthor()).setLanguage(byId[i].getLang()).setSubject(byId[i].getSubject()).setBookQty(byId[i].getBookQty()).build();
 		 			responseObserver.onNext(response);
 		 			
 		 			//slow it all down a bit so we can observe the behaviour 

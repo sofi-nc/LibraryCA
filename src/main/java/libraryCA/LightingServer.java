@@ -57,8 +57,7 @@ public class LightingServer extends LightServiceImplBase{
 			@Override
 			public void onError(Throwable t) {
 				// TODO Auto-generated method stub
-				
-			}
+				t.printStackTrace();			}
 
 			@Override
 			public void onCompleted() {

@@ -51,4 +51,9 @@ public interface AvailableBooksOrBuilder extends
    */
   com.google.protobuf.ByteString
       getSubjectBytes();
+
+  /**
+   * <code>int32 bookQty = 6;</code>
+   */
+  int getBookQty();
 }

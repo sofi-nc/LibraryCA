@@ -23,23 +23,29 @@ service RegistrationBook {
 	message BookRegistrationRequest {
 		int32 bookId = 1;
 		int32 userId = 2;
+		int32 bookQty = 3;
+		int32 total = 4;
 		
 		enum RegistrationType{
 			BORROW = 0;
 			RETURN = 1;
 		}
 		
-		RegistrationType registration = 3;
+		RegistrationType registration = 5;
 	}
 	
 	message BookRegistrationResponse {
 		string userInfo = 1;
 		string bookDetails = 2;
 		int32 totalBooks = 3;
+		string regType = 4;
+		int32 complReg = 5;
 	}
 	
 	message VisitorRegistrationRequest {
 		int32 visitorId = 1;
+		string name = 2;
+		string status = 3;
 	}
 	
 	message VisitorRegistrationResponse {

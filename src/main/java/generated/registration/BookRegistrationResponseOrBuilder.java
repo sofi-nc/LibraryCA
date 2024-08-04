@@ -31,4 +31,19 @@ public interface BookRegistrationResponseOrBuilder extends
    * <code>int32 totalBooks = 3;</code>
    */
   int getTotalBooks();
+
+  /**
+   * <code>string regType = 4;</code>
+   */
+  java.lang.String getRegType();
+  /**
+   * <code>string regType = 4;</code>
+   */
+  com.google.protobuf.ByteString
+      getRegTypeBytes();
+
+  /**
+   * <code>int32 complReg = 5;</code>
+   */
+  int getComplReg();
 }

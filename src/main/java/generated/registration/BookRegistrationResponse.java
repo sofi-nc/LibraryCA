@@ -19,6 +19,8 @@ private static final long serialVersionUID = 0L;
     userInfo_ = "";
     bookDetails_ = "";
     totalBooks_ = 0;
+    regType_ = "";
+    complReg_ = 0;
   }
 
   @java.lang.Override
@@ -60,6 +62,17 @@ private static final long serialVersionUID = 0L;
           case 24: {
 
             totalBooks_ = input.readInt32();
+            break;
+          }
+          case 34: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            regType_ = s;
+            break;
+          }
+          case 40: {
+
+            complReg_ = input.readInt32();
             break;
           }
           default: {
@@ -171,6 +184,49 @@ private static final long serialVersionUID = 0L;
     return totalBooks_;
   }
 
+  public static final int REGTYPE_FIELD_NUMBER = 4;
+  private volatile java.lang.Object regType_;
+  /**
+   * <code>string regType = 4;</code>
+   */
+  public java.lang.String getRegType() {
+    java.lang.Object ref = regType_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      regType_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string regType = 4;</code>
+   */
+  public com.google.protobuf.ByteString
+      getRegTypeBytes() {
+    java.lang.Object ref = regType_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      regType_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int COMPLREG_FIELD_NUMBER = 5;
+  private int complReg_;
+  /**
+   * <code>int32 complReg = 5;</code>
+   */
+  public int getComplReg() {
+    return complReg_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -194,6 +250,12 @@ private static final long serialVersionUID = 0L;
     if (totalBooks_ != 0) {
       output.writeInt32(3, totalBooks_);
     }
+    if (!getRegTypeBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, regType_);
+    }
+    if (complReg_ != 0) {
+      output.writeInt32(5, complReg_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -212,6 +274,13 @@ private static final long serialVersionUID = 0L;
     if (totalBooks_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(3, totalBooks_);
+    }
+    if (!getRegTypeBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, regType_);
+    }
+    if (complReg_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(5, complReg_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -235,6 +304,10 @@ private static final long serialVersionUID = 0L;
         .equals(other.getBookDetails());
     result = result && (getTotalBooks()
         == other.getTotalBooks());
+    result = result && getRegType()
+        .equals(other.getRegType());
+    result = result && (getComplReg()
+        == other.getComplReg());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -252,6 +325,10 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getBookDetails().hashCode();
     hash = (37 * hash) + TOTALBOOKS_FIELD_NUMBER;
     hash = (53 * hash) + getTotalBooks();
+    hash = (37 * hash) + REGTYPE_FIELD_NUMBER;
+    hash = (53 * hash) + getRegType().hashCode();
+    hash = (37 * hash) + COMPLREG_FIELD_NUMBER;
+    hash = (53 * hash) + getComplReg();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -391,6 +468,10 @@ private static final long serialVersionUID = 0L;
 
       totalBooks_ = 0;
 
+      regType_ = "";
+
+      complReg_ = 0;
+
       return this;
     }
 
@@ -420,6 +501,8 @@ private static final long serialVersionUID = 0L;
       result.userInfo_ = userInfo_;
       result.bookDetails_ = bookDetails_;
       result.totalBooks_ = totalBooks_;
+      result.regType_ = regType_;
+      result.complReg_ = complReg_;
       onBuilt();
       return result;
     }
@@ -478,6 +561,13 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getTotalBooks() != 0) {
         setTotalBooks(other.getTotalBooks());
+      }
+      if (!other.getRegType().isEmpty()) {
+        regType_ = other.regType_;
+        onChanged();
+      }
+      if (other.getComplReg() != 0) {
+        setComplReg(other.getComplReg());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -668,6 +758,101 @@ private static final long serialVersionUID = 0L;
     public Builder clearTotalBooks() {
       
       totalBooks_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object regType_ = "";
+    /**
+     * <code>string regType = 4;</code>
+     */
+    public java.lang.String getRegType() {
+      java.lang.Object ref = regType_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        regType_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string regType = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getRegTypeBytes() {
+      java.lang.Object ref = regType_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        regType_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string regType = 4;</code>
+     */
+    public Builder setRegType(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      regType_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string regType = 4;</code>
+     */
+    public Builder clearRegType() {
+      
+      regType_ = getDefaultInstance().getRegType();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string regType = 4;</code>
+     */
+    public Builder setRegTypeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      regType_ = value;
+      onChanged();
+      return this;
+    }
+
+    private int complReg_ ;
+    /**
+     * <code>int32 complReg = 5;</code>
+     */
+    public int getComplReg() {
+      return complReg_;
+    }
+    /**
+     * <code>int32 complReg = 5;</code>
+     */
+    public Builder setComplReg(int value) {
+      
+      complReg_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 complReg = 5;</code>
+     */
+    public Builder clearComplReg() {
+      
+      complReg_ = 0;
       onChanged();
       return this;
     }

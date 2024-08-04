@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     author_ = "";
     language_ = "";
     subject_ = "";
+    bookQty_ = 0;
   }
 
   @java.lang.Override
@@ -74,6 +75,11 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             subject_ = s;
+            break;
+          }
+          case 48: {
+
+            bookQty_ = input.readInt32();
             break;
           }
           default: {
@@ -253,6 +259,15 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int BOOKQTY_FIELD_NUMBER = 6;
+  private int bookQty_;
+  /**
+   * <code>int32 bookQty = 6;</code>
+   */
+  public int getBookQty() {
+    return bookQty_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -282,6 +297,9 @@ private static final long serialVersionUID = 0L;
     if (!getSubjectBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, subject_);
     }
+    if (bookQty_ != 0) {
+      output.writeInt32(6, bookQty_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -306,6 +324,10 @@ private static final long serialVersionUID = 0L;
     }
     if (!getSubjectBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, subject_);
+    }
+    if (bookQty_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(6, bookQty_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -333,6 +355,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getLanguage());
     result = result && getSubject()
         .equals(other.getSubject());
+    result = result && (getBookQty()
+        == other.getBookQty());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -354,6 +378,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getLanguage().hashCode();
     hash = (37 * hash) + SUBJECT_FIELD_NUMBER;
     hash = (53 * hash) + getSubject().hashCode();
+    hash = (37 * hash) + BOOKQTY_FIELD_NUMBER;
+    hash = (53 * hash) + getBookQty();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -497,6 +523,8 @@ private static final long serialVersionUID = 0L;
 
       subject_ = "";
 
+      bookQty_ = 0;
+
       return this;
     }
 
@@ -528,6 +556,7 @@ private static final long serialVersionUID = 0L;
       result.author_ = author_;
       result.language_ = language_;
       result.subject_ = subject_;
+      result.bookQty_ = bookQty_;
       onBuilt();
       return result;
     }
@@ -594,6 +623,9 @@ private static final long serialVersionUID = 0L;
       if (!other.getSubject().isEmpty()) {
         subject_ = other.subject_;
         onChanged();
+      }
+      if (other.getBookQty() != 0) {
+        setBookQty(other.getBookQty());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -922,6 +954,32 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       subject_ = value;
+      onChanged();
+      return this;
+    }
+
+    private int bookQty_ ;
+    /**
+     * <code>int32 bookQty = 6;</code>
+     */
+    public int getBookQty() {
+      return bookQty_;
+    }
+    /**
+     * <code>int32 bookQty = 6;</code>
+     */
+    public Builder setBookQty(int value) {
+      
+      bookQty_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 bookQty = 6;</code>
+     */
+    public Builder clearBookQty() {
+      
+      bookQty_ = 0;
       onChanged();
       return this;
     }

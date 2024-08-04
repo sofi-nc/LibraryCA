@@ -36,6 +36,7 @@ service SearchEngine {
   	string author = 3;
   	string language = 4;
   	string subject = 5;
+  	int32 bookQty = 6;
   }
   
   
@@ -49,4 +50,5 @@ service SearchEngine {
   	bool borrowedBooks = 3;
   	int32 totalBooksBorrowed = 4;
   	bool status = 5;
+  	bool found = 6;
   }

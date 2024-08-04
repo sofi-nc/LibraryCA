@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     borrowedBooks_ = false;
     totalBooksBorrowed_ = 0;
     status_ = false;
+    found_ = false;
   }
 
   @java.lang.Override
@@ -72,6 +73,11 @@ private static final long serialVersionUID = 0L;
           case 40: {
 
             status_ = input.readBool();
+            break;
+          }
+          case 48: {
+
+            found_ = input.readBool();
             break;
           }
           default: {
@@ -201,6 +207,15 @@ private static final long serialVersionUID = 0L;
     return status_;
   }
 
+  public static final int FOUND_FIELD_NUMBER = 6;
+  private boolean found_;
+  /**
+   * <code>bool found = 6;</code>
+   */
+  public boolean getFound() {
+    return found_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -230,6 +245,9 @@ private static final long serialVersionUID = 0L;
     if (status_ != false) {
       output.writeBool(5, status_);
     }
+    if (found_ != false) {
+      output.writeBool(6, found_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -257,6 +275,10 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(5, status_);
     }
+    if (found_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(6, found_);
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -283,6 +305,8 @@ private static final long serialVersionUID = 0L;
         == other.getTotalBooksBorrowed());
     result = result && (getStatus()
         == other.getStatus());
+    result = result && (getFound()
+        == other.getFound());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -306,6 +330,9 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + STATUS_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getStatus());
+    hash = (37 * hash) + FOUND_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getFound());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -449,6 +476,8 @@ private static final long serialVersionUID = 0L;
 
       status_ = false;
 
+      found_ = false;
+
       return this;
     }
 
@@ -480,6 +509,7 @@ private static final long serialVersionUID = 0L;
       result.borrowedBooks_ = borrowedBooks_;
       result.totalBooksBorrowed_ = totalBooksBorrowed_;
       result.status_ = status_;
+      result.found_ = found_;
       onBuilt();
       return result;
     }
@@ -544,6 +574,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getStatus() != false) {
         setStatus(other.getStatus());
+      }
+      if (other.getFound() != false) {
+        setFound(other.getFound());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -786,6 +819,32 @@ private static final long serialVersionUID = 0L;
     public Builder clearStatus() {
       
       status_ = false;
+      onChanged();
+      return this;
+    }
+
+    private boolean found_ ;
+    /**
+     * <code>bool found = 6;</code>
+     */
+    public boolean getFound() {
+      return found_;
+    }
+    /**
+     * <code>bool found = 6;</code>
+     */
+    public Builder setFound(boolean value) {
+      
+      found_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool found = 6;</code>
+     */
+    public Builder clearFound() {
+      
+      found_ = false;
       onChanged();
       return this;
     }

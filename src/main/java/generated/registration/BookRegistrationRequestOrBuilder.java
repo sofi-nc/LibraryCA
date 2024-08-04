@@ -18,11 +18,21 @@ public interface BookRegistrationRequestOrBuilder extends
   int getUserId();
 
   /**
-   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 3;</code>
+   * <code>int32 bookQty = 3;</code>
+   */
+  int getBookQty();
+
+  /**
+   * <code>int32 total = 4;</code>
+   */
+  int getTotal();
+
+  /**
+   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 5;</code>
    */
   int getRegistrationValue();
   /**
-   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 3;</code>
+   * <code>.registration.BookRegistrationRequest.RegistrationType registration = 5;</code>
    */
   generated.registration.BookRegistrationRequest.RegistrationType getRegistration();
 }

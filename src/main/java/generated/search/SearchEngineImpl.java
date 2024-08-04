@@ -46,19 +46,20 @@ public final class SearchEngineImpl {
       "\n\022searchEngine.proto\022\014searchEngine\"o\n\006Li" +
       "stBy\0225\n\toperation\030\001 \001(\0162\".searchEngine.L" +
       "istBy.ListOperation\".\n\rListOperation\022\t\n\005" +
-      "TITLE\020\000\022\n\n\006AUTHOR\020\001\022\006\n\002ID\020\002\"b\n\016Available" +
+      "TITLE\020\000\022\n\n\006AUTHOR\020\001\022\006\n\002ID\020\002\"s\n\016Available" +
       "Books\022\016\n\006bookId\030\001 \001(\005\022\r\n\005title\030\002 \001(\t\022\016\n\006" +
       "author\030\003 \001(\t\022\020\n\010language\030\004 \001(\t\022\017\n\007subjec" +
-      "t\030\005 \001(\t\"\034\n\006userID\022\022\n\nuserNumber\030\001 \001(\005\"|\n" +
-      "\017userInformation\022\014\n\004name\030\001 \001(\t\022\030\n\020regist" +
-      "rationDate\030\002 \001(\t\022\025\n\rborrowedBooks\030\003 \001(\010\022" +
-      "\032\n\022totalBooksBorrowed\030\004 \001(\005\022\016\n\006status\030\005 " +
-      "\001(\0102\233\001\n\014SearchEngine\022F\n\014availability\022\024.s" +
-      "earchEngine.ListBy\032\034.searchEngine.Availa" +
-      "bleBooks\"\0000\001\022C\n\nreaderInfo\022\024.searchEngin" +
-      "e.userID\032\035.searchEngine.userInformation\"" +
-      "\000B&\n\020generated.searchB\020SearchEngineImplP" +
-      "\001b\006proto3"
+      "t\030\005 \001(\t\022\017\n\007bookQty\030\006 \001(\005\"\034\n\006userID\022\022\n\nus" +
+      "erNumber\030\001 \001(\005\"\213\001\n\017userInformation\022\014\n\004na" +
+      "me\030\001 \001(\t\022\030\n\020registrationDate\030\002 \001(\t\022\025\n\rbo" +
+      "rrowedBooks\030\003 \001(\010\022\032\n\022totalBooksBorrowed\030" +
+      "\004 \001(\005\022\016\n\006status\030\005 \001(\010\022\r\n\005found\030\006 \001(\0102\233\001\n" +
+      "\014SearchEngine\022F\n\014availability\022\024.searchEn" +
+      "gine.ListBy\032\034.searchEngine.AvailableBook" +
+      "s\"\0000\001\022C\n\nreaderInfo\022\024.searchEngine.userI" +
+      "D\032\035.searchEngine.userInformation\"\000B&\n\020ge" +
+      "nerated.searchB\020SearchEngineImplP\001b\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -83,7 +84,7 @@ public final class SearchEngineImpl {
     internal_static_searchEngine_AvailableBooks_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_searchEngine_AvailableBooks_descriptor,
-        new java.lang.String[] { "BookId", "Title", "Author", "Language", "Subject", });
+        new java.lang.String[] { "BookId", "Title", "Author", "Language", "Subject", "BookQty", });
     internal_static_searchEngine_userID_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_searchEngine_userID_fieldAccessorTable = new
@@ -95,7 +96,7 @@ public final class SearchEngineImpl {
     internal_static_searchEngine_userInformation_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_searchEngine_userInformation_descriptor,
-        new java.lang.String[] { "Name", "RegistrationDate", "BorrowedBooks", "TotalBooksBorrowed", "Status", });
+        new java.lang.String[] { "Name", "RegistrationDate", "BorrowedBooks", "TotalBooksBorrowed", "Status", "Found", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

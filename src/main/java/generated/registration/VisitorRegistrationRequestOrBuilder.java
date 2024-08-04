@@ -11,4 +11,24 @@ public interface VisitorRegistrationRequestOrBuilder extends
    * <code>int32 visitorId = 1;</code>
    */
   int getVisitorId();
+
+  /**
+   * <code>string name = 2;</code>
+   */
+  java.lang.String getName();
+  /**
+   * <code>string name = 2;</code>
+   */
+  com.google.protobuf.ByteString
+      getNameBytes();
+
+  /**
+   * <code>string status = 3;</code>
+   */
+  java.lang.String getStatus();
+  /**
+   * <code>string status = 3;</code>
+   */
+  com.google.protobuf.ByteString
+      getStatusBytes();
 }

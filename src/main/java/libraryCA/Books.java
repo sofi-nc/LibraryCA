@@ -1,15 +1,16 @@
 package libraryCA;
 
 public class Books {
-	private int bookId;
+	private int bookId, bookQty;
 	private String title, author, lang, subject;
 	
-	public Books(int bookId, String title, String author, String lang, String subject) {
+	public Books(int bookId, String title, String author, String lang, String subject, int bookQty) {
 		this.bookId = bookId;
 		this.title = title;
 		this.author = author;
 		this.lang = lang;
 		this.subject = subject;
+		this.bookQty = bookQty;
 	}
 
 	public int getBookId() {
@@ -52,6 +53,13 @@ public class Books {
 		this.subject = subject;
 	}
 	
+	public int getBookQty() {
+		return bookQty;
+	}
+
+	public void setBookQty(int bookQty) {
+		this.bookQty = bookQty;
+	}
 	
 	
 	public int compareObject(Object obj, String opt) {
@@ -84,6 +92,8 @@ public class Books {
 		return "Book [Book ID= " + bookId + ", Title= " + title + ", Author= " + author + ", Language= " + lang + ", Subject= "
 				+ subject + "]";
 	}
+
+	
 	
 	
 	

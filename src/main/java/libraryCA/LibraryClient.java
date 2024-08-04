@@ -52,6 +52,7 @@ public class LibraryClient {
 		//readerInfo();
 		//visitorRegister();
 		bookRegister();
+		//channel.shutdown();
 	}
 	
 	public static void availabilityAsyn() {
@@ -114,11 +115,11 @@ public class LibraryClient {
 	
 	public static void visitorRegister() {
 		int visitorID = 12;
-		VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setVisitorId(visitorID).build();
+		VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setVisitorId(visitorID).setName("Patricia").setStatus("Active").build();
 		
 		VisitorRegistrationResponse response = RblockingStub.visitorRegister(req);
 		
-		System.out.println(LocalTime.now().toString() + ": receiving message: " + response.getRegistrationConfirmation() + " for the date: " + response.getRegistrationDate());
+		System.out.println(LocalTime.now().toString() + ": receiving message: " + response.getRegistrationConfirmation() + " on the date " + response.getRegistrationDate());
 	}
 	/*
 	 * REGISTRATION SERVICE
@@ -130,7 +131,7 @@ public class LibraryClient {
 			int iCount = 0;
 			@Override
 			public void onNext(BookRegistrationResponse value) {
-				System.out.println(LocalTime.now().toString() + ": received information\n" + value.getBookDetails() + "\nBooks registered so far: " + value.getTotalBooks());
+				System.out.println(LocalTime.now().toString() + ": received information\n" + "Type of registration: " + value.getRegType() + "\n" + value.getBookDetails() + "\nBooks registered so far: " + value.getTotalBooks());
 				iCount++;
 			}
 
@@ -142,7 +143,7 @@ public class LibraryClient {
 
 			@Override
 			public void onCompleted() {
-				System.out.println(LocalTime.now().toString() + ": stream is completed... received " + iCount + "books for registration.");
+				System.out.println(LocalTime.now().toString() + ": stream is completed... received " + iCount + " books for registration.");
 				
 			}
 			
@@ -152,8 +153,11 @@ public class LibraryClient {
 		try {
 			//IDs available 7836262, 7174668, 8724795, 7660479, 3283121, 1917707, 3924794
 			RegistrationType type = RegistrationType.BORROW;
-			request.onNext(BookRegistrationRequest.newBuilder().setBookId(3283121).setUserId(54642).setRegistration(type).build());
-			
+			request.onNext(BookRegistrationRequest.newBuilder().setBookId(7660479).setUserId(443325).setRegistration(type).setBookQty(1).build());
+			Thread.sleep(700);
+			request.onNext(BookRegistrationRequest.newBuilder().setBookId(7660479).setUserId(443325).setRegistration(type).setBookQty(1).build());
+			Thread.sleep(700);
+			request.onNext(BookRegistrationRequest.newBuilder().setBookId(7660479).setUserId(443325).setRegistration(type).setBookQty(1).build());
 			request.onCompleted();
 			
 			Thread.sleep(new Random().nextInt(1000) + 500);
@@ -221,11 +225,9 @@ public class LibraryClient {
 			
 			Thread.sleep(7000);
 			
-		} catch (RuntimeException exc) {
+		} catch (RuntimeException | InterruptedException exc) {
 			exc.printStackTrace();
-		} catch (InterruptedException ex) {
-			ex.printStackTrace();
-		}
+		} 
 	}
 	
 	

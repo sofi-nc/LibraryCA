@@ -41,4 +41,9 @@ public interface userInformationOrBuilder extends
    * <code>bool status = 5;</code>
    */
   boolean getStatus();
+
+  /**
+   * <code>bool found = 6;</code>
+   */
+  boolean getFound();
 }

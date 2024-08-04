@@ -37,7 +37,9 @@ generated\registration\RegistrationBookGrpc$RegistrationBookBlockingStub.class
 generated\registration\VisitorRegistrationRequest.class
 generated\search\SearchEngineGrpc$SearchEngineFutureStub.class
 generated\registration\VisitorRegistrationResponse$Builder.class
+libraryCA\LibraryGUI$9.class
 generated\registration\VisitorRegistrationRequest$Builder.class
+libraryCA\Visitor.class
 libraryCA\RegisterServer$2.class
 generated\registration\BookRegistrationRequest.class
 generated\registration\RegistrationBookGrpc$RegistrationBookFutureStub.class
@@ -58,6 +60,7 @@ libraryCA\LightingServer.class
 libraryCA\SearchServer$1.class
 generated\registration\BookRegistrationResponse.class
 generated\search\SearchEngineGrpc$SearchEngineMethodDescriptorSupplier.class
+libraryCA\LibraryGUI$3$1.class
 generated\search\ListBy$Builder.class
 generated\lights\LightServiceGrpc$LightServiceBlockingStub.class
 generated\registration\VisitorRegistrationResponse.class
@@ -78,7 +81,6 @@ generated\lights\LightRequest$Builder.class
 generated\registration\RegistrationBookGrpc$RegistrationBookMethodDescriptorSupplier.class
 generated\search\ListBy$1.class
 libraryCA\GUI_library.class
-libraryCA\LibraryGUI$4$1.class
 libraryCA\LibraryGUI$4.class
 generated\search\SearchEngineImpl.class
 generated\lights\StatusResponse.class
@@ -103,6 +105,7 @@ generated\search\ListBy$ListOperation$1.class
 generated\lights\LightLevel$1.class
 generated\lights\LightServiceGrpc$MethodHandlers.class
 generated\search\userID$Builder.class
+libraryCA\LibraryClient$3.class
 generated\registration\VisitorRegistrationResponse$1.class
 generated\registration\BookRegistrationResponse$Builder.class
 generated\registration\VisitorRegistrationResponseOrBuilder.class
