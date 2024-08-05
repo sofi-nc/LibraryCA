@@ -40,6 +40,7 @@ service RegistrationBook {
 		int32 totalBooks = 3;
 		string regType = 4;
 		int32 complReg = 5;
+		bool reqStatus = 6;
 	}
 	
 	message VisitorRegistrationRequest {

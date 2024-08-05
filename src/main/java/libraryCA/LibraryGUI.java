@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
+import java.util.Random;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -63,14 +64,20 @@ import javax.swing.JTabbedPane;
 import java.awt.Dimension;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
+
+import generated.registration.BookRegistrationRequest;
+import generated.registration.BookRegistrationResponse;
+import generated.registration.RegistrationBookGrpc;
 import generated.registration.BookRegistrationRequest.RegistrationType;
+import generated.registration.RegistrationBookGrpc.RegistrationBookStub;
 
 public class LibraryGUI extends JFrame {
 
 	int barCount, lightCount = 0, calcAvg = 0;
 	ArrayList<Integer> lightList = new ArrayList<Integer>();
 	ArrayList<String> timeList = new ArrayList<String>();
-	boolean manualID = false;
+	ArrayList<BookRegistration> regList = new ArrayList<BookRegistration>();
+	boolean manualID = false, manualbkReg = false;
 
 	int onOffInst = 0;
 
@@ -81,6 +88,7 @@ public class LibraryGUI extends JFrame {
 	private static LightServiceStub asyncStub;
 	public static SearchEngineStub SEasyncStub;
 	private static SearchEngineBlockingStub SEblockingStub;
+	private static RegistrationBookStub RAsyncStub;
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -100,6 +108,7 @@ public class LibraryGUI extends JFrame {
 		asyncStub = LightServiceGrpc.newStub(channel);
 		SEasyncStub = SearchEngineGrpc.newStub(channel);
 		SEblockingStub = SearchEngineGrpc.newBlockingStub(channel);
+		RAsyncStub = RegistrationBookGrpc.newStub(channel);
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -111,6 +120,7 @@ public class LibraryGUI extends JFrame {
 				}
 			}
 		});
+		
 	}
 
 	/**
@@ -187,24 +197,28 @@ public class LibraryGUI extends JFrame {
 		JButton submitBtn = new JButton("Submit");
 		submitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int lightLvl = (int) LightLvlSpn.getValue();
-				if (lightLvl >= 0 && lightLvl <= 5) {
-					lightList.add(lightCount, lightLvl);
-				} else {
-					JOptionPane.showMessageDialog(null, "Invalid input for light level");
-				}
+				try {
+					int lightLvl = (int) LightLvlSpn.getValue();
+					if (lightLvl >= 0 && lightLvl <= 5) {
+						lightList.add(lightCount, lightLvl);
+					} else {
+						JOptionPane.showMessageDialog(null, "Invalid input for light level");
+					}
 
-				/*
-				 * String lightTime = TimeTxt.getText();
-				 */
-				String lightTime = (String) timeOptions.getSelectedItem();
-				if (lightTime.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Invalid input for time");
-				} else {
-					timeList.add(lightCount, lightTime);
-				}
-				if (lightLvl >= 0 && lightLvl <= 100 && !lightTime.isEmpty()) {
-					lightCount++;
+					/*
+					 * String lightTime = TimeTxt.getText();
+					 */
+					String lightTime = (String) timeOptions.getSelectedItem();
+					if (lightTime.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Invalid input for time");
+					} else {
+						timeList.add(lightCount, lightTime);
+					}
+					if (lightLvl >= 0 && lightLvl <= 100 && !lightTime.isEmpty()) {
+						lightCount++;
+					}
+				} catch (Exception x) {
+					x.printStackTrace();
 				}
 			}
 		});
@@ -216,7 +230,6 @@ public class LibraryGUI extends JFrame {
 		avgBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// averageLighting(stream LightLevel) returns (AverageResponse)
-				// averageValues(stream NumberMessage) returns (CalculateResponse )
 				StreamObserver<AverageResponse> responseObserver = new StreamObserver<AverageResponse>() {
 
 					@Override
@@ -559,115 +572,208 @@ public class LibraryGUI extends JFrame {
 		JPanel RegisterPane = new JPanel();
 		MenuTab.addTab("Registration service", null, RegisterPane, null);
 		RegisterPane.setLayout(null);
-		
+
 		JPanel bkRegisterPanel_1 = new JPanel();
 		bkRegisterPanel_1.setLayout(null);
-		bkRegisterPanel_1.setBorder(new TitledBorder(null, "Book Registration", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		bkRegisterPanel_1.setBorder(
+				new TitledBorder(null, "Book Registration", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		bkRegisterPanel_1.setBounds(5, 11, 297, 251);
 		RegisterPane.add(bkRegisterPanel_1);
-		
-		JComboBox regTypeOpt_1 = new JComboBox();
-		regTypeOpt_1.setModel(new DefaultComboBoxModel(RegistrationType.values()));
-		regTypeOpt_1.setBounds(65, 23, 80, 22);
-		bkRegisterPanel_1.add(regTypeOpt_1);
-		
+
+		JComboBox regTypeOpt = new JComboBox();
+		regTypeOpt.setModel(new DefaultComboBoxModel(RegistrationType.values()));
+		regTypeOpt.setBounds(65, 23, 80, 22);
+		bkRegisterPanel_1.add(regTypeOpt);
+
 		JLabel TypeLbl = new JLabel("Type");
 		TypeLbl.setBounds(10, 29, 55, 14);
 		bkRegisterPanel_1.add(TypeLbl);
-		
+
+		manualbkID = new JTextField();
+		manualbkID.setEditable(false);
+		manualbkID.setBounds(150, 80, 85, 20);
+		bkRegisterPanel_1.add(manualbkID);
+		manualbkID.setColumns(10);
+
 		JLabel bkIDLbl = new JLabel("Book ID");
 		bkIDLbl.setBounds(10, 58, 70, 14);
 		bkRegisterPanel_1.add(bkIDLbl);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"7836262", "7174668", "8724795", "7660479", "3283121", "1917707", "3924794"}));
-		comboBox.setBounds(65, 54, 80, 22);
-		bkRegisterPanel_1.add(comboBox);
-		
-		manualbkID = new JTextField();
-		manualbkID.setEditable(false);
-		manualbkID.setBounds(135, 80, 70, 20);
-		bkRegisterPanel_1.add(manualbkID);
-		manualbkID.setColumns(10);
-		
+
+		JComboBox bkIDRegopt = new JComboBox();
+		bkIDRegopt.setModel(new DefaultComboBoxModel(
+				new String[] { "7836262", "7174668", "8724795", "7660479", "3283121", "1917707", "3924794" }));
+		bkIDRegopt.setBounds(65, 54, 80, 22);
+		bkRegisterPanel_1.add(bkIDRegopt);
+
 		JCheckBox chckbxEnterBookId = new JCheckBox("Enter other book ID");
+		chckbxEnterBookId.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (manualbkReg == true) {
+					manualbkID.setEditable(false);
+					manualbkReg = false;
+				} else {
+					System.out.println("Enter the visitor's ID: ");
+					manualbkID.setEditable(true);
+					manualbkReg = true;
+				}
+			}
+		});
 		chckbxEnterBookId.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxEnterBookId.setBounds(4, 79, 141, 23);
 		bkRegisterPanel_1.add(chckbxEnterBookId);
-		
+
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(10, 136, 272, 104);
 		bkRegisterPanel_1.add(scrollPane_3);
-		
+
 		JTextArea bkRegTa = new JTextArea();
 		scrollPane_3.setViewportView(bkRegTa);
 		bkRegTa.setEditable(false);
-		
+
 		JLabel bookQtyLbl = new JLabel("Quantity");
 		bookQtyLbl.setBounds(155, 55, 55, 14);
 		bkRegisterPanel_1.add(bookQtyLbl);
-		
+
 		JLabel visIdLbl = new JLabel("Visitor ID");
 		visIdLbl.setBounds(152, 27, 55, 14);
 		bkRegisterPanel_1.add(visIdLbl);
-		
+
 		userIdTxt = new JTextField();
 		userIdTxt.setBounds(207, 24, 80, 20);
 		bkRegisterPanel_1.add(userIdTxt);
 		userIdTxt.setColumns(10);
-		
-		JSpinner spinner = new JSpinner();
-		spinner.setBounds(207, 52, 30, 20);
-		bkRegisterPanel_1.add(spinner);
-		spinner.setModel(new SpinnerNumberModel(1, 1, 10, 1));
-		
+
+		JSpinner qtySpin = new JSpinner();
+		qtySpin.setBounds(207, 52, 30, 20);
+		bkRegisterPanel_1.add(qtySpin);
+		qtySpin.setModel(new SpinnerNumberModel(1, 1, 10, 1));
+
 		JButton bkRegBtn = new JButton("Register");
 		bkRegBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				bkRegTa.setText("");
+				StreamObserver<BookRegistrationResponse> responseObserver = new StreamObserver<BookRegistrationResponse>() {
+					//USERID available 443325, 493947, 102934, and 980661
+					int success = 0, totalQty=0, failed = 0, totalReq=0;
+					@Override
+					public void onNext(BookRegistrationResponse value) {
+						System.out.println(LocalTime.now().toString() + ": received information\n" + "Type of registration: " + value.getRegType() + "\n" + value.getBookDetails() + "\nQuantity of books registered so far: " + value.getTotalBooks());
+						totalReq= value.getComplReg();
+						
+						if(value.getReqStatus()) {
+							System.out.println("SUCCESS");
+							totalQty = value.getTotalBooks();
+							success++;
+						} else {
+							System.out.println("FAILURE");
+							failed++;
+						}
+						
+						bkRegTa.append("Type of registration" + value.getRegType() + "\nUser ID: " + value.getUserInfo() + "\nBook details:\n" + value.getBookDetails());
+					}
+
+					@Override
+					public void onError(Throwable t) {
+						t.printStackTrace();
+						
+					}
+
+					@Override
+					public void onCompleted() {
+						System.out.println(LocalTime.now().toString() + ": stream is completed... Received " + totalReq + " registration requests (Success: " + success + ", Failed: " + failed + "). \nRegistered a total of: " + totalQty + " books.");
+						
+					}
+					
+				};
+				
+				StreamObserver<BookRegistrationRequest> request = RAsyncStub.bookRegister(responseObserver);
+				try {
+					for(int i=0; i<regList.size(); i++) {
+						request.onNext(BookRegistrationRequest.newBuilder().setBookId(regList.get(i).getBookID()).setUserId(regList.get(i).getUserID()).setBookQty(regList.get(i).getBookQty()).setTotal(i+1).setRegistration(regList.get(i).getReg()).build());
+					}
+					//IDs available 7836262, 7174668, 8724795, 7660479, 3283121, 1917707, 3924794
+					
+					request.onCompleted();
+					
+					Thread.sleep(7000);
+
+
+				} catch (RuntimeException | InterruptedException ex) {
+					ex.printStackTrace();
+				} 
+				
+				
 			}
 		});
 		bkRegBtn.setBounds(161, 107, 89, 23);
 		bkRegisterPanel_1.add(bkRegBtn);
-		
+
 		JButton regSubBtn = new JButton("Submit");
+		regSubBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int bookID, userID, bookQty, total;
+					RegistrationType regT;
+
+					if (manualbkReg) {
+						bookID = Integer.valueOf(manualbkID.getText());
+					} else {
+						bookID = Integer.valueOf((String) bkIDRegopt.getSelectedItem());
+					}
+					userID = Integer.valueOf(userIdTxt.getText());
+					bookQty = (int) qtySpin.getValue();
+					regT = (RegistrationType) regTypeOpt.getSelectedItem();
+					
+					BookRegistration regBook = new BookRegistration(bookID, userID, bookQty, regT);
+					regList.add(regBook);
+
+				} catch (InputMismatchException | NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Invalid input");
+				}
+
+			}
+		});
 		regSubBtn.setBounds(38, 107, 89, 23);
 		bkRegisterPanel_1.add(regSubBtn);
 		regSubBtn.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
+
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "Visitor registration", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(
+				new TitledBorder(null, "Visitor registration", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(5, 273, 297, 111);
 		RegisterPane.add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel usrNameLbl = new JLabel("Name");
 		usrNameLbl.setBounds(10, 21, 62, 14);
 		panel.add(usrNameLbl);
-		
+
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setBounds(10, 47, 46, 14);
 		panel.add(idLbl);
-		
+
 		vistrNmTxt = new JTextField();
 		vistrNmTxt.setBounds(50, 18, 86, 20);
 		panel.add(vistrNmTxt);
 		vistrNmTxt.setColumns(10);
-		
+
 		visitrIDTxt = new JTextField();
 		visitrIDTxt.setBounds(50, 45, 86, 20);
 		panel.add(visitrIDTxt);
 		visitrIDTxt.setColumns(10);
-		
+
 		JButton visitrBtn = new JButton("Register");
 		visitrBtn.setBounds(30, 71, 89, 23);
 		panel.add(visitrBtn);
-		
+
 		JScrollPane visitorRegScrll = new JScrollPane();
 		visitorRegScrll.setBounds(146, 13, 141, 88);
 		panel.add(visitorRegScrll);
-		
+
 		JTextArea visitorRegTa = new JTextArea();
 		visitorRegScrll.setViewportView(visitorRegTa);
 
 	}// Library GUI
+
 }

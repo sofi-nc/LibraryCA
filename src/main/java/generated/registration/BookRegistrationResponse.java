@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     totalBooks_ = 0;
     regType_ = "";
     complReg_ = 0;
+    reqStatus_ = false;
   }
 
   @java.lang.Override
@@ -73,6 +74,11 @@ private static final long serialVersionUID = 0L;
           case 40: {
 
             complReg_ = input.readInt32();
+            break;
+          }
+          case 48: {
+
+            reqStatus_ = input.readBool();
             break;
           }
           default: {
@@ -227,6 +233,15 @@ private static final long serialVersionUID = 0L;
     return complReg_;
   }
 
+  public static final int REQSTATUS_FIELD_NUMBER = 6;
+  private boolean reqStatus_;
+  /**
+   * <code>bool reqStatus = 6;</code>
+   */
+  public boolean getReqStatus() {
+    return reqStatus_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -256,6 +271,9 @@ private static final long serialVersionUID = 0L;
     if (complReg_ != 0) {
       output.writeInt32(5, complReg_);
     }
+    if (reqStatus_ != false) {
+      output.writeBool(6, reqStatus_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -281,6 +299,10 @@ private static final long serialVersionUID = 0L;
     if (complReg_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(5, complReg_);
+    }
+    if (reqStatus_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(6, reqStatus_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -308,6 +330,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getRegType());
     result = result && (getComplReg()
         == other.getComplReg());
+    result = result && (getReqStatus()
+        == other.getReqStatus());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -329,6 +353,9 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getRegType().hashCode();
     hash = (37 * hash) + COMPLREG_FIELD_NUMBER;
     hash = (53 * hash) + getComplReg();
+    hash = (37 * hash) + REQSTATUS_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getReqStatus());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -472,6 +499,8 @@ private static final long serialVersionUID = 0L;
 
       complReg_ = 0;
 
+      reqStatus_ = false;
+
       return this;
     }
 
@@ -503,6 +532,7 @@ private static final long serialVersionUID = 0L;
       result.totalBooks_ = totalBooks_;
       result.regType_ = regType_;
       result.complReg_ = complReg_;
+      result.reqStatus_ = reqStatus_;
       onBuilt();
       return result;
     }
@@ -568,6 +598,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.getComplReg() != 0) {
         setComplReg(other.getComplReg());
+      }
+      if (other.getReqStatus() != false) {
+        setReqStatus(other.getReqStatus());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -853,6 +886,32 @@ private static final long serialVersionUID = 0L;
     public Builder clearComplReg() {
       
       complReg_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean reqStatus_ ;
+    /**
+     * <code>bool reqStatus = 6;</code>
+     */
+    public boolean getReqStatus() {
+      return reqStatus_;
+    }
+    /**
+     * <code>bool reqStatus = 6;</code>
+     */
+    public Builder setReqStatus(boolean value) {
+      
+      reqStatus_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool reqStatus = 6;</code>
+     */
+    public Builder clearReqStatus() {
+      
+      reqStatus_ = false;
       onChanged();
       return this;
     }

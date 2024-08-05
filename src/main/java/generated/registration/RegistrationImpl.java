@@ -49,21 +49,22 @@ public final class RegistrationImpl {
       "\030\004 \001(\005\022L\n\014registration\030\005 \001(\01626.registrat" +
       "ion.BookRegistrationRequest.Registration" +
       "Type\"*\n\020RegistrationType\022\n\n\006BORROW\020\000\022\n\n\006" +
-      "RETURN\020\001\"x\n\030BookRegistrationResponse\022\020\n\010" +
-      "userInfo\030\001 \001(\t\022\023\n\013bookDetails\030\002 \001(\t\022\022\n\nt" +
-      "otalBooks\030\003 \001(\005\022\017\n\007regType\030\004 \001(\t\022\020\n\010comp" +
-      "lReg\030\005 \001(\005\"M\n\032VisitorRegistrationRequest" +
-      "\022\021\n\tvisitorId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\016\n\006sta" +
-      "tus\030\003 \001(\t\"Y\n\033VisitorRegistrationResponse" +
-      "\022 \n\030registrationConfirmation\030\001 \001(\t\022\030\n\020re" +
-      "gistrationDate\030\002 \001(\t2\341\001\n\020RegistrationBoo" +
-      "k\022c\n\014bookRegister\022%.registration.BookReg" +
-      "istrationRequest\032&.registration.BookRegi" +
-      "strationResponse\"\000(\0010\001\022h\n\017visitorRegiste" +
-      "r\022(.registration.VisitorRegistrationRequ" +
-      "est\032).registration.VisitorRegistrationRe" +
-      "sponse\"\000B,\n\026generated.registrationB\020Regi" +
-      "strationImplP\001b\006proto3"
+      "RETURN\020\001\"\213\001\n\030BookRegistrationResponse\022\020\n" +
+      "\010userInfo\030\001 \001(\t\022\023\n\013bookDetails\030\002 \001(\t\022\022\n\n" +
+      "totalBooks\030\003 \001(\005\022\017\n\007regType\030\004 \001(\t\022\020\n\010com" +
+      "plReg\030\005 \001(\005\022\021\n\treqStatus\030\006 \001(\010\"M\n\032Visito" +
+      "rRegistrationRequest\022\021\n\tvisitorId\030\001 \001(\005\022" +
+      "\014\n\004name\030\002 \001(\t\022\016\n\006status\030\003 \001(\t\"Y\n\033Visitor" +
+      "RegistrationResponse\022 \n\030registrationConf" +
+      "irmation\030\001 \001(\t\022\030\n\020registrationDate\030\002 \001(\t" +
+      "2\341\001\n\020RegistrationBook\022c\n\014bookRegister\022%." +
+      "registration.BookRegistrationRequest\032&.r" +
+      "egistration.BookRegistrationResponse\"\000(\001" +
+      "0\001\022h\n\017visitorRegister\022(.registration.Vis" +
+      "itorRegistrationRequest\032).registration.V" +
+      "isitorRegistrationResponse\"\000B,\n\026generate" +
+      "d.registrationB\020RegistrationImplP\001b\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -88,7 +89,7 @@ public final class RegistrationImpl {
     internal_static_registration_BookRegistrationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_registration_BookRegistrationResponse_descriptor,
-        new java.lang.String[] { "UserInfo", "BookDetails", "TotalBooks", "RegType", "ComplReg", });
+        new java.lang.String[] { "UserInfo", "BookDetails", "TotalBooks", "RegType", "ComplReg", "ReqStatus", });
     internal_static_registration_VisitorRegistrationRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_registration_VisitorRegistrationRequest_fieldAccessorTable = new

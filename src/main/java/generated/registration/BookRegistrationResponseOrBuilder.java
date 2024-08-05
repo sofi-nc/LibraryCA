@@ -46,4 +46,9 @@ public interface BookRegistrationResponseOrBuilder extends
    * <code>int32 complReg = 5;</code>
    */
   int getComplReg();
+
+  /**
+   * <code>bool reqStatus = 6;</code>
+   */
+  boolean getReqStatus();
 }

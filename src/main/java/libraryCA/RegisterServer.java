@@ -78,7 +78,7 @@ public class RegisterServer extends RegistrationBookImplBase {
 			StreamObserver<BookRegistrationResponse> responseObserver) {
 
 		return new StreamObserver<BookRegistrationRequest>() {
-			int iCount = 0;
+			int success = 0, totalQty = 0, failed=0;
 
 			@Override
 			public void onNext(BookRegistrationRequest msg) {
@@ -105,61 +105,77 @@ public class RegisterServer extends RegistrationBookImplBase {
 				booksList[6] = Pride;
 
 				Integer[] idList = new Integer[7];
-				for (int i = 0; i < idList.length - 1; i++) {
+				for (int i = 0; i < idList.length; i++) {
 					idList[i] = booksList[i].getBookId();
 				}
+				
+				System.out.println(idList[0] + ", " + idList[6]);
 
 				String visitorId = "User ID: " + msg.getUserId();
+				boolean reqStat;
 
 				String bookDtls = "";
 				BookRegistrationResponse resp = BookRegistrationResponse.newBuilder().setUserInfo(visitorId).build();
 				String regType = "" + msg.getRegistration();
-
-				System.out.println(msg.getUserId());
+				
+				
+				//System.out.println(msg.getUserId());
 				boolean idFound = findID(visitorList, msg.getUserId(), msg);
+				
 				if (idFound) {
 					switch (msg.getRegistration()) {
 					case BORROW:
-
-						int iIndex = Arrays.binarySearch(idList, msg.getBookId());
+						System.out.println("Requesting to borrow " + msg.getBookQty() + " copies.");
+						int iIndex = Arrays.binarySearch(idList, 0, idList.length-1, msg.getBookId());
 						if (iIndex >= 0) {
 							if (msg.getBookQty() <= booksList[iIndex].getBookQty()) {
-								bookDtls = booksList[iIndex].toString();
-								iCount++;
+								System.out.println("SUCCESSFUL\n" + booksList[iIndex].toString());
+								bookDtls = "ID: " + booksList[iIndex].getBookId() + "Title: " + booksList[iIndex].getTitle() + " Author: " + booksList[iIndex].getAuthor();
+								totalQty += msg.getBookQty();
+								success++;
+								reqStat=true;
 							} else {
+								System.out.println("FAILURE\n There are no more available copies of the book: "+ booksList[iIndex].getTitle());
 								bookDtls = "There are no more available copies of the book: "
 										+ booksList[iIndex].getTitle();
+								reqStat=false;
 							}
 
 						} else {
+							System.out.println("FAILURE \nBook not found");
 							bookDtls = "Book not found.";
+							reqStat=false;
+							failed++;
 						}
-						// resp =
-						// BookRegistrationResponse.newBuilder().setUserInfo(visitorId).setBookDetails(bookDtls)
-						// .setTotalBooks(iCount).setRegType(regType).build();
-
+						
 						break;
 					case RETURN:
 
-						// visitorId = "User registered: " + msg.getUserId();
+						//visitorId = "User registered: " + msg.getUserId();
 						bookDtls = "Book registered: " + msg.getBookId();
-						iCount++;
+						totalQty += msg.getBookQty();
+						reqStat=true;
+						success++;
 						// resp =
 						// BookRegistrationResponse.newBuilder().setUserInfo(visitorId).setBookDetails(bookDtls)
 						// .setTotalBooks(iCount).build();
 						break;
 					case UNRECOGNIZED:
 						bookDtls = "Invalid option";
+						reqStat=false;
 						break;
 					default:
 						bookDtls = "Invalid option";
+						reqStat=false;
 					} // Switch
 				} else {
 					bookDtls = "User inactive or not found.";
+					reqStat=false;
 				}
-
+				System.out.println(totalQty);
+				int totReg = success+failed;
 				resp = BookRegistrationResponse.newBuilder().setUserInfo(visitorId).setBookDetails(bookDtls)
-						.setTotalBooks(iCount).setRegType(regType).build();
+						.setComplReg(totReg).setRegType(regType).setTotalBooks(totalQty).setReqStatus(reqStat).build();
 				responseObserver.onNext(resp);
 
 			} // On next
@@ -172,7 +188,7 @@ public class RegisterServer extends RegistrationBookImplBase {
 
 			@Override
 			public void onCompleted() {
-				System.out.println(LocalTime.now().toString() + ": reveiving book registration completed.");
+				System.out.println(LocalTime.now().toString() + ": receiving book registration completed. Successful operations: " + success + ". Failed attempts: " + (failed) + "\nTotal books registered: " + totalQty);
 				responseObserver.onCompleted();
 
 			} // onCompleted
