@@ -68,7 +68,10 @@ import javax.swing.AbstractListModel;
 import generated.registration.BookRegistrationRequest;
 import generated.registration.BookRegistrationResponse;
 import generated.registration.RegistrationBookGrpc;
+import generated.registration.VisitorRegistrationRequest;
+import generated.registration.VisitorRegistrationResponse;
 import generated.registration.BookRegistrationRequest.RegistrationType;
+import generated.registration.RegistrationBookGrpc.RegistrationBookBlockingStub;
 import generated.registration.RegistrationBookGrpc.RegistrationBookStub;
 
 public class LibraryGUI extends JFrame {
@@ -89,13 +92,14 @@ public class LibraryGUI extends JFrame {
 	public static SearchEngineStub SEasyncStub;
 	private static SearchEngineBlockingStub SEblockingStub;
 	private static RegistrationBookStub RAsyncStub;
+	private static RegistrationBookBlockingStub RblockingStub;
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField userIDinput;
 	private JTextField userIdTxt;
 	private JTextField manualbkID;
-	private JTextField vistrNmTxt;
+	private JTextField visitrNmTxt;
 	private JTextField visitrIDTxt;
 
 	/**
@@ -109,6 +113,7 @@ public class LibraryGUI extends JFrame {
 		SEasyncStub = SearchEngineGrpc.newStub(channel);
 		SEblockingStub = SearchEngineGrpc.newBlockingStub(channel);
 		RAsyncStub = RegistrationBookGrpc.newStub(channel);
+		RblockingStub = RegistrationBookGrpc.newBlockingStub(channel);
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -613,7 +618,7 @@ public class LibraryGUI extends JFrame {
 					manualbkID.setEditable(false);
 					manualbkReg = false;
 				} else {
-					System.out.println("Enter the visitor's ID: ");
+					System.out.println("Enter the book's ID: ");
 					manualbkID.setEditable(true);
 					manualbkReg = true;
 				}
@@ -628,6 +633,7 @@ public class LibraryGUI extends JFrame {
 		bkRegisterPanel_1.add(scrollPane_3);
 
 		JTextArea bkRegTa = new JTextArea();
+		bkRegTa.setLineWrap(true);
 		scrollPane_3.setViewportView(bkRegTa);
 		bkRegTa.setEditable(false);
 
@@ -670,7 +676,7 @@ public class LibraryGUI extends JFrame {
 							failed++;
 						}
 						
-						bkRegTa.append("Type of registration" + value.getRegType() + "\nUser ID: " + value.getUserInfo() + "\nBook details:\n" + value.getBookDetails());
+						bkRegTa.append("Type of registration: " + value.getRegType() + "\n" + value.getUserInfo() + "\n" + value.getBookDetails() + "\n\n");
 					}
 
 					@Override
@@ -697,7 +703,7 @@ public class LibraryGUI extends JFrame {
 					request.onCompleted();
 					
 					Thread.sleep(7000);
-
+					regList.clear();
 
 				} catch (RuntimeException | InterruptedException ex) {
 					ex.printStackTrace();
@@ -753,26 +759,64 @@ public class LibraryGUI extends JFrame {
 		idLbl.setBounds(10, 47, 46, 14);
 		panel.add(idLbl);
 
-		vistrNmTxt = new JTextField();
-		vistrNmTxt.setBounds(50, 18, 86, 20);
-		panel.add(vistrNmTxt);
-		vistrNmTxt.setColumns(10);
+		visitrNmTxt = new JTextField();
+		visitrNmTxt.setBounds(50, 18, 86, 20);
+		panel.add(visitrNmTxt);
+		visitrNmTxt.setColumns(10);
 
 		visitrIDTxt = new JTextField();
 		visitrIDTxt.setBounds(50, 45, 86, 20);
 		panel.add(visitrIDTxt);
 		visitrIDTxt.setColumns(10);
-
-		JButton visitrBtn = new JButton("Register");
-		visitrBtn.setBounds(30, 71, 89, 23);
-		panel.add(visitrBtn);
-
+		
 		JScrollPane visitorRegScrll = new JScrollPane();
 		visitorRegScrll.setBounds(146, 13, 141, 88);
 		panel.add(visitorRegScrll);
 
 		JTextArea visitorRegTa = new JTextArea();
+		visitorRegTa.setWrapStyleWord(true);
+		visitorRegTa.setLineWrap(true);
 		visitorRegScrll.setViewportView(visitorRegTa);
+
+		JButton visitrBtn = new JButton("Register");
+		visitrBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int visitorID;
+					String visitorName;
+					boolean valInput=true;
+					
+					visitorID = Integer.valueOf( visitrIDTxt.getText());
+					visitorName = visitrNmTxt.getText();
+					for(int i=0; i<visitorName.length(); i++) {
+						if(!Character.isLetter(visitorName.charAt(i)) && visitorName.charAt(i) != ' ') {
+							valInput=false;
+						}
+					}
+					
+				if(valInput==true) {
+				
+				VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setVisitorId(visitorID).setName(visitorName).setStatus("Active").build();
+				
+				VisitorRegistrationResponse response = RblockingStub.visitorRegister(req);
+				
+				System.out.println(LocalTime.now().toString() + ": receiving message: " + response.getRegistrationConfirmation() + " on the date " + response.getRegistrationDate());
+				visitorRegTa.setText("Date: " + response.getRegistrationDate() + "\n" + response.getRegistrationConfirmation());
+				} else {
+					JOptionPane.showMessageDialog(null, "Invalid input for Name.");
+				}
+				
+				} catch(InputMismatchException | NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Invalid input for user ID.");
+				}
+				
+				
+			}
+		});
+		visitrBtn.setBounds(30, 71, 89, 23);
+		panel.add(visitrBtn);
+
+		
 
 	}// Library GUI
 

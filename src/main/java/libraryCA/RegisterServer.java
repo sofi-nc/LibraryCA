@@ -46,7 +46,7 @@ public class RegisterServer extends RegistrationBookImplBase {
 	public void visitorRegister(VisitorRegistrationRequest request,
 			StreamObserver<VisitorRegistrationResponse> responseObserver) {
 
-		System.out.println("Reveiving visitor's registration request.");
+		System.out.println("Receiving visitor's registration request.");
 		String confirmation, date, vName = request.getName(), vStatus = request.getStatus();
 		int vId = request.getVisitorId();
 		date = LocalDate.now().toString();
@@ -54,8 +54,8 @@ public class RegisterServer extends RegistrationBookImplBase {
 		Visitor v1 = new Visitor(vName, vStatus, date, "No", vId, 0);
 		visitorList.add(v1);
 
-		confirmation = "Registration complete for the visitor " + v1.getName() + " with ID " + v1.getVisitorId()
-				+ "\nStatus: " + v1.getStatus();
+		confirmation = "Registration complete. \nNAME: " + v1.getName() + "\nID: " + v1.getVisitorId()
+				+ "\nSTATUS: " + v1.getStatus();
 
 		VisitorRegistrationResponse resp = VisitorRegistrationResponse.newBuilder()
 				.setRegistrationConfirmation(confirmation).setRegistrationDate(date).build();
@@ -130,20 +130,21 @@ public class RegisterServer extends RegistrationBookImplBase {
 						if (iIndex >= 0) {
 							if (msg.getBookQty() <= booksList[iIndex].getBookQty()) {
 								System.out.println("SUCCESSFUL\n" + booksList[iIndex].toString());
-								bookDtls = "ID: " + booksList[iIndex].getBookId() + "Title: " + booksList[iIndex].getTitle() + " Author: " + booksList[iIndex].getAuthor();
+								bookDtls = "SUCCESSFUL REGISTRATION\nBook details\nID: " + booksList[iIndex].getBookId() + "\nTitle: " + booksList[iIndex].getTitle() + "\nAuthor: " + booksList[iIndex].getAuthor() + "\nQuantity: " + msg.getBookQty();
+								int less = booksList[iIndex].getBookQty();
+								booksList[iIndex].setBookQty(less-msg.getBookQty());
 								totalQty += msg.getBookQty();
 								success++;
 								reqStat=true;
 							} else {
-								System.out.println("FAILURE\n There are no more available copies of the book: "+ booksList[iIndex].getTitle());
-								bookDtls = "There are no more available copies of the book: "
-										+ booksList[iIndex].getTitle();
+								System.out.println("FAILURE\nThere are only " + booksList[iIndex].getBookQty() + " available copies of the book: "+ booksList[iIndex].getTitle());
+								bookDtls = "FAILED REGISTRATION\nRequested: " + msg.getBookQty() + " copies of the book '" + booksList[iIndex].getTitle() + "', and there are only " + booksList[iIndex].getBookQty() + " available copies";
 								reqStat=false;
 							}
 
 						} else {
 							System.out.println("FAILURE \nBook not found");
-							bookDtls = "Book not found.";
+							bookDtls = "FAILED REGISTRATION\nBook not found.";
 							reqStat=false;
 							failed++;
 						}
@@ -161,15 +162,15 @@ public class RegisterServer extends RegistrationBookImplBase {
 						// .setTotalBooks(iCount).build();
 						break;
 					case UNRECOGNIZED:
-						bookDtls = "Invalid option";
+						bookDtls = "FAILED REGISTRATION\nInvalid option";
 						reqStat=false;
 						break;
 					default:
-						bookDtls = "Invalid option";
+						bookDtls = "FAILED REGISTRATION\nInvalid option";
 						reqStat=false;
 					} // Switch
 				} else {
-					bookDtls = "User inactive or not found.";
+					bookDtls = "FAILED REGISTRATION\nUser inactive or not found.";
 					reqStat=false;
 				}
 				System.out.println(totalQty);
