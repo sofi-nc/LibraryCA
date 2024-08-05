@@ -24,12 +24,12 @@ service LightService {
 
 
 message LightLevel {
-	int32 level  = 1;
+	double elecUsage  = 1;
 	string currentTime = 2;
 }
 
 message AverageResponse {
-	string lightAverage = 1;
+	string usageAverage = 1;
 }
 
 message LightRequest {

@@ -8,12 +8,12 @@ public interface AverageResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string lightAverage = 1;</code>
+   * <code>string usageAverage = 1;</code>
    */
-  java.lang.String getLightAverage();
+  java.lang.String getUsageAverage();
   /**
-   * <code>string lightAverage = 1;</code>
+   * <code>string usageAverage = 1;</code>
    */
   com.google.protobuf.ByteString
-      getLightAverageBytes();
+      getUsageAverageBytes();
 }

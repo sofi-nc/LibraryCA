@@ -192,7 +192,7 @@ public class LibraryClient {
 			@Override
 			public void onNext(AverageResponse msg) {
 				// TODO Auto-generated method stub
-				System.out.println(LocalTime.now().toString() + ": Response from server " + msg.getLightAverage());
+				System.out.println(LocalTime.now().toString() + ": Response from server " + msg.getUsageAverage());
 				
 				
 			}
@@ -215,9 +215,9 @@ public class LibraryClient {
 		StreamObserver<LightLevel> requestObserver = LSasyncStub.averageLighting(responseObserver);
 		try {
 			
-			requestObserver.onNext(LightLevel.newBuilder().setLevel(1).setCurrentTime("0").build());
+			requestObserver.onNext(LightLevel.newBuilder().setElecUsage(1).setCurrentTime("0").build());
 			Thread.sleep(700);
-			requestObserver.onNext(LightLevel.newBuilder().setLevel(2).setCurrentTime("2").build());
+			requestObserver.onNext(LightLevel.newBuilder().setElecUsage(2).setCurrentTime("2").build());
 			Thread.sleep(700);
 			
 			

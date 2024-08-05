@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private AverageResponse() {
-    lightAverage_ = "";
+    usageAverage_ = "";
   }
 
   @java.lang.Override
@@ -46,7 +46,7 @@ private static final long serialVersionUID = 0L;
           case 10: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            lightAverage_ = s;
+            usageAverage_ = s;
             break;
           }
           default: {
@@ -81,34 +81,34 @@ private static final long serialVersionUID = 0L;
             generated.lights.AverageResponse.class, generated.lights.AverageResponse.Builder.class);
   }
 
-  public static final int LIGHTAVERAGE_FIELD_NUMBER = 1;
-  private volatile java.lang.Object lightAverage_;
+  public static final int USAGEAVERAGE_FIELD_NUMBER = 1;
+  private volatile java.lang.Object usageAverage_;
   /**
-   * <code>string lightAverage = 1;</code>
+   * <code>string usageAverage = 1;</code>
    */
-  public java.lang.String getLightAverage() {
-    java.lang.Object ref = lightAverage_;
+  public java.lang.String getUsageAverage() {
+    java.lang.Object ref = usageAverage_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      lightAverage_ = s;
+      usageAverage_ = s;
       return s;
     }
   }
   /**
-   * <code>string lightAverage = 1;</code>
+   * <code>string usageAverage = 1;</code>
    */
   public com.google.protobuf.ByteString
-      getLightAverageBytes() {
-    java.lang.Object ref = lightAverage_;
+      getUsageAverageBytes() {
+    java.lang.Object ref = usageAverage_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      lightAverage_ = b;
+      usageAverage_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -129,8 +129,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getLightAverageBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, lightAverage_);
+    if (!getUsageAverageBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, usageAverage_);
     }
     unknownFields.writeTo(output);
   }
@@ -141,8 +141,8 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getLightAverageBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, lightAverage_);
+    if (!getUsageAverageBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, usageAverage_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -160,8 +160,8 @@ private static final long serialVersionUID = 0L;
     generated.lights.AverageResponse other = (generated.lights.AverageResponse) obj;
 
     boolean result = true;
-    result = result && getLightAverage()
-        .equals(other.getLightAverage());
+    result = result && getUsageAverage()
+        .equals(other.getUsageAverage());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -173,8 +173,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + LIGHTAVERAGE_FIELD_NUMBER;
-    hash = (53 * hash) + getLightAverage().hashCode();
+    hash = (37 * hash) + USAGEAVERAGE_FIELD_NUMBER;
+    hash = (53 * hash) + getUsageAverage().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -308,7 +308,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      lightAverage_ = "";
+      usageAverage_ = "";
 
       return this;
     }
@@ -336,7 +336,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public generated.lights.AverageResponse buildPartial() {
       generated.lights.AverageResponse result = new generated.lights.AverageResponse(this);
-      result.lightAverage_ = lightAverage_;
+      result.usageAverage_ = usageAverage_;
       onBuilt();
       return result;
     }
@@ -385,8 +385,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(generated.lights.AverageResponse other) {
       if (other == generated.lights.AverageResponse.getDefaultInstance()) return this;
-      if (!other.getLightAverage().isEmpty()) {
-        lightAverage_ = other.lightAverage_;
+      if (!other.getUsageAverage().isEmpty()) {
+        usageAverage_ = other.usageAverage_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -418,71 +418,71 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object lightAverage_ = "";
+    private java.lang.Object usageAverage_ = "";
     /**
-     * <code>string lightAverage = 1;</code>
+     * <code>string usageAverage = 1;</code>
      */
-    public java.lang.String getLightAverage() {
-      java.lang.Object ref = lightAverage_;
+    public java.lang.String getUsageAverage() {
+      java.lang.Object ref = usageAverage_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        lightAverage_ = s;
+        usageAverage_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string lightAverage = 1;</code>
+     * <code>string usageAverage = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getLightAverageBytes() {
-      java.lang.Object ref = lightAverage_;
+        getUsageAverageBytes() {
+      java.lang.Object ref = usageAverage_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        lightAverage_ = b;
+        usageAverage_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string lightAverage = 1;</code>
+     * <code>string usageAverage = 1;</code>
      */
-    public Builder setLightAverage(
+    public Builder setUsageAverage(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      lightAverage_ = value;
+      usageAverage_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string lightAverage = 1;</code>
+     * <code>string usageAverage = 1;</code>
      */
-    public Builder clearLightAverage() {
+    public Builder clearUsageAverage() {
       
-      lightAverage_ = getDefaultInstance().getLightAverage();
+      usageAverage_ = getDefaultInstance().getUsageAverage();
       onChanged();
       return this;
     }
     /**
-     * <code>string lightAverage = 1;</code>
+     * <code>string usageAverage = 1;</code>
      */
-    public Builder setLightAverageBytes(
+    public Builder setUsageAverageBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      lightAverage_ = value;
+      usageAverage_ = value;
       onChanged();
       return this;
     }

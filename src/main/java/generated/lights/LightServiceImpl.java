@@ -43,16 +43,16 @@ public final class LightServiceImpl {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016lighting.proto\022\010lighting\"0\n\nLightLevel" +
-      "\022\r\n\005level\030\001 \001(\005\022\023\n\013currentTime\030\002 \001(\t\"\'\n\017" +
-      "AverageResponse\022\024\n\014lightAverage\030\001 \001(\t\"#\n" +
-      "\014LightRequest\022\023\n\013lightButton\030\001 \001(\005\"$\n\016St" +
-      "atusResponse\022\022\n\nlightState\030\001 \001(\t2\227\001\n\014Lig" +
-      "htService\022F\n\017averageLighting\022\024.lighting." +
-      "LightLevel\032\031.lighting.AverageResponse\"\000(" +
-      "\001\022?\n\tturnOnOff\022\026.lighting.LightRequest\032\030" +
-      ".lighting.StatusResponse\"\000B&\n\020generated." +
-      "lightsB\020LightServiceImplP\001b\006proto3"
+      "\n\016lighting.proto\022\010lighting\"4\n\nLightLevel" +
+      "\022\021\n\telecUsage\030\001 \001(\001\022\023\n\013currentTime\030\002 \001(\t" +
+      "\"\'\n\017AverageResponse\022\024\n\014usageAverage\030\001 \001(" +
+      "\t\"#\n\014LightRequest\022\023\n\013lightButton\030\001 \001(\005\"$" +
+      "\n\016StatusResponse\022\022\n\nlightState\030\001 \001(\t2\227\001\n" +
+      "\014LightService\022F\n\017averageLighting\022\024.light" +
+      "ing.LightLevel\032\031.lighting.AverageRespons" +
+      "e\"\000(\001\022?\n\tturnOnOff\022\026.lighting.LightReque" +
+      "st\032\030.lighting.StatusResponse\"\000B&\n\020genera" +
+      "ted.lightsB\020LightServiceImplP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -71,13 +71,13 @@ public final class LightServiceImpl {
     internal_static_lighting_LightLevel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lighting_LightLevel_descriptor,
-        new java.lang.String[] { "Level", "CurrentTime", });
+        new java.lang.String[] { "ElecUsage", "CurrentTime", });
     internal_static_lighting_AverageResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_lighting_AverageResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lighting_AverageResponse_descriptor,
-        new java.lang.String[] { "LightAverage", });
+        new java.lang.String[] { "UsageAverage", });
     internal_static_lighting_LightRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_lighting_LightRequest_fieldAccessorTable = new

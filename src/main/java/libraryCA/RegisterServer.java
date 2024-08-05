@@ -21,9 +21,19 @@ public class RegisterServer extends RegistrationBookImplBase {
 	private static final ArrayList<Visitor> visitorList = new ArrayList<Visitor>();
 
 	public static void main(String[] args) {
+		// USERIDs available 443325, 493947, 102934, and 980661
+		Visitor v1 = new Visitor("Catalina Jauregui", "Active", "20/12/2004", "Yes", 443325, 4);
 
-		Visitor Cata = new Visitor("Catalina Jauregui", "Active", "20/12/2004", "Yes", 443325, 4);
-		visitorList.add(Cata);
+		Visitor v2 = new Visitor("Edward Cullen", "Active", "15/04/2007", "Yes", 493947, 2);
+
+		Visitor v3 = new Visitor("Alice Cullen", "Inactive", "03/02/2007", "No", 102934, 0);
+
+		Visitor v4 = new Visitor("Bella Swan", "Active", "03/11/2001", "No", 980661, 0);
+
+		visitorList.add(v1);
+		visitorList.add(v2);
+		visitorList.add(v3);
+		visitorList.add(v4);
 
 		RegisterServer regServ = new RegisterServer();
 
@@ -40,6 +50,34 @@ public class RegisterServer extends RegistrationBookImplBase {
 		}
 	} // Main
 
+	public static void startServer() throws IOException {
+		Visitor v1 = new Visitor("Catalina Jauregui", "Active", "20/12/2004", "Yes", 443325, 4);
+
+		Visitor v2 = new Visitor("Edward Cullen", "Active", "15/04/2007", "Yes", 493947, 2);
+
+		Visitor v3 = new Visitor("Alice Cullen", "Inactive", "03/02/2007", "No", 102934, 0);
+
+		Visitor v4 = new Visitor("Bella Swan", "Active", "03/11/2001", "No", 980661, 1);
+
+		visitorList.add(v1);
+		visitorList.add(v2);
+		visitorList.add(v3);
+		visitorList.add(v4);
+		RegisterServer regServ = new RegisterServer();
+
+		int port = 50053;
+
+		try {
+			Server srvr = ServerBuilder.forPort(port).addService(regServ).build().start();
+			System.out.println(LocalTime.now().toString() + ": Register Server started, listening on " + port);
+			Thread.sleep(200);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/*
 	 * VISITOR REGISTRATION SERVICE UNARY RPC
 	 */
@@ -54,8 +92,8 @@ public class RegisterServer extends RegistrationBookImplBase {
 		Visitor v1 = new Visitor(vName, vStatus, date, "No", vId, 0);
 		visitorList.add(v1);
 
-		confirmation = "Registration complete. \nNAME: " + v1.getName() + "\nID: " + v1.getVisitorId()
-				+ "\nSTATUS: " + v1.getStatus();
+		confirmation = "Registration complete. \nNAME: " + v1.getName() + "\nID: " + v1.getVisitorId() + "\nSTATUS: "
+				+ v1.getStatus();
 
 		VisitorRegistrationResponse resp = VisitorRegistrationResponse.newBuilder()
 				.setRegistrationConfirmation(confirmation).setRegistrationDate(date).build();
@@ -78,7 +116,7 @@ public class RegisterServer extends RegistrationBookImplBase {
 			StreamObserver<BookRegistrationResponse> responseObserver) {
 
 		return new StreamObserver<BookRegistrationRequest>() {
-			int success = 0, totalQty = 0, failed=0;
+			int success = 0, totalQty = 0, failed = 0;
 
 			@Override
 			public void onNext(BookRegistrationRequest msg) {
@@ -108,7 +146,7 @@ public class RegisterServer extends RegistrationBookImplBase {
 				for (int i = 0; i < idList.length; i++) {
 					idList[i] = booksList[i].getBookId();
 				}
-				
+
 				System.out.println(idList[0] + ", " + idList[6]);
 
 				String visitorId = "User ID: " + msg.getUserId();
@@ -117,45 +155,50 @@ public class RegisterServer extends RegistrationBookImplBase {
 				String bookDtls = "";
 				BookRegistrationResponse resp = BookRegistrationResponse.newBuilder().setUserInfo(visitorId).build();
 				String regType = "" + msg.getRegistration();
-				
-				
-				//System.out.println(msg.getUserId());
+
+				// System.out.println(msg.getUserId());
 				boolean idFound = findID(visitorList, msg.getUserId(), msg);
-				
+
 				if (idFound) {
 					switch (msg.getRegistration()) {
 					case BORROW:
 						System.out.println("Requesting to borrow " + msg.getBookQty() + " copies.");
-						int iIndex = Arrays.binarySearch(idList, 0, idList.length-1, msg.getBookId());
+						int iIndex = Arrays.binarySearch(idList, 0, idList.length - 1, msg.getBookId());
 						if (iIndex >= 0) {
 							if (msg.getBookQty() <= booksList[iIndex].getBookQty()) {
 								System.out.println("SUCCESSFUL\n" + booksList[iIndex].toString());
-								bookDtls = "SUCCESSFUL REGISTRATION\nBook details\nID: " + booksList[iIndex].getBookId() + "\nTitle: " + booksList[iIndex].getTitle() + "\nAuthor: " + booksList[iIndex].getAuthor() + "\nQuantity: " + msg.getBookQty();
+								bookDtls = "SUCCESSFUL REGISTRATION\nBook details\nID: " + booksList[iIndex].getBookId()
+										+ "\nTitle: " + booksList[iIndex].getTitle() + "\nAuthor: "
+										+ booksList[iIndex].getAuthor() + "\nQuantity: " + msg.getBookQty();
 								int less = booksList[iIndex].getBookQty();
-								booksList[iIndex].setBookQty(less-msg.getBookQty());
+								booksList[iIndex].setBookQty(less - msg.getBookQty());
 								totalQty += msg.getBookQty();
 								success++;
-								reqStat=true;
+								reqStat = true;
 							} else {
-								System.out.println("FAILURE\nThere are only " + booksList[iIndex].getBookQty() + " available copies of the book: "+ booksList[iIndex].getTitle());
-								bookDtls = "FAILED REGISTRATION\nRequested: " + msg.getBookQty() + " copies of the book '" + booksList[iIndex].getTitle() + "', and there are only " + booksList[iIndex].getBookQty() + " available copies";
-								reqStat=false;
+								System.out.println("FAILURE\nThere are only " + booksList[iIndex].getBookQty()
+										+ " available copies of the book: " + booksList[iIndex].getTitle());
+								bookDtls = "FAILED REGISTRATION\nRequested: " + msg.getBookQty()
+										+ " copies of the book '" + booksList[iIndex].getTitle()
+										+ "', and there are only " + booksList[iIndex].getBookQty()
+										+ " available copies";
+								reqStat = false;
 							}
 
 						} else {
 							System.out.println("FAILURE \nBook not found");
 							bookDtls = "FAILED REGISTRATION\nBook not found.";
-							reqStat=false;
+							reqStat = false;
 							failed++;
 						}
-						
+
 						break;
 					case RETURN:
 
-						//visitorId = "User registered: " + msg.getUserId();
+						// visitorId = "User registered: " + msg.getUserId();
 						bookDtls = "Book registered: " + msg.getBookId();
 						totalQty += msg.getBookQty();
-						reqStat=true;
+						reqStat = true;
 						success++;
 						// resp =
 						// BookRegistrationResponse.newBuilder().setUserInfo(visitorId).setBookDetails(bookDtls)
@@ -163,18 +206,18 @@ public class RegisterServer extends RegistrationBookImplBase {
 						break;
 					case UNRECOGNIZED:
 						bookDtls = "FAILED REGISTRATION\nInvalid option";
-						reqStat=false;
+						reqStat = false;
 						break;
 					default:
 						bookDtls = "FAILED REGISTRATION\nInvalid option";
-						reqStat=false;
+						reqStat = false;
 					} // Switch
 				} else {
 					bookDtls = "FAILED REGISTRATION\nUser inactive or not found.";
-					reqStat=false;
+					reqStat = false;
 				}
 				System.out.println(totalQty);
-				int totReg = success+failed;
+				int totReg = success + failed;
 				resp = BookRegistrationResponse.newBuilder().setUserInfo(visitorId).setBookDetails(bookDtls)
 						.setComplReg(totReg).setRegType(regType).setTotalBooks(totalQty).setReqStatus(reqStat).build();
 				responseObserver.onNext(resp);
@@ -189,7 +232,9 @@ public class RegisterServer extends RegistrationBookImplBase {
 
 			@Override
 			public void onCompleted() {
-				System.out.println(LocalTime.now().toString() + ": receiving book registration completed. Successful operations: " + success + ". Failed attempts: " + (failed) + "\nTotal books registered: " + totalQty);
+				System.out.println(
+						LocalTime.now().toString() + ": receiving book registration completed. Successful operations: "
+								+ success + ". Failed attempts: " + (failed) + "\nTotal books registered: " + totalQty);
 				responseObserver.onCompleted();
 
 			} // onCompleted

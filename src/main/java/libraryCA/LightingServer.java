@@ -26,13 +26,35 @@ public class LightingServer extends LightServiceImplBase{
 					.start();
 			
 			System.out.println(LocalTime.now().toString() + ": Lighting Server started, listening on " + port);
-			server.awaitTermination();
+			Thread.sleep(200);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void startServer() throws IOException{
+SearchServer lServer = new SearchServer();
+		
+		int port = 50051;
+		
+		try {
+			Server server = ServerBuilder.forPort(port)
+					.addService(lServer)
+					.build()
+					.start();
+			
+			System.out.println(LocalTime.now().toString() + ": Search Engine Server started, listening on " + port);
+			server.awaitTermination();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/*
 	 * 	LIGHTING SERVICE
 	 * CLIENT-STREAMING RPC
@@ -43,14 +65,14 @@ public class LightingServer extends LightServiceImplBase{
 		
 		return new StreamObserver<LightLevel>() {
 			
-			ArrayList<Integer> levelList = new ArrayList<Integer>();
+			ArrayList<Double> levelList = new ArrayList<Double>();
 
 			@Override
 			public void onNext(LightLevel request) {
 				// TODO Auto-generated method stub
-				System.out.println(LocalTime.now().toString() + ": received the light level: " + request.getLevel() + "\nTime of the recording: " + request.getCurrentTime());
+				System.out.println(LocalTime.now().toString() + ": received the light level: " + request.getElecUsage() + "\nTime of the recording: " + request.getCurrentTime());
 					
-				levelList.add(request.getLevel());
+				levelList.add(request.getElecUsage());
 				//System.out.println("\n" + levelList.toString() + "\n");
 			}
 
@@ -65,14 +87,14 @@ public class LightingServer extends LightServiceImplBase{
 				System.out.printf(LocalTime.now().toString() + ": Natural light level stream complete \n");
 				
 				double lightPercentage = 0;
-				for (float v: levelList) {
+				for (double v: levelList) {
 					lightPercentage = lightPercentage + v;
 				}
 				float mean = (float) (lightPercentage/levelList.size());
 				
 				String finalMsg = "Today's natural lighting average was: " + mean;
 				
-				AverageResponse reply = AverageResponse.newBuilder().setLightAverage(finalMsg).build();
+				AverageResponse reply = AverageResponse.newBuilder().setUsageAverage(finalMsg).build();
 				
 				responseObserver.onNext(reply);
 				responseObserver.onCompleted();

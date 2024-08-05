@@ -47,6 +47,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
+
 import javax.swing.SpinnerNumberModel;
 import java.awt.FlowLayout;
 import javax.swing.JTextPane;
@@ -57,12 +58,19 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JTabbedPane;
 import java.awt.Dimension;
 import javax.swing.JList;
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceEvent;
+import javax.jmdns.ServiceInfo;
+import javax.jmdns.ServiceListener;
 import javax.swing.AbstractListModel;
 
 import generated.registration.BookRegistrationRequest;
@@ -73,19 +81,44 @@ import generated.registration.VisitorRegistrationResponse;
 import generated.registration.BookRegistrationRequest.RegistrationType;
 import generated.registration.RegistrationBookGrpc.RegistrationBookBlockingStub;
 import generated.registration.RegistrationBookGrpc.RegistrationBookStub;
+import javax.swing.border.MatteBorder;
 
 public class LibraryGUI extends JFrame {
 
+	private static class SampleListener implements ServiceListener {
+
+		@Override
+		public void serviceAdded(ServiceEvent event) {
+			System.out.println("Service added : " + event.getInfo());
+		}
+
+		@Override
+		public void serviceRemoved(ServiceEvent event) {
+			System.out.println("Service removed : " + event.getInfo());
+
+		}
+
+		@Override
+		public void serviceResolved(ServiceEvent event) {
+			System.out.println("Service resolved : " + event.getInfo());
+
+			ServiceInfo info = event.getInfo();
+			int port = info.getPort();
+			String path = info.getNiceTextString().split("=")[1];
+
+			String url = "Localhost:" + port + "/" + path;
+			System.out.println(" - - sending request to " + url);
+
+		}
+	}
+
 	int barCount, lightCount = 0, calcAvg = 0;
-	ArrayList<Integer> lightList = new ArrayList<Integer>();
+	ArrayList<Double> lightList = new ArrayList<Double>();
 	ArrayList<String> timeList = new ArrayList<String>();
 	ArrayList<BookRegistration> regList = new ArrayList<BookRegistration>();
 	boolean manualID = false, manualbkReg = false;
 
 	int onOffInst = 0;
-
-	// ListBy request;
-	// ListBy.ListOperation operation;
 
 	private static LightServiceBlockingStub LSblockingStub;
 	private static LightServiceStub asyncStub;
@@ -106,26 +139,50 @@ public class LibraryGUI extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
 
-		LSblockingStub = LightServiceGrpc.newBlockingStub(channel);
-		asyncStub = LightServiceGrpc.newStub(channel);
-		SEasyncStub = SearchEngineGrpc.newStub(channel);
-		SEblockingStub = SearchEngineGrpc.newBlockingStub(channel);
-		RAsyncStub = RegistrationBookGrpc.newStub(channel);
-		RblockingStub = RegistrationBookGrpc.newBlockingStub(channel);
+		try {
 
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LibraryGUI frame = new LibraryGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+			// Create a JmDNS instance
+			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
+			// add a service listener
+			jmdns.addServiceListener("_http._tcp.local.", new SampleListener());
+			Thread.sleep(2000);
+			System.out.println("Adding service listener to hostname: " + InetAddress.getLocalHost());
+
+			// Create channel and stubs for Lighting service
+			ManagedChannel lightCh = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+
+			ManagedChannel searchCh = ManagedChannelBuilder.forAddress("localhost", 50052).usePlaintext().build();
+
+			ManagedChannel registrationCh = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
+
+			LSblockingStub = LightServiceGrpc.newBlockingStub(lightCh);
+			asyncStub = LightServiceGrpc.newStub(lightCh);
+			SEasyncStub = SearchEngineGrpc.newStub(searchCh);
+			SEblockingStub = SearchEngineGrpc.newBlockingStub(searchCh);
+			RAsyncStub = RegistrationBookGrpc.newStub(registrationCh);
+			RblockingStub = RegistrationBookGrpc.newBlockingStub(registrationCh);
+
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						LibraryGUI frame = new LibraryGUI();
+						frame.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});
-		
+			});
+
+			// averageLighting();
+		} catch (UnknownHostException e) {
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println("IOEXC\n" + e.getMessage());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // End service discovery
 	}
 
 	/**
@@ -163,16 +220,16 @@ public class LibraryGUI extends JFrame {
 				"Average lighting", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		AvgPanel.setLayout(null);
 
-		JLabel LightLevelLbl = new JLabel("Natural light level (1-5)");
-		LightLevelLbl.setBounds(24, 25, 155, 14);
-		AvgPanel.add(LightLevelLbl);
+		JLabel lightUsageLbl = new JLabel("Electric usage (W)");
+		lightUsageLbl.setBounds(24, 25, 155, 14);
+		AvgPanel.add(lightUsageLbl);
 
 		JLabel TimeLbl = new JLabel("Time (Select)");
 		TimeLbl.setBounds(24, 50, 155, 14);
 		AvgPanel.add(TimeLbl);
 
 		JSpinner LightLvlSpn = new JSpinner();
-		LightLvlSpn.setModel(new SpinnerNumberModel(1, 1, 5, 1));
+		LightLvlSpn.setModel(new SpinnerNumberModel(2760.0, 0.0, 3000.0, 60.0));
 		LightLvlSpn.setBounds(177, 22, 86, 20);
 		AvgPanel.add(LightLvlSpn);
 
@@ -203,12 +260,11 @@ public class LibraryGUI extends JFrame {
 		submitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					int lightLvl = (int) LightLvlSpn.getValue();
-					if (lightLvl >= 0 && lightLvl <= 5) {
-						lightList.add(lightCount, lightLvl);
-					} else {
-						JOptionPane.showMessageDialog(null, "Invalid input for light level");
-					}
+					double lightLvl = (double) LightLvlSpn.getValue();
+
+					lightList.add(lightCount, lightLvl);
+					System.out.println("Electric usage registered: " + lightLvl + " for the time "
+							+ timeOptions.getSelectedItem());
 
 					/*
 					 * String lightTime = TimeTxt.getText();
@@ -241,8 +297,8 @@ public class LibraryGUI extends JFrame {
 					public void onNext(AverageResponse msg) {
 						// TODO Auto-generated method stub
 						System.out.println(
-								LocalTime.now().toString() + ": Response from server " + msg.getLightAverage());
-						avgTa.setText(msg.getLightAverage());
+								LocalTime.now().toString() + ": Response from server: " + msg.getUsageAverage());
+						avgTa.setText(msg.getUsageAverage());
 
 					}
 
@@ -264,7 +320,7 @@ public class LibraryGUI extends JFrame {
 				StreamObserver<LightLevel> requestObserver = asyncStub.averageLighting(responseObserver);
 				try {
 					for (int i = 0; i < lightList.size(); i++) {
-						requestObserver.onNext(LightLevel.newBuilder().setLevel(lightList.get(i))
+						requestObserver.onNext(LightLevel.newBuilder().setElecUsage(lightList.get(i))
 								.setCurrentTime(timeList.get(i)).build());
 						Thread.sleep(700);
 					}
@@ -391,7 +447,8 @@ public class LibraryGUI extends JFrame {
 							count += 1;
 							booksTa.append("Author: " + value.getAuthor() + "\nBook ID: " + value.getBookId()
 									+ "\nTitle: " + value.getTitle() + "\nLanguage: " + value.getLanguage()
-									+ "\nSubject: " + value.getSubject() + "\n- - - - - -\n");
+									+ "\nSubject: " + value.getSubject() + "\nQuantity: " + value.getBookQty()
+									+ "\n- - - - - -\n");
 							break;
 						case ID:
 							System.out.println(LocalTime.now().toString() + ": receiving book's information."
@@ -401,7 +458,8 @@ public class LibraryGUI extends JFrame {
 							count += 1;
 							booksTa.append("Book ID: " + value.getBookId() + "\nTitle: " + value.getTitle()
 									+ "\nAuthor: " + value.getAuthor() + "\nLanguage: " + value.getLanguage()
-									+ "\nSubject: " + value.getSubject() + "\n- - - - - -\n");
+									+ "\nSubject: " + value.getSubject() + "\nQuantity: " + value.getBookQty()
+									+ "\n- - - - - -\n");
 							break;
 						case TITLE:
 							System.out.println(LocalTime.now().toString() + ": receiving book's information."
@@ -411,7 +469,7 @@ public class LibraryGUI extends JFrame {
 							count += 1;
 							booksTa.append("\nTitle: " + value.getTitle() + value.getBookId() + "\nAuthor: "
 									+ value.getAuthor() + "\nLanguage: " + value.getLanguage() + "\nSubject: "
-									+ value.getSubject() + "\n- - - - - -\n");
+									+ value.getSubject() + "\nQuantity: " + value.getBookQty() + "\n- - - - - -\n");
 							break;
 						case UNRECOGNIZED:
 							System.out.println("Invalid option");
@@ -660,14 +718,17 @@ public class LibraryGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				bkRegTa.setText("");
 				StreamObserver<BookRegistrationResponse> responseObserver = new StreamObserver<BookRegistrationResponse>() {
-					//USERID available 443325, 493947, 102934, and 980661
-					int success = 0, totalQty=0, failed = 0, totalReq=0;
+					// USERID available 443325, 493947, 102934, and 980661
+					int success = 0, totalQty = 0, failed = 0, totalReq = 0;
+
 					@Override
 					public void onNext(BookRegistrationResponse value) {
-						System.out.println(LocalTime.now().toString() + ": received information\n" + "Type of registration: " + value.getRegType() + "\n" + value.getBookDetails() + "\nQuantity of books registered so far: " + value.getTotalBooks());
-						totalReq= value.getComplReg();
-						
-						if(value.getReqStatus()) {
+						System.out.println(LocalTime.now().toString() + ": received information\n"
+								+ "Type of registration: " + value.getRegType() + "\n" + value.getBookDetails()
+								+ "\nQuantity of books registered so far: " + value.getTotalBooks());
+						totalReq = value.getComplReg();
+
+						if (value.getReqStatus()) {
 							System.out.println("SUCCESS");
 							totalQty = value.getTotalBooks();
 							success++;
@@ -675,41 +736,45 @@ public class LibraryGUI extends JFrame {
 							System.out.println("FAILURE");
 							failed++;
 						}
-						
-						bkRegTa.append("Type of registration: " + value.getRegType() + "\n" + value.getUserInfo() + "\n" + value.getBookDetails() + "\n\n");
+
+						bkRegTa.append("Type of registration: " + value.getRegType() + "\n" + value.getUserInfo() + "\n"
+								+ value.getBookDetails() + "\n\n");
 					}
 
 					@Override
 					public void onError(Throwable t) {
 						t.printStackTrace();
-						
+
 					}
 
 					@Override
 					public void onCompleted() {
-						System.out.println(LocalTime.now().toString() + ": stream is completed... Received " + totalReq + " registration requests (Success: " + success + ", Failed: " + failed + "). \nRegistered a total of: " + totalQty + " books.");
-						
+						System.out.println(LocalTime.now().toString() + ": stream is completed... Received " + totalReq
+								+ " registration requests (Success: " + success + ", Failed: " + failed
+								+ "). \nRegistered a total of: " + totalQty + " books.");
+
 					}
-					
+
 				};
-				
+
 				StreamObserver<BookRegistrationRequest> request = RAsyncStub.bookRegister(responseObserver);
 				try {
-					for(int i=0; i<regList.size(); i++) {
-						request.onNext(BookRegistrationRequest.newBuilder().setBookId(regList.get(i).getBookID()).setUserId(regList.get(i).getUserID()).setBookQty(regList.get(i).getBookQty()).setTotal(i+1).setRegistration(regList.get(i).getReg()).build());
+					for (int i = 0; i < regList.size(); i++) {
+						request.onNext(BookRegistrationRequest.newBuilder().setBookId(regList.get(i).getBookID())
+								.setUserId(regList.get(i).getUserID()).setBookQty(regList.get(i).getBookQty())
+								.setTotal(i + 1).setRegistration(regList.get(i).getReg()).build());
 					}
-					//IDs available 7836262, 7174668, 8724795, 7660479, 3283121, 1917707, 3924794
-					
+					// IDs available 7836262, 7174668, 8724795, 7660479, 3283121, 1917707, 3924794
+
 					request.onCompleted();
-					
+
 					Thread.sleep(7000);
 					regList.clear();
 
 				} catch (RuntimeException | InterruptedException ex) {
 					ex.printStackTrace();
-				} 
-				
-				
+				}
+
 			}
 		});
 		bkRegBtn.setBounds(161, 107, 89, 23);
@@ -730,7 +795,7 @@ public class LibraryGUI extends JFrame {
 					userID = Integer.valueOf(userIdTxt.getText());
 					bookQty = (int) qtySpin.getValue();
 					regT = (RegistrationType) regTypeOpt.getSelectedItem();
-					
+
 					BookRegistration regBook = new BookRegistration(bookID, userID, bookQty, regT);
 					regList.add(regBook);
 
@@ -768,7 +833,7 @@ public class LibraryGUI extends JFrame {
 		visitrIDTxt.setBounds(50, 45, 86, 20);
 		panel.add(visitrIDTxt);
 		visitrIDTxt.setColumns(10);
-		
+
 		JScrollPane visitorRegScrll = new JScrollPane();
 		visitorRegScrll.setBounds(146, 13, 141, 88);
 		panel.add(visitorRegScrll);
@@ -784,40 +849,40 @@ public class LibraryGUI extends JFrame {
 				try {
 					int visitorID;
 					String visitorName;
-					boolean valInput=true;
-					
-					visitorID = Integer.valueOf( visitrIDTxt.getText());
+					boolean valInput = true;
+
+					visitorID = Integer.valueOf(visitrIDTxt.getText());
 					visitorName = visitrNmTxt.getText();
-					for(int i=0; i<visitorName.length(); i++) {
-						if(!Character.isLetter(visitorName.charAt(i)) && visitorName.charAt(i) != ' ') {
-							valInput=false;
+					for (int i = 0; i < visitorName.length(); i++) {
+						if (!Character.isLetter(visitorName.charAt(i)) && visitorName.charAt(i) != ' ') {
+							valInput = false;
 						}
 					}
-					
-				if(valInput==true) {
-				
-				VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setVisitorId(visitorID).setName(visitorName).setStatus("Active").build();
-				
-				VisitorRegistrationResponse response = RblockingStub.visitorRegister(req);
-				
-				System.out.println(LocalTime.now().toString() + ": receiving message: " + response.getRegistrationConfirmation() + " on the date " + response.getRegistrationDate());
-				visitorRegTa.setText("Date: " + response.getRegistrationDate() + "\n" + response.getRegistrationConfirmation());
-				} else {
-					JOptionPane.showMessageDialog(null, "Invalid input for Name.");
-				}
-				
-				} catch(InputMismatchException | NumberFormatException ex) {
+
+					if (valInput == true) {
+
+						VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setVisitorId(visitorID)
+								.setName(visitorName).setStatus("Active").build();
+
+						VisitorRegistrationResponse response = RblockingStub.visitorRegister(req);
+
+						System.out.println(LocalTime.now().toString() + ": receiving message: "
+								+ response.getRegistrationConfirmation() + " on the date "
+								+ response.getRegistrationDate());
+						visitorRegTa.setText("Date: " + response.getRegistrationDate() + "\n"
+								+ response.getRegistrationConfirmation());
+					} else {
+						JOptionPane.showMessageDialog(null, "Invalid input for Name.");
+					}
+
+				} catch (InputMismatchException | NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Invalid input for user ID.");
 				}
-				
-				
+
 			}
 		});
 		visitrBtn.setBounds(30, 71, 89, 23);
 		panel.add(visitrBtn);
 
-		
-
 	}// Library GUI
-
 }

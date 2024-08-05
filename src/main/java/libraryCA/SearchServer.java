@@ -16,7 +16,7 @@ public class SearchServer extends SearchEngineImplBase{
 	public static void main(String[] args) {
 		SearchServer searchServer = new SearchServer();
 		
-		int port = 50051;
+		int port = 50052;
 		
 		try {
 			Server server = ServerBuilder.forPort(port)
@@ -29,6 +29,23 @@ public class SearchServer extends SearchEngineImplBase{
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void startServer() throws IOException{
+		SearchServer sServer = new SearchServer();
+		int port = 50052;
+		try {
+			Server server = ServerBuilder.forPort(port)
+					.addService(sServer)
+					.build()
+					.start();
+			
+			System.out.println(LocalTime.now().toString() + ": Search Engine Server started, listening on " + port);
+			Thread.sleep(200);
+			
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
@@ -97,7 +114,7 @@ public class SearchServer extends SearchEngineImplBase{
 	     case TITLE:
 	    	 for (int i=0; i < byTitle.length; i++) {
 	    		quickSort(bookList, 0, bookList.length-1, "Title");
-	 			response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).build();
+	 			response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).setBookQty(bookList[i].getBookQty()).build();
 	 			responseObserver.onNext(response);
 	 			
 	 			//slow it all down a bit so we can observe the behaviour 
@@ -261,6 +278,30 @@ public class SearchServer extends SearchEngineImplBase{
 				borrowedBooks = true;
 				status = true;
 				totalBooksBorrowed = 4;
+				found = true;
+				break;
+			case 493947:
+				name = "Edward Cullen";
+				registrationDate = "15/04/2007";
+				borrowedBooks = true;
+				status = true;
+				totalBooksBorrowed = 2;
+				found = true;
+				break;
+			case 102934:
+				name = "Alice Cullen";
+				registrationDate = "03/02/2007";
+				borrowedBooks = false;
+				status = false;
+				totalBooksBorrowed = 0;
+				found = true;
+				break;
+			case 980661:
+				name = "Bella Swan";
+				registrationDate = "03/11/2001";
+				borrowedBooks = false;
+				status = true;
+				totalBooksBorrowed = 0;
 				found = true;
 				break;
 			default :

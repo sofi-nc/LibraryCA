@@ -5,7 +5,14 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>LibraryCA</name>
   
-    <dependencies>
+   
+	<dependencies>
+		<dependency>
+			<groupId>org.jmdns</groupId>
+			<artifactId>jmdns</artifactId>
+			<version>3.5.9</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
@@ -42,9 +49,30 @@
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.36</version>
+			<!--  Use the latest stable version  -->
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.36</version>
+			<!--  Use the latest stable version  -->
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.8</version>
+		</dependency>
+
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
 	<build>
 		<defaultGoal>clean generate-sources compile install</defaultGoal>

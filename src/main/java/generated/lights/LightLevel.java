@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private LightLevel() {
-    level_ = 0;
+    elecUsage_ = 0D;
     currentTime_ = "";
   }
 
@@ -44,9 +44,9 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 8: {
+          case 9: {
 
-            level_ = input.readInt32();
+            elecUsage_ = input.readDouble();
             break;
           }
           case 18: {
@@ -87,13 +87,13 @@ private static final long serialVersionUID = 0L;
             generated.lights.LightLevel.class, generated.lights.LightLevel.Builder.class);
   }
 
-  public static final int LEVEL_FIELD_NUMBER = 1;
-  private int level_;
+  public static final int ELECUSAGE_FIELD_NUMBER = 1;
+  private double elecUsage_;
   /**
-   * <code>int32 level = 1;</code>
+   * <code>double elecUsage = 1;</code>
    */
-  public int getLevel() {
-    return level_;
+  public double getElecUsage() {
+    return elecUsage_;
   }
 
   public static final int CURRENTTIME_FIELD_NUMBER = 2;
@@ -144,8 +144,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (level_ != 0) {
-      output.writeInt32(1, level_);
+    if (elecUsage_ != 0D) {
+      output.writeDouble(1, elecUsage_);
     }
     if (!getCurrentTimeBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, currentTime_);
@@ -159,9 +159,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (level_ != 0) {
+    if (elecUsage_ != 0D) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, level_);
+        .computeDoubleSize(1, elecUsage_);
     }
     if (!getCurrentTimeBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, currentTime_);
@@ -182,8 +182,10 @@ private static final long serialVersionUID = 0L;
     generated.lights.LightLevel other = (generated.lights.LightLevel) obj;
 
     boolean result = true;
-    result = result && (getLevel()
-        == other.getLevel());
+    result = result && (
+        java.lang.Double.doubleToLongBits(getElecUsage())
+        == java.lang.Double.doubleToLongBits(
+            other.getElecUsage()));
     result = result && getCurrentTime()
         .equals(other.getCurrentTime());
     result = result && unknownFields.equals(other.unknownFields);
@@ -197,8 +199,9 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + LEVEL_FIELD_NUMBER;
-    hash = (53 * hash) + getLevel();
+    hash = (37 * hash) + ELECUSAGE_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        java.lang.Double.doubleToLongBits(getElecUsage()));
     hash = (37 * hash) + CURRENTTIME_FIELD_NUMBER;
     hash = (53 * hash) + getCurrentTime().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
@@ -334,7 +337,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      level_ = 0;
+      elecUsage_ = 0D;
 
       currentTime_ = "";
 
@@ -364,7 +367,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public generated.lights.LightLevel buildPartial() {
       generated.lights.LightLevel result = new generated.lights.LightLevel(this);
-      result.level_ = level_;
+      result.elecUsage_ = elecUsage_;
       result.currentTime_ = currentTime_;
       onBuilt();
       return result;
@@ -414,8 +417,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(generated.lights.LightLevel other) {
       if (other == generated.lights.LightLevel.getDefaultInstance()) return this;
-      if (other.getLevel() != 0) {
-        setLevel(other.getLevel());
+      if (other.getElecUsage() != 0D) {
+        setElecUsage(other.getElecUsage());
       }
       if (!other.getCurrentTime().isEmpty()) {
         currentTime_ = other.currentTime_;
@@ -450,28 +453,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int level_ ;
+    private double elecUsage_ ;
     /**
-     * <code>int32 level = 1;</code>
+     * <code>double elecUsage = 1;</code>
      */
-    public int getLevel() {
-      return level_;
+    public double getElecUsage() {
+      return elecUsage_;
     }
     /**
-     * <code>int32 level = 1;</code>
+     * <code>double elecUsage = 1;</code>
      */
-    public Builder setLevel(int value) {
+    public Builder setElecUsage(double value) {
       
-      level_ = value;
+      elecUsage_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 level = 1;</code>
+     * <code>double elecUsage = 1;</code>
      */
-    public Builder clearLevel() {
+    public Builder clearElecUsage() {
       
-      level_ = 0;
+      elecUsage_ = 0D;
       onChanged();
       return this;
     }

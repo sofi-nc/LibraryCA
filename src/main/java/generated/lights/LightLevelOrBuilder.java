@@ -8,9 +8,9 @@ public interface LightLevelOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 level = 1;</code>
+   * <code>double elecUsage = 1;</code>
    */
-  int getLevel();
+  double getElecUsage();
 
   /**
    * <code>string currentTime = 2;</code>

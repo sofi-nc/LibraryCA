@@ -6,7 +6,6 @@ C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\lights\LightS
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\lights\LightServiceImpl.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\search\userInformationOrBuilder.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\RegistrationBookGrpc.java
-C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\LibraryServer.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\RegisterServer.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\VisitorRegistrationResponse.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\VisitorRegistrationResponseOrBuilder.java
@@ -25,9 +24,9 @@ C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\search\Availa
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\LightingServer.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\lights\AverageResponse.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\registration\BookRegistrationRequestOrBuilder.java
-C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\GUI_library.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\search\userInformation.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\LibraryClient.java
+C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\libraryCA\ServiceRegistration.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\lights\LightLevel.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\search\SearchEngineGrpc.java
 C:\Users\frida\eclipse-workspace\LibraryCA\src\main\java\generated\search\SearchEngineImpl.java
