@@ -4,7 +4,12 @@ public class Books {
 	private int bookId, bookQty;
 	private String title, author, lang, subject;
 	
-	public Books(int bookId, String title, String author, String lang, String subject, int bookQty) {
+	public Books() {
+		//Empty constructor
+	}
+	
+	public Books(int bookId, String title, String author,
+			String lang, String subject, int bookQty) {
 		this.bookId = bookId;
 		this.title = title;
 		this.author = author;

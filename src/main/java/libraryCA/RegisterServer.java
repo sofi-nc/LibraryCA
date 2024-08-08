@@ -24,13 +24,13 @@ public class RegisterServer extends RegistrationBookImplBase {
 
 	public static void main(String[] args) {
 		// USERIDs available 443325, 493947, 102934, and 980661
-		Visitor v1 = new Visitor("Mildred García", "Active", "20/12/2004", "Yes", 443325, 4);
+		Visitor v1 = new Visitor("Mildred García", true, "20/12/2004", true, 443325, 4);
 
-		Visitor v2 = new Visitor("Edward Cullen", "Active", "15/04/2007", "Yes", 493947, 2);
+		Visitor v2 = new Visitor("Edward Cullen", true, "15/04/2007", true, 493947, 2);
 
-		Visitor v3 = new Visitor("Alice Cullen", "Inactive", "03/02/2007", "No", 102934, 0);
+		Visitor v3 = new Visitor("Alice Cullen", false, "03/02/2007", false, 102934, 0);
 
-		Visitor v4 = new Visitor("Bella Swan", "Active", "03/11/2001", "No", 980661, 0);
+		Visitor v4 = new Visitor("Bella Swan", true, "03/11/2001", false, 980661, 0);
 
 		visitorList.add(v1);
 		visitorList.add(v2);
@@ -53,13 +53,13 @@ public class RegisterServer extends RegistrationBookImplBase {
 	} // Main
 
 	public static void startServer() throws IOException {
-		Visitor v1 = new Visitor("Catalina Jauregui", "Active", "20/12/2004", "Yes", 443325, 4);
+		Visitor v1 = new Visitor("Mildred García", true, "20/12/2004", true, 443325, 4);
 
-		Visitor v2 = new Visitor("Edward Cullen", "Active", "15/04/2007", "Yes", 493947, 2);
+		Visitor v2 = new Visitor("Edward Cullen", true, "15/04/2007", true, 493947, 2);
 
-		Visitor v3 = new Visitor("Alice Cullen", "Inactive", "03/02/2007", "No", 102934, 0);
+		Visitor v3 = new Visitor("Alice Cullen", false, "03/02/2007", false, 102934, 0);
 
-		Visitor v4 = new Visitor("Bella Swan", "Active", "03/11/2001", "No", 980661, 1);
+		Visitor v4 = new Visitor("Bella Swan", true, "03/11/2001", false, 980661, 0);
 
 		visitorList.add(v1);
 		visitorList.add(v2);
@@ -87,18 +87,27 @@ public class RegisterServer extends RegistrationBookImplBase {
 			StreamObserver<VisitorRegistrationResponse> responseObserver) {
 
 		System.out.println("Receiving visitor's registration request.");
-		String confirmation, date, vName = request.getName(), vStatus = request.getStatus();
+		String confirmation, date, vName = request.getName(), sStatus = "Active";
+
 		int vId = request.getVisitorId();
 		date = LocalDate.now().toString();
+		boolean idFound = findID(visitorList, request.getVisitorId());
+		VisitorRegistrationResponse resp;
 
-		Visitor v1 = new Visitor(vName, vStatus, date, "No", vId, 0);
-		visitorList.add(v1);
+		if (idFound) {
+			resp = VisitorRegistrationResponse.newBuilder()
+					.setRegistrationConfirmation("Registration failed. User ID: " + vId + "is already in use.")
+					.setRegistrationConfirmation("N/A").build();
+		} else {
+			Visitor v1 = new Visitor(vName, true, date, false, vId, 0);
+			visitorList.add(v1);
 
-		confirmation = "Registration complete. \nNAME: " + v1.getName() + "\nID: " + v1.getVisitorId() + "\nSTATUS: "
-				+ v1.getStatus();
+			confirmation = "Registration complete. \nNAME: " + v1.getName() + "\nID: " + v1.getVisitorId()
+					+ "\nSTATUS: " + sStatus;
 
-		VisitorRegistrationResponse resp = VisitorRegistrationResponse.newBuilder()
-				.setRegistrationConfirmation(confirmation).setRegistrationDate(date).build();
+			resp = VisitorRegistrationResponse.newBuilder().setRegistrationConfirmation(confirmation)
+					.setRegistrationDate(date).build();
+		}
 
 		responseObserver.onNext(resp);
 		try {
@@ -159,7 +168,7 @@ public class RegisterServer extends RegistrationBookImplBase {
 				String regType = "" + msg.getRegistration();
 
 				// System.out.println(msg.getUserId());
-				boolean idFound = findID(visitorList, msg.getUserId(), msg);
+				boolean idFound = findID(visitorList, msg.getUserId());
 
 				if (idFound) {
 					switch (msg.getRegistration()) {
@@ -243,11 +252,10 @@ public class RegisterServer extends RegistrationBookImplBase {
 		}; // Stream observer
 	} // Book register
 
-	private boolean findID(ArrayList<Visitor> list, int vId, BookRegistrationRequest msg) {
+	private boolean findID(ArrayList<Visitor> list, int vId) {
 		for (int i = 0; i < visitorList.size(); i++) {
 			System.out.println(visitorList.get(i).toString());
-			if (list.get(i).getVisitorId() == msg.getUserId()
-					&& visitorList.get(i).getStatus().equalsIgnoreCase("Active")) {
+			if (list.get(i).getVisitorId() == vId && visitorList.get(i).getStatus()) {
 				return true;
 			}
 		}

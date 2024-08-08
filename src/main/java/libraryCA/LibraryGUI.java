@@ -98,7 +98,7 @@ public class LibraryGUI extends JFrame {
 
 		@Override
 		public void serviceRemoved(ServiceEvent event) {
-			System.out.println("Service removed : " + event.getInfo());
+			System.out.println("Service removed : " + event.getInfo() + event.getName());
 
 		}
 
@@ -110,8 +110,8 @@ public class LibraryGUI extends JFrame {
 			int port = info.getPort();
 			String path = info.getNiceTextString().split("=")[1];
 
-			String url = "Localhost:" + port + "/" + path;
-			System.out.println(" - - sending request to " + url);
+			//String url = "Localhost:" + port + "/" + path;
+			//System.out.println("Sending request to: " + url);
 
 		}
 	}
@@ -145,25 +145,28 @@ public class LibraryGUI extends JFrame {
 	public static void main(String[] args) {
 
 		try {
+			int port1= 50051, port2 =50052;
 
 			// Create a JmDNS instance
 			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 			// add a service listener
-			jmdns.addServiceListener("_grpc.local.", new SampleListener());
-			Thread.sleep(2000);
+			jmdns.addServiceListener("_grpc._tcp.local.", new SampleListener());
+			Thread.sleep(1000);
 			System.out.println("Adding service listener to hostname: " + InetAddress.getLocalHost());
 
 			// Create channel and stubs for Lighting service
-			ManagedChannel lightCh = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+			ManagedChannel lightCh = ManagedChannelBuilder.forAddress("localhost", port1).usePlaintext().build();
 
-			ManagedChannel searchCh = ManagedChannelBuilder.forAddress("localhost", 50052).usePlaintext().build();
+			ManagedChannel searchCh = ManagedChannelBuilder.forAddress("localhost", port2).usePlaintext().build();
 
 			ManagedChannel registrationCh = ManagedChannelBuilder.forAddress("localhost", 50053).usePlaintext().build();
 
 			LSblockingStub = LightServiceGrpc.newBlockingStub(lightCh);
 			asyncStub = LightServiceGrpc.newStub(lightCh);
+			
 			SEasyncStub = SearchEngineGrpc.newStub(searchCh);
 			SEblockingStub = SearchEngineGrpc.newBlockingStub(searchCh);
+			
 			RAsyncStub = RegistrationBookGrpc.newStub(registrationCh);
 			RblockingStub = RegistrationBookGrpc.newBlockingStub(registrationCh);
 
@@ -178,7 +181,6 @@ public class LibraryGUI extends JFrame {
 				}
 			});
 
-			// averageLighting();
 		} catch (UnknownHostException e) {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
@@ -195,7 +197,7 @@ public class LibraryGUI extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public LibraryGUI() {
 		setTitle("Smart library");
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\frida\\eclipse-workspace\\LibraryCA\\iconovaca1.jpg"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\frida\\eclipse-workspace\\LibraryCA\\icon.jpg"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 778, 487);
 		contentPane = new JPanel();
@@ -364,6 +366,7 @@ public class LibraryGUI extends JFrame {
 		JButton OnOffBtn = new JButton("Turn On/Off");
 		OnOffBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				int instruction;
 				if (onOffInst == 1) {
 					onOffInst = 0;
@@ -377,6 +380,9 @@ public class LibraryGUI extends JFrame {
 
 				System.out.println(LocalTime.now().toString() + ": Validation message: " + resp.getLightState());
 				lightStateTa.replaceRange(resp.getLightState(), 0, resp.getLightState().length());
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Server disconnected");
+				}
 			}
 		});
 		OnOffBtn.setBounds(69, 56, 121, 23);
@@ -588,15 +594,13 @@ public class LibraryGUI extends JFrame {
 				try {
 					if (manualID == false) {
 						// USERIDs available 443325, 493947, 102934, and 980661
-						// userNum = (int) userIDopt.getSelectedItem();
-
 						userNum = Integer.valueOf((String) userIDopt.getSelectedItem());
+						System.out.println("Sending: " + userNum);
 
 					} else {
 						userNum = Integer.valueOf(userIDinput.getText());
-
+						System.out.println("Sending: " + userNum);
 					}
-
 					req = userID.newBuilder().setUserNumber(userNum).build();
 
 					userInformation responseRI = SEblockingStub.readerInfo(req);
@@ -868,7 +872,7 @@ public class LibraryGUI extends JFrame {
 					if (valInput == true) {
 
 						VisitorRegistrationRequest req = VisitorRegistrationRequest.newBuilder().setVisitorId(visitorID)
-								.setName(visitorName).setStatus("Active").build();
+								.setName(visitorName).build();
 
 						VisitorRegistrationResponse response = RblockingStub.visitorRegister(req);
 

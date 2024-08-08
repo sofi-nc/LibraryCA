@@ -21,14 +21,4 @@ public interface VisitorRegistrationRequestOrBuilder extends
    */
   com.google.protobuf.ByteString
       getNameBytes();
-
-  /**
-   * <code>string status = 3;</code>
-   */
-  java.lang.String getStatus();
-  /**
-   * <code>string status = 3;</code>
-   */
-  com.google.protobuf.ByteString
-      getStatusBytes();
 }
