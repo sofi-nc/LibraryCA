@@ -1,4 +1,4 @@
-package libraryCA;
+package library.objects;
 
 public class Books {
 	private int bookId, bookQty;

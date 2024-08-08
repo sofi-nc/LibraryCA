@@ -47,6 +47,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
+import library.objects.BookRegistration;
 
 import javax.swing.SpinnerNumberModel;
 import java.awt.FlowLayout;
@@ -82,6 +83,9 @@ import generated.registration.BookRegistrationRequest.RegistrationType;
 import generated.registration.RegistrationBookGrpc.RegistrationBookBlockingStub;
 import generated.registration.RegistrationBookGrpc.RegistrationBookStub;
 import javax.swing.border.MatteBorder;
+import java.awt.Toolkit;
+import javax.swing.UIManager;
+import javax.swing.JTree;
 
 public class LibraryGUI extends JFrame {
 
@@ -145,7 +149,7 @@ public class LibraryGUI extends JFrame {
 			// Create a JmDNS instance
 			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 			// add a service listener
-			jmdns.addServiceListener("_http._tcp.local.", new SampleListener());
+			jmdns.addServiceListener("_grpc.local.", new SampleListener());
 			Thread.sleep(2000);
 			System.out.println("Adding service listener to hostname: " + InetAddress.getLocalHost());
 
@@ -190,22 +194,25 @@ public class LibraryGUI extends JFrame {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public LibraryGUI() {
+		setTitle("Smart library");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\frida\\eclipse-workspace\\LibraryCA\\iconovaca1.jpg"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 959, 502);
+		setBounds(100, 100, 778, 487);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 
 		/*
 		 * AVERAGE LIGHTING SERVER STREAMING RPC
 		 */
+		contentPane.setLayout(null);
 
 		JTabbedPane MenuTab = new JTabbedPane(JTabbedPane.LEFT);
+		MenuTab.setBackground(new Color(240, 240, 240));
+		MenuTab.setBounds(10, 7, 450, 400);
 		MenuTab.setBorder(new EmptyBorder(0, 0, 0, 0));
 		MenuTab.setToolTipText("Light Service");
-		MenuTab.setBounds(10, 7, 450, 400);
 		contentPane.add(MenuTab);
 
 		JPanel LightPane = new JPanel();
@@ -229,7 +236,7 @@ public class LibraryGUI extends JFrame {
 		AvgPanel.add(TimeLbl);
 
 		JSpinner LightLvlSpn = new JSpinner();
-		LightLvlSpn.setModel(new SpinnerNumberModel(2760.0, 0.0, 3000.0, 60.0));
+		LightLvlSpn.setModel(new SpinnerNumberModel(120.0, 0.0, 3000.0, 60.0));
 		LightLvlSpn.setBounds(177, 22, 86, 20);
 		AvgPanel.add(LightLvlSpn);
 
@@ -262,22 +269,21 @@ public class LibraryGUI extends JFrame {
 				try {
 					double lightLvl = (double) LightLvlSpn.getValue();
 
-					lightList.add(lightCount, lightLvl);
-					System.out.println("Electric usage registered: " + lightLvl + " for the time "
-							+ timeOptions.getSelectedItem());
-
-					/*
-					 * String lightTime = TimeTxt.getText();
-					 */
 					String lightTime = (String) timeOptions.getSelectedItem();
 					if (lightTime.isEmpty()) {
 						JOptionPane.showMessageDialog(null, "Invalid input for time");
-					} else {
+					} else if (lightLvl >= 120 && lightLvl <= 3000) {
 						timeList.add(lightCount, lightTime);
-					}
-					if (lightLvl >= 0 && lightLvl <= 100 && !lightTime.isEmpty()) {
+						lightList.add(lightCount, lightLvl);
+						System.out.println("Operation #" + (lightCount+1) + ". Electric usage registered: " + lightLvl + " for the time "
+								+ timeOptions.getSelectedItem());
 						lightCount++;
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "Invalid input for electric usage. \nIt must be between 120 and 3000");
 					}
+					
+					
 				} catch (Exception x) {
 					x.printStackTrace();
 				}
@@ -290,29 +296,25 @@ public class LibraryGUI extends JFrame {
 		JButton avgBtn = new JButton("Calculate average");
 		avgBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				// averageLighting(stream LightLevel) returns (AverageResponse)
 				StreamObserver<AverageResponse> responseObserver = new StreamObserver<AverageResponse>() {
 
 					@Override
 					public void onNext(AverageResponse msg) {
-						// TODO Auto-generated method stub
 						System.out.println(
 								LocalTime.now().toString() + ": Response from server: " + msg.getUsageAverage());
 						avgTa.setText(msg.getUsageAverage());
-
 					}
 
 					@Override
 					public void onError(Throwable t) {
-						// TODO Auto-generated method stub
 						t.printStackTrace();
 					}
 
 					@Override
 					public void onCompleted() {
-						// TODO Auto-generated method stub
 						System.out.println(LocalTime.now().toString() + ": Stream is completed.");
-
 					}
 
 				};
@@ -371,7 +373,7 @@ public class LibraryGUI extends JFrame {
 					instruction = onOffInst;
 				}
 				LightRequest req = LightRequest.newBuilder().setLightButton(instruction).build();
-				StatusResponse resp = LSblockingStub.turnOnOff(req);
+				StatusResponse resp = LSblockingStub.lightControl(req);
 
 				System.out.println(LocalTime.now().toString() + ": Validation message: " + resp.getLightState());
 				lightStateTa.replaceRange(resp.getLightState(), 0, resp.getLightState().length());
@@ -408,16 +410,9 @@ public class LibraryGUI extends JFrame {
 		JButton btnListBy = new JButton("Submit");
 		btnListBy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				booksTa.setText("");
-				ListBy requestAsyn;
-				ListBy.ListOperation operation;
-				operation = (ListOperation) listByOptions.getSelectedItem();
-
-				System.out.println("You selected to list the books by: " + operation);
-				requestAsyn = ListBy.newBuilder().setOperation(operation).build();
-
+				
 				/*
-				 * SERVER STREAMING (NON-BLOCKING)
+				 * SERVER STREAMING 
 				 */
 				// set up the responseObserver - this is a new object where the client specifies
 				// the
@@ -431,6 +426,14 @@ public class LibraryGUI extends JFrame {
 				// the server behaves the same - the clients reaction to the responses is
 				// different - it is
 				// asynchronous
+				
+				booksTa.setText("");
+				ListBy requestAsyn;
+				ListBy.ListOperation operation;
+				operation = (ListOperation) listByOptions.getSelectedItem();
+
+				System.out.println("You selected to list the books by: " + operation);
+				requestAsyn = ListBy.newBuilder().setOperation(operation).build();
 
 				StreamObserver<AvailableBooks> responseObserver = new StreamObserver<AvailableBooks>() {
 
@@ -633,10 +636,12 @@ public class LibraryGUI extends JFrame {
 		detailsPanel.add(useridBtn);
 
 		JPanel RegisterPane = new JPanel();
+		RegisterPane.setBackground(UIManager.getColor("Button.background"));
 		MenuTab.addTab("Registration service", null, RegisterPane, null);
 		RegisterPane.setLayout(null);
 
 		JPanel bkRegisterPanel_1 = new JPanel();
+		bkRegisterPanel_1.setBackground(UIManager.getColor("Button.background"));
 		bkRegisterPanel_1.setLayout(null);
 		bkRegisterPanel_1.setBorder(
 				new TitledBorder(null, "Book Registration", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -839,6 +844,7 @@ public class LibraryGUI extends JFrame {
 		panel.add(visitorRegScrll);
 
 		JTextArea visitorRegTa = new JTextArea();
+		visitorRegTa.setEditable(false);
 		visitorRegTa.setWrapStyleWord(true);
 		visitorRegTa.setLineWrap(true);
 		visitorRegScrll.setViewportView(visitorRegTa);
@@ -883,6 +889,7 @@ public class LibraryGUI extends JFrame {
 		});
 		visitrBtn.setBounds(30, 71, 89, 23);
 		panel.add(visitrBtn);
+		
 
 	}// Library GUI
 }

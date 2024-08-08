@@ -63,35 +63,35 @@ public final class LightServiceGrpc {
   }
 
   private static volatile io.grpc.MethodDescriptor<generated.lights.LightRequest,
-      generated.lights.StatusResponse> getTurnOnOffMethod;
+      generated.lights.StatusResponse> getLightControlMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "turnOnOff",
+      fullMethodName = SERVICE_NAME + '/' + "lightControl",
       requestType = generated.lights.LightRequest.class,
       responseType = generated.lights.StatusResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<generated.lights.LightRequest,
-      generated.lights.StatusResponse> getTurnOnOffMethod() {
-    io.grpc.MethodDescriptor<generated.lights.LightRequest, generated.lights.StatusResponse> getTurnOnOffMethod;
-    if ((getTurnOnOffMethod = LightServiceGrpc.getTurnOnOffMethod) == null) {
+      generated.lights.StatusResponse> getLightControlMethod() {
+    io.grpc.MethodDescriptor<generated.lights.LightRequest, generated.lights.StatusResponse> getLightControlMethod;
+    if ((getLightControlMethod = LightServiceGrpc.getLightControlMethod) == null) {
       synchronized (LightServiceGrpc.class) {
-        if ((getTurnOnOffMethod = LightServiceGrpc.getTurnOnOffMethod) == null) {
-          LightServiceGrpc.getTurnOnOffMethod = getTurnOnOffMethod = 
+        if ((getLightControlMethod = LightServiceGrpc.getLightControlMethod) == null) {
+          LightServiceGrpc.getLightControlMethod = getLightControlMethod = 
               io.grpc.MethodDescriptor.<generated.lights.LightRequest, generated.lights.StatusResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
-                  "lighting.LightService", "turnOnOff"))
+                  "lighting.LightService", "lightControl"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   generated.lights.LightRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   generated.lights.StatusResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new LightServiceMethodDescriptorSupplier("turnOnOff"))
+                  .setSchemaDescriptor(new LightServiceMethodDescriptorSupplier("lightControl"))
                   .build();
           }
         }
      }
-     return getTurnOnOffMethod;
+     return getLightControlMethod;
   }
 
   /**
@@ -143,9 +143,9 @@ public final class LightServiceGrpc {
      * server sends back a single confirmation message
      * </pre>
      */
-    public void turnOnOff(generated.lights.LightRequest request,
+    public void lightControl(generated.lights.LightRequest request,
         io.grpc.stub.StreamObserver<generated.lights.StatusResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getTurnOnOffMethod(), responseObserver);
+      asyncUnimplementedUnaryCall(getLightControlMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -158,12 +158,12 @@ public final class LightServiceGrpc {
                 generated.lights.AverageResponse>(
                   this, METHODID_AVERAGE_LIGHTING)))
           .addMethod(
-            getTurnOnOffMethod(),
+            getLightControlMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 generated.lights.LightRequest,
                 generated.lights.StatusResponse>(
-                  this, METHODID_TURN_ON_OFF)))
+                  this, METHODID_LIGHT_CONTROL)))
           .build();
     }
   }
@@ -209,10 +209,10 @@ public final class LightServiceGrpc {
      * server sends back a single confirmation message
      * </pre>
      */
-    public void turnOnOff(generated.lights.LightRequest request,
+    public void lightControl(generated.lights.LightRequest request,
         io.grpc.stub.StreamObserver<generated.lights.StatusResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(getTurnOnOffMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getLightControlMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -244,9 +244,9 @@ public final class LightServiceGrpc {
      * server sends back a single confirmation message
      * </pre>
      */
-    public generated.lights.StatusResponse turnOnOff(generated.lights.LightRequest request) {
+    public generated.lights.StatusResponse lightControl(generated.lights.LightRequest request) {
       return blockingUnaryCall(
-          getChannel(), getTurnOnOffMethod(), getCallOptions(), request);
+          getChannel(), getLightControlMethod(), getCallOptions(), request);
     }
   }
 
@@ -278,14 +278,14 @@ public final class LightServiceGrpc {
      * server sends back a single confirmation message
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<generated.lights.StatusResponse> turnOnOff(
+    public com.google.common.util.concurrent.ListenableFuture<generated.lights.StatusResponse> lightControl(
         generated.lights.LightRequest request) {
       return futureUnaryCall(
-          getChannel().newCall(getTurnOnOffMethod(), getCallOptions()), request);
+          getChannel().newCall(getLightControlMethod(), getCallOptions()), request);
     }
   }
 
-  private static final int METHODID_TURN_ON_OFF = 0;
+  private static final int METHODID_LIGHT_CONTROL = 0;
   private static final int METHODID_AVERAGE_LIGHTING = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
@@ -305,8 +305,8 @@ public final class LightServiceGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_TURN_ON_OFF:
-          serviceImpl.turnOnOff((generated.lights.LightRequest) request,
+        case METHODID_LIGHT_CONTROL:
+          serviceImpl.lightControl((generated.lights.LightRequest) request,
               (io.grpc.stub.StreamObserver<generated.lights.StatusResponse>) responseObserver);
           break;
         default:
@@ -374,7 +374,7 @@ public final class LightServiceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new LightServiceFileDescriptorSupplier())
               .addMethod(getAverageLightingMethod())
-              .addMethod(getTurnOnOffMethod())
+              .addMethod(getLightControlMethod())
               .build();
         }
       }

@@ -17,7 +17,7 @@ service LightService {
   // unary RPC
   // client sends one message to either turn on the lights or turn them off
   // server sends back a single confirmation message
-  rpc turnOnOff(LightRequest) returns (StatusResponse) {}
+  rpc lightControl(LightRequest) returns (StatusResponse) {}
 
 }
 

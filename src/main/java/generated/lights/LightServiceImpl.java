@@ -47,12 +47,13 @@ public final class LightServiceImpl {
       "\022\021\n\telecUsage\030\001 \001(\001\022\023\n\013currentTime\030\002 \001(\t" +
       "\"\'\n\017AverageResponse\022\024\n\014usageAverage\030\001 \001(" +
       "\t\"#\n\014LightRequest\022\023\n\013lightButton\030\001 \001(\005\"$" +
-      "\n\016StatusResponse\022\022\n\nlightState\030\001 \001(\t2\227\001\n" +
+      "\n\016StatusResponse\022\022\n\nlightState\030\001 \001(\t2\232\001\n" +
       "\014LightService\022F\n\017averageLighting\022\024.light" +
       "ing.LightLevel\032\031.lighting.AverageRespons" +
-      "e\"\000(\001\022?\n\tturnOnOff\022\026.lighting.LightReque" +
-      "st\032\030.lighting.StatusResponse\"\000B&\n\020genera" +
-      "ted.lightsB\020LightServiceImplP\001b\006proto3"
+      "e\"\000(\001\022B\n\014lightControl\022\026.lighting.LightRe" +
+      "quest\032\030.lighting.StatusResponse\"\000B&\n\020gen" +
+      "erated.lightsB\020LightServiceImplP\001b\006proto" +
+      "3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

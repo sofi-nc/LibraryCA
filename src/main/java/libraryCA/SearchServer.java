@@ -11,6 +11,7 @@ import generated.search.SearchEngineGrpc.SearchEngineImplBase;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import library.objects.Books;
 
 public class SearchServer extends SearchEngineImplBase{
 	public static void main(String[] args) {
@@ -61,11 +62,7 @@ public class SearchServer extends SearchEngineImplBase{
 			StreamObserver<AvailableBooks> responseObserver) {
 		
 		System.out.println(LocalTime.now().toString() + " : receiving convert request with values : " + request.getOperation());
-		
-		//ArrayList<Books> booksList = new ArrayList<>();
-		Books[] byTitle = new Books[7];
-		Books[] byAuthor = new Books[7];
-		Books[] byId = new Books[7];
+
 		Books[] bookList = new Books[7];
 		
 		Books TGatsby = new Books(7836262, "The great Gatsby", "F. Scott Fitzgerald", "English", "Fiction",3);
@@ -75,30 +72,6 @@ public class SearchServer extends SearchEngineImplBase{
 		Books Phantom = new Books (3283121, "Phantom", "Jo Nesbo", "English", "Mystery",9);
 		Books	WNext = new Books (1917707, "What comes next", "John Katzenbach", "English", "Suspense",4);
 		Books PetS = new Books (3924794, "Pet Sematary", "Stephen King", "English", "Thriller",8);
-		
-	/*	byTitle[0] = PetS;
-		byTitle[1] = Phantom;
-		byTitle[2] = Pride;
-		byTitle[3] = Tcatcher;
-		byTitle[4] = TGatsby;
-		byTitle[5] = TKill;
-		byTitle[6] = WNext;
-		
-		byAuthor[0] = TGatsby;
-		byAuthor[1] = TKill;
-		byAuthor[2] = Tcatcher;
-		byAuthor[3] = Pride;
-		byAuthor[4] = Phantom;
-		byAuthor[5] = WNext;
-		byAuthor[6] = PetS;
-		
-		byId[0] = WNext;
-		byId[1] = Phantom;
-		byId[2] = PetS;
-		byId[3] = TKill;
-		byId[4] = Tcatcher;
-		byId[5] = TGatsby;
-		byId[6] = Pride; */
 		
 		bookList[0] = WNext;
 		bookList[1] = Phantom;
@@ -112,9 +85,11 @@ public class SearchServer extends SearchEngineImplBase{
 		
 		switch (request.getOperation()) {  
 	     case TITLE:
-	    	 for (int i=0; i < byTitle.length; i++) {
+	    	 for (int i=0; i < bookList.length; i++) {
 	    		quickSort(bookList, 0, bookList.length-1, "Title");
-	 			response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).setBookQty(bookList[i].getBookQty()).build();
+	 			response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId())
+	 					.setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject())
+	 					.setBookQty(bookList[i].getBookQty()).build();
 	 			responseObserver.onNext(response);
 	 			
 	 			//slow it all down a bit so we can observe the behaviour 
@@ -130,9 +105,9 @@ public class SearchServer extends SearchEngineImplBase{
 	       break;
 	       
 	     case AUTHOR:
-	    	 for (int i=0; i < 7; i++) {
+	    	 for (int i=0; i < bookList.length; i++) {
 	    		 quickSort(bookList, 0, bookList.length-1, "Author");
-		 		response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).build();
+		 		response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).setBookQty(bookList[i].getBookQty()).build();
 	    		 //response = AvailableBooks.newBuilder().setBookId(3+i).build();
 	    		 
 		 			responseObserver.onNext(response);
@@ -151,9 +126,9 @@ public class SearchServer extends SearchEngineImplBase{
 		       break;
 		       
 	     case ID:
-	    	 for (int i=0; i < 7; i++) {
+	    	 for (int i=0; i < bookList.length; i++) {
 	    		 quickSort(bookList, 0, bookList.length-1, "ID");
-		 			response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).build();
+		 			response = AvailableBooks.newBuilder().setTitle(bookList[i].getTitle()).setBookId(bookList[i].getBookId()).setAuthor(bookList[i].getAuthor()).setLanguage(bookList[i].getLang()).setSubject(bookList[i].getSubject()).setBookQty(bookList[i].getBookQty()).build();
 		 			responseObserver.onNext(response);
 		 			
 		 			//slow it all down a bit so we can observe the behaviour 

@@ -1,4 +1,4 @@
-package libraryCA;
+package library.objects;
 
 import generated.registration.BookRegistrationRequest.RegistrationType;
 

@@ -15,6 +15,8 @@ import generated.registration.VisitorRegistrationResponse;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import library.objects.Books;
+import library.objects.Visitor;
 
 public class RegisterServer extends RegistrationBookImplBase {
 	private static final Books[][] Array = null;
@@ -22,7 +24,7 @@ public class RegisterServer extends RegistrationBookImplBase {
 
 	public static void main(String[] args) {
 		// USERIDs available 443325, 493947, 102934, and 980661
-		Visitor v1 = new Visitor("Catalina Jauregui", "Active", "20/12/2004", "Yes", 443325, 4);
+		Visitor v1 = new Visitor("Mildred García", "Active", "20/12/2004", "Yes", 443325, 4);
 
 		Visitor v2 = new Visitor("Edward Cullen", "Active", "15/04/2007", "Yes", 493947, 2);
 

@@ -1,4 +1,4 @@
-package libraryCA;
+package library.objects;
 
 public class Visitor {
 	private String name, status, regDate, bBooks;
